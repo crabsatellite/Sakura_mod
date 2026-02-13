@@ -59,7 +59,7 @@ public class ChoppingRecipe extends AbstractRecipe {
     
     @Override
     public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return this.output;
+        return this.output.copy();
     }
     
     public NonNullList<ChanceResult> getByproducts() {
@@ -79,7 +79,7 @@ public class ChoppingRecipe extends AbstractRecipe {
 
     @Override
     public ItemStack assemble(RecipeWrapper pContainer, RegistryAccess pRegistryAccess) {
-        return this.output;
+        return this.output.copy();
     }
 
     @Override

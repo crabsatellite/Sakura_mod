@@ -17,6 +17,9 @@ public class ScreensRegistry {
             MenuScreens.register(ContainerRegistry.COOKING_POT.get(), CookingPotScreen::new);
             MenuScreens.register(ContainerRegistry.FERMENTER.get(), FermenterScreen::new);
             MenuScreens.register(ContainerRegistry.DISTILLER.get(), DistillerScreen::new);
+            MenuScreens.register(ContainerRegistry.CAMPFIRE_POT.get(), CampfirePotScreen::new);
+            MenuScreens.register(ContainerRegistry.MAPLE_CAULDRON.get(), MapleCauldronScreen::new);
+            MenuScreens.register(ContainerRegistry.BARREL_OUTPUT.get(), BarrelOutputScreen::new);
         });
     }
 }

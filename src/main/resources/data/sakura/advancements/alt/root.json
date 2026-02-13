@@ -1,0 +1,13 @@
+{
+  "display": {
+    "icon": { "item": "sakura:onigiri" },
+    "title": { "translate": "advancements.sakura.root.title" },
+    "description": { "translate": "advancements.sakura.root.description" },
+    "background": "sakura:textures/block/sakura_planks.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "hidden": { "trigger": "minecraft:impossible" }
+  }
+}

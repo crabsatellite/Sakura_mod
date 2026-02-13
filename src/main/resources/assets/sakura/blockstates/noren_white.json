@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "sakura:block/noren_white" },
+    "facing=east": { "model": "sakura:block/noren_white", "y": 90 },
+    "facing=south": { "model": "sakura:block/noren_white", "y": 180 },
+    "facing=west": { "model": "sakura:block/noren_white", "y": 270 }
+  }
+}

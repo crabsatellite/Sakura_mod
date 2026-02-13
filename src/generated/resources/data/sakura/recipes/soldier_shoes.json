@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+    "I I",
+    "L L"
+  ],
+  "result": {
+    "item": "sakura:soldier_shoes"
+  },
+  "show_notification": true
+}

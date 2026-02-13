@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "facing=north,bites=0":  { "model": "sakura:block/teishoku_katsu" },
+    "facing=south,bites=0":  { "model": "sakura:block/teishoku_katsu", "y": 180 },
+    "facing=west,bites=0":  { "model": "sakura:block/teishoku_katsu", "y": 270 },
+    "facing=east,bites=0":  { "model": "sakura:block/teishoku_katsu", "y": 90 },
+
+    "facing=north,bites=1":  { "model": "sakura:block/teishoku_katsu_1" },
+    "facing=south,bites=1":  { "model": "sakura:block/teishoku_katsu_1", "y": 180 },
+    "facing=west,bites=1":  { "model": "sakura:block/teishoku_katsu_1", "y": 270 },
+    "facing=east,bites=1":  { "model": "sakura:block/teishoku_katsu_1", "y": 90 },
+
+    "facing=north,bites=2":  { "model": "sakura:block/teishoku_katsu_2" },
+    "facing=south,bites=2":  { "model": "sakura:block/teishoku_katsu_2", "y": 180 },
+    "facing=west,bites=2":  { "model": "sakura:block/teishoku_katsu_2", "y": 270 },
+    "facing=east,bites=2":  { "model": "sakura:block/teishoku_katsu_2", "y": 90 },
+
+    "facing=north,bites=3":  { "model": "sakura:block/teishoku_katsu_3" },
+    "facing=south,bites=3":  { "model": "sakura:block/teishoku_katsu_3", "y": 180 },
+    "facing=west,bites=3":  { "model": "sakura:block/teishoku_katsu_3", "y": 270 },
+    "facing=east,bites=3":  { "model": "sakura:block/teishoku_katsu_3", "y": 90 }
+  }
+}

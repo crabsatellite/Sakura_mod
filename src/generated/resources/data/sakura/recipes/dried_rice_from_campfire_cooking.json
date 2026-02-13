@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 600,
+  "experience": 0.35,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:rice_cooked"
+  },
+  "result": "sakura:dried_rice"
+}

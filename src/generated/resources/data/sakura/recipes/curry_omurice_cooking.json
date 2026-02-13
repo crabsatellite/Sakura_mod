@@ -1,0 +1,23 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 125,
+    "fluidTag": "forge:food_oil"
+  },
+  "ingredients": [
+    {
+      "tag": "sakura:rice/rice"
+    },
+    {
+      "item": "sakura:curry_sauce"
+    },
+    {
+      "tag": "forge:eggs"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "item": "sakura:curry_omurice"
+  }
+}

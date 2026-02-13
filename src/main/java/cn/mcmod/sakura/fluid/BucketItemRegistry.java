@@ -36,10 +36,29 @@ public class BucketItemRegistry {
     
     public static final RegistryObject<Item> RUM_BUCKET = ITEMS.register("rum_bucket", () -> 
         new BucketItem(FluidRegistry.RUM, new Item.Properties().craftRemainder(Items.BUCKET)));
-    public static final RegistryObject<Item> BRANDY_BUCKET = ITEMS.register("brandy_bucket", () -> 
+    public static final RegistryObject<Item> BRANDY_BUCKET = ITEMS.register("brandy_bucket", () ->
         new BucketItem(FluidRegistry.BRANDY, new Item.Properties().craftRemainder(Items.BUCKET)));
-    
-    
+    public static final RegistryObject<Item> VODKA_BUCKET = ITEMS.register("vodka_bucket", () ->
+        new BucketItem(FluidRegistry.VODKA, new Item.Properties().craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> LIQUEUR_BUCKET = ITEMS.register("liqueur_bucket", () ->
+        new BucketItem(FluidRegistry.LIQUEUR, new Item.Properties().craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> COCOA_LIQUEUR_BUCKET = ITEMS.register("cocoa_liqueur_bucket", () ->
+        new BucketItem(FluidRegistry.COCOA_LIQUEUR, new Item.Properties().craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> GIN_BUCKET = ITEMS.register("gin_bucket", () ->
+        new BucketItem(FluidRegistry.GIN, new Item.Properties().craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> TEQUILA_BUCKET = ITEMS.register("tequila_bucket", () ->
+        new BucketItem(FluidRegistry.TEQUILA, new Item.Properties().craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> GRAPE_FLUID_BUCKET = ITEMS.register("grape_fluid_bucket", () ->
+        new BucketItem(FluidRegistry.GRAPE_FLUID, new Item.Properties().craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> GREEN_GRAPE_FLUID_BUCKET = ITEMS.register("green_grape_fluid_bucket", () ->
+        new BucketItem(FluidRegistry.GREEN_GRAPE_FLUID, new Item.Properties().craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> YEAST_LIQUID_BUCKET = ITEMS.register("yeast_liquid_bucket", () ->
+        new BucketItem(FluidRegistry.YEAST_LIQUID, new Item.Properties().craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> MAPLE_SYRUP_BUCKET = ITEMS.register("maple_syrup_bucket", () ->
+        new BucketItem(FluidRegistry.MAPLE_SYRUP, new Item.Properties().craftRemainder(Items.BUCKET)));
+    public static final RegistryObject<Item> HOT_SPRING_WATER_BUCKET = ITEMS.register("hot_spring_water_bucket", () ->
+        new BucketItem(FluidRegistry.HOT_SPRING_WATER, new Item.Properties().craftRemainder(Items.BUCKET)));
+
     @SubscribeEvent
     public static void onAddCreativeModeTab(BuildCreativeModeTabContentsEvent event){
         if(event.getTabKey()== CreativeModeTabs.INGREDIENTS){

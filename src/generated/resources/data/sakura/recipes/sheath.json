@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "W": {
+      "tag": "forge:lumber"
+    }
+  },
+  "pattern": [
+    "L",
+    "W"
+  ],
+  "result": {
+    "item": "sakura:sheath"
+  },
+  "show_notification": true
+}

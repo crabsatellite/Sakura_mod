@@ -22,4 +22,13 @@ public class ContainerRegistry {
     
     public static final RegistryObject<MenuType<DistillerContainer>> DISTILLER = CONTAINER_TYPES
             .register("distiller", () -> IForgeMenuType.create(DistillerContainer::new));
+
+    public static final RegistryObject<MenuType<CampfirePotContainer>> CAMPFIRE_POT = CONTAINER_TYPES
+            .register("campfire_pot", () -> IForgeMenuType.create(CampfirePotContainer::new));
+
+    public static final RegistryObject<MenuType<MapleCauldronContainer>> MAPLE_CAULDRON = CONTAINER_TYPES
+            .register("maple_cauldron", () -> IForgeMenuType.create(MapleCauldronContainer::new));
+
+    public static final RegistryObject<MenuType<BarrelOutputContainer>> BARREL_OUTPUT = CONTAINER_TYPES
+            .register("barrel_output", () -> IForgeMenuType.create(BarrelOutputContainer::new));
 }

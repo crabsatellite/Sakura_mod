@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:ores/iron"
+    },
+    {
+      "item": "sakura:bamboo_charcoal_block"
+    },
+    {
+      "item": "sakura:iron_hammer"
+    }
+  ],
+  "result": {
+    "item": "sakura:tatara"
+  }
+}

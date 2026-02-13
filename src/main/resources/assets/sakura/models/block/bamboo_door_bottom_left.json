@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "textures": {
+    "bottom": "sakura:block/bamboo_door_upper",
+    "top": "sakura:block/bamboo_door_upper"
+  }
+}

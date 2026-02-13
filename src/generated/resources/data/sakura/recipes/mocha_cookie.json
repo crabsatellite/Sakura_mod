@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:flour"
+    },
+    {
+      "tag": "forge:eggs"
+    },
+    {
+      "item": "sakura:mocha"
+    },
+    {
+      "tag": "forge:milk"
+    },
+    {
+      "tag": "forge:sugar"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "sakura:mocha_cookie"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#sakura:can_spawn_maple_tree",
+  "features": "sakura:trees_maple",
+  "step": "vegetal_decoration"
+}

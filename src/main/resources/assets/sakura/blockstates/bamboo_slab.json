@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "type=bottom,waterlogged=false": { "model": "sakura:block/bamboo_slab" },
+    "type=bottom,waterlogged=true": { "model": "sakura:block/bamboo_slab" },
+    "type=top,waterlogged=false": { "model": "sakura:block/bamboo_slab_top" },
+    "type=top,waterlogged=true": { "model": "sakura:block/bamboo_slab_top" },
+    "type=double,waterlogged=false": { "model": "sakura:block/bamboo_block" },
+    "type=double,waterlogged=true": { "model": "sakura:block/bamboo_block" }
+  }
+}

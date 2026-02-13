@@ -67,11 +67,60 @@ public class FluidRegistry {
     public static final RegistryObject<FlowingFluid> CHAMPAGNE_FLOWING = FLUIDS.register("champagne_flowing", 
             () -> new ForgeFlowingFluid.Flowing(FluidRegistry.CHAMPAGNE_PROP));
     
-    public static final RegistryObject<FlowingFluid> BRANDY = FLUIDS.register("brandy", 
+    public static final RegistryObject<FlowingFluid> BRANDY = FLUIDS.register("brandy",
             () -> new ForgeFlowingFluid.Source(FluidRegistry.BRANDY_PROP));
-    public static final RegistryObject<FlowingFluid> BRANDY_FLOWING = FLUIDS.register("brandy_flowing", 
+    public static final RegistryObject<FlowingFluid> BRANDY_FLOWING = FLUIDS.register("brandy_flowing",
             () -> new ForgeFlowingFluid.Flowing(FluidRegistry.BRANDY_PROP));
-    
+
+    public static final RegistryObject<FlowingFluid> VODKA = FLUIDS.register("vodka",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.VODKA_PROP));
+    public static final RegistryObject<FlowingFluid> VODKA_FLOWING = FLUIDS.register("vodka_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.VODKA_PROP));
+
+    public static final RegistryObject<FlowingFluid> LIQUEUR = FLUIDS.register("liqueur",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.LIQUEUR_PROP));
+    public static final RegistryObject<FlowingFluid> LIQUEUR_FLOWING = FLUIDS.register("liqueur_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.LIQUEUR_PROP));
+
+    public static final RegistryObject<FlowingFluid> COCOA_LIQUEUR = FLUIDS.register("cocoa_liqueur",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.COCOA_LIQUEUR_PROP));
+    public static final RegistryObject<FlowingFluid> COCOA_LIQUEUR_FLOWING = FLUIDS.register("cocoa_liqueur_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.COCOA_LIQUEUR_PROP));
+
+    public static final RegistryObject<FlowingFluid> GIN = FLUIDS.register("gin",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.GIN_PROP));
+    public static final RegistryObject<FlowingFluid> GIN_FLOWING = FLUIDS.register("gin_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.GIN_PROP));
+
+    public static final RegistryObject<FlowingFluid> TEQUILA = FLUIDS.register("tequila",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.TEQUILA_PROP));
+    public static final RegistryObject<FlowingFluid> TEQUILA_FLOWING = FLUIDS.register("tequila_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.TEQUILA_PROP));
+
+    public static final RegistryObject<FlowingFluid> GRAPE_FLUID = FLUIDS.register("grape_fluid",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.GRAPE_FLUID_PROP));
+    public static final RegistryObject<FlowingFluid> GRAPE_FLUID_FLOWING = FLUIDS.register("grape_fluid_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.GRAPE_FLUID_PROP));
+
+    public static final RegistryObject<FlowingFluid> GREEN_GRAPE_FLUID = FLUIDS.register("green_grape_fluid",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.GREEN_GRAPE_FLUID_PROP));
+    public static final RegistryObject<FlowingFluid> GREEN_GRAPE_FLUID_FLOWING = FLUIDS.register("green_grape_fluid_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.GREEN_GRAPE_FLUID_PROP));
+
+    public static final RegistryObject<FlowingFluid> YEAST_LIQUID = FLUIDS.register("yeast_liquid",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.YEAST_LIQUID_PROP));
+    public static final RegistryObject<FlowingFluid> YEAST_LIQUID_FLOWING = FLUIDS.register("yeast_liquid_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.YEAST_LIQUID_PROP));
+
+    public static final RegistryObject<FlowingFluid> MAPLE_SYRUP = FLUIDS.register("maple_syrup",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.MAPLE_SYRUP_PROP));
+    public static final RegistryObject<FlowingFluid> MAPLE_SYRUP_FLOWING = FLUIDS.register("maple_syrup_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.MAPLE_SYRUP_PROP));
+
+    public static final RegistryObject<FlowingFluid> HOT_SPRING_WATER = FLUIDS.register("hot_spring_water",
+            () -> new ForgeFlowingFluid.Source(FluidRegistry.HOT_SPRING_WATER_PROP));
+    public static final RegistryObject<FlowingFluid> HOT_SPRING_WATER_FLOWING = FLUIDS.register("hot_spring_water_flowing",
+            () -> new ForgeFlowingFluid.Flowing(FluidRegistry.HOT_SPRING_WATER_PROP));
 
     private static final ForgeFlowingFluid.Properties FOOD_OIL_PROP = 
             createProp(FOOD_OIL, FOOD_OIL_FLOWING, FluidTypeRegistry.FOOD_OIL, FluidBlockRegistry.FOOD_OIL_BLOCK,BucketItemRegistry.FOOD_OIL_BUCKET);
@@ -103,9 +152,39 @@ public class FluidRegistry {
     private static final ForgeFlowingFluid.Properties WHITE_WINE_PROP = 
             createProp(WHITE_WINE, WHITE_WINE_FLOWING, FluidTypeRegistry.WHITE_WINE, FluidBlockRegistry.WHITE_WINE_BLOCK,BucketItemRegistry.WHITE_WINE_BUCKET);
     
-    private static final ForgeFlowingFluid.Properties CHAMPAGNE_PROP = 
+    private static final ForgeFlowingFluid.Properties CHAMPAGNE_PROP =
             createProp(CHAMPAGNE, CHAMPAGNE_FLOWING, FluidTypeRegistry.CHAMPAGNE, FluidBlockRegistry.CHAMPAGNE_BLOCK,BucketItemRegistry.CHAMPAGNE_BUCKET);
-    
+
+    private static final ForgeFlowingFluid.Properties VODKA_PROP =
+            createProp(VODKA, VODKA_FLOWING, FluidTypeRegistry.VODKA, FluidBlockRegistry.VODKA_BLOCK,BucketItemRegistry.VODKA_BUCKET);
+
+    private static final ForgeFlowingFluid.Properties LIQUEUR_PROP =
+            createProp(LIQUEUR, LIQUEUR_FLOWING, FluidTypeRegistry.LIQUEUR, FluidBlockRegistry.LIQUEUR_BLOCK,BucketItemRegistry.LIQUEUR_BUCKET);
+
+    private static final ForgeFlowingFluid.Properties COCOA_LIQUEUR_PROP =
+            createProp(COCOA_LIQUEUR, COCOA_LIQUEUR_FLOWING, FluidTypeRegistry.COCOA_LIQUEUR, FluidBlockRegistry.COCOA_LIQUEUR_BLOCK,BucketItemRegistry.COCOA_LIQUEUR_BUCKET);
+
+    private static final ForgeFlowingFluid.Properties GIN_PROP =
+            createProp(GIN, GIN_FLOWING, FluidTypeRegistry.GIN, FluidBlockRegistry.GIN_BLOCK,BucketItemRegistry.GIN_BUCKET);
+
+    private static final ForgeFlowingFluid.Properties TEQUILA_PROP =
+            createProp(TEQUILA, TEQUILA_FLOWING, FluidTypeRegistry.TEQUILA, FluidBlockRegistry.TEQUILA_BLOCK,BucketItemRegistry.TEQUILA_BUCKET);
+
+    private static final ForgeFlowingFluid.Properties GRAPE_FLUID_PROP =
+            createProp(GRAPE_FLUID, GRAPE_FLUID_FLOWING, FluidTypeRegistry.GRAPE_FLUID, FluidBlockRegistry.GRAPE_FLUID_BLOCK,BucketItemRegistry.GRAPE_FLUID_BUCKET);
+
+    private static final ForgeFlowingFluid.Properties GREEN_GRAPE_FLUID_PROP =
+            createProp(GREEN_GRAPE_FLUID, GREEN_GRAPE_FLUID_FLOWING, FluidTypeRegistry.GREEN_GRAPE_FLUID, FluidBlockRegistry.GREEN_GRAPE_FLUID_BLOCK,BucketItemRegistry.GREEN_GRAPE_FLUID_BUCKET);
+
+    private static final ForgeFlowingFluid.Properties YEAST_LIQUID_PROP =
+            createProp(YEAST_LIQUID, YEAST_LIQUID_FLOWING, FluidTypeRegistry.YEAST_LIQUID, FluidBlockRegistry.YEAST_LIQUID_BLOCK,BucketItemRegistry.YEAST_LIQUID_BUCKET);
+
+    private static final ForgeFlowingFluid.Properties MAPLE_SYRUP_PROP =
+            createProp(MAPLE_SYRUP, MAPLE_SYRUP_FLOWING, FluidTypeRegistry.MAPLE_SYRUP, FluidBlockRegistry.MAPLE_SYRUP_BLOCK,BucketItemRegistry.MAPLE_SYRUP_BUCKET);
+
+    private static final ForgeFlowingFluid.Properties HOT_SPRING_WATER_PROP =
+            createProp(HOT_SPRING_WATER, HOT_SPRING_WATER_FLOWING, FluidTypeRegistry.HOT_SPRING_WATER, FluidBlockRegistry.HOT_SPRING_WATER_BLOCK,BucketItemRegistry.HOT_SPRING_WATER_BUCKET);
+
     private static ForgeFlowingFluid.Properties createProp(
             Supplier<? extends Fluid> still, 
             Supplier<? extends Fluid> flowing,

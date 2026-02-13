@@ -34,5 +34,25 @@ public class FluidBlockRegistry {
         new LiquidBlock(FluidRegistry.RUM, Block.Properties.copy(Blocks.WATER)));
     public static final RegistryObject<LiquidBlock> CHAMPAGNE_BLOCK = BLOCKS.register("champagne", () ->
         new LiquidBlock(FluidRegistry.CHAMPAGNE, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> VODKA_BLOCK = BLOCKS.register("vodka", () ->
+        new LiquidBlock(FluidRegistry.VODKA, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> LIQUEUR_BLOCK = BLOCKS.register("liqueur", () ->
+        new LiquidBlock(FluidRegistry.LIQUEUR, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> COCOA_LIQUEUR_BLOCK = BLOCKS.register("cocoa_liqueur", () ->
+        new LiquidBlock(FluidRegistry.COCOA_LIQUEUR, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> GIN_BLOCK = BLOCKS.register("gin", () ->
+        new LiquidBlock(FluidRegistry.GIN, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> TEQUILA_BLOCK = BLOCKS.register("tequila", () ->
+        new LiquidBlock(FluidRegistry.TEQUILA, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> GRAPE_FLUID_BLOCK = BLOCKS.register("grape_fluid", () ->
+        new LiquidBlock(FluidRegistry.GRAPE_FLUID, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> GREEN_GRAPE_FLUID_BLOCK = BLOCKS.register("green_grape_fluid", () ->
+        new LiquidBlock(FluidRegistry.GREEN_GRAPE_FLUID, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> YEAST_LIQUID_BLOCK = BLOCKS.register("yeast_liquid", () ->
+        new LiquidBlock(FluidRegistry.YEAST_LIQUID, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> MAPLE_SYRUP_BLOCK = BLOCKS.register("maple_syrup", () ->
+        new LiquidBlock(FluidRegistry.MAPLE_SYRUP, Block.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> HOT_SPRING_WATER_BLOCK = BLOCKS.register("hot_spring_water_liquid", () ->
+        new LiquidBlock(FluidRegistry.HOT_SPRING_WATER, Block.Properties.copy(Blocks.WATER)));
 
 }

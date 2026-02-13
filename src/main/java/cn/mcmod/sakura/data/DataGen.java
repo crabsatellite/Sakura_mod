@@ -21,8 +21,11 @@ public class DataGen {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         PackOutput packOutput = dataGenerator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
-        dataGenerator.addProvider(event.includeClient(),new SakuraBlockStateProvider(packOutput, SakuraMod.MODID, existingFileHelper));
-        dataGenerator.addProvider(event.includeClient(),new SakuraItemModelProvider(packOutput, SakuraMod.MODID, existingFileHelper));
+        // Client-side providers kept commented to avoid overwriting manually created models/blockstates
+        // dataGenerator.addProvider(event.includeClient(),new SakuraBlockStateProvider(packOutput, SakuraMod.MODID, existingFileHelper));
+        // dataGenerator.addProvider(event.includeClient(),new SakuraItemModelProvider(packOutput, SakuraMod.MODID, existingFileHelper));
+
+        // Server-side providers: tags, recipes, loot tables
         SakuraBlockTagsProvider block_tag = new SakuraBlockTagsProvider(packOutput, provider, SakuraMod.MODID, existingFileHelper);
         dataGenerator.addProvider(event.includeServer(),block_tag);
         dataGenerator.addProvider(event.includeServer(),new SakuraItemTagsProvider(packOutput, provider, block_tag, SakuraMod.MODID, existingFileHelper));
@@ -31,7 +34,8 @@ public class DataGen {
         dataGenerator.addProvider(event.includeServer(),new SakuraRecipeProvider(packOutput));
         dataGenerator.addProvider(event.includeServer(),new SakuraLootTableProvider(packOutput));
         dataGenerator.addProvider(event.includeServer(),new SakuraFeatureProvider(packOutput, provider));
-//        dataGenerator.addProvider(event.includeServer(),new SakuraLootModifierProvider(packOutput, SakuraMod.MODID));
-        dataGenerator.addProvider(event.includeServer(),new SakuraTFCFoodCompatProvider(packOutput, existingFileHelper));
+        dataGenerator.addProvider(event.includeServer(),new SakuraLootModifierProvider(packOutput, SakuraMod.MODID));
+        // TFC compat provider kept commented - depends on TFC mod
+        // dataGenerator.addProvider(event.includeServer(),new SakuraTFCFoodCompatProvider(packOutput, existingFileHelper));
     }
 }

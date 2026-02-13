@@ -1,0 +1,19 @@
+{
+  "type": "sakura:stone_mortar",
+  "experience": 0.0,
+  "ingredients": [
+    {
+      "tag": "forge:crops/potato"
+    },
+    {
+      "tag": "forge:crops/potato"
+    }
+  ],
+  "recipeTime": 200,
+  "results": [
+    {
+      "count": 2,
+      "item": "sakura:flour"
+    }
+  ]
+}

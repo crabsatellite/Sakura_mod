@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:glass_whiskey"
+    },
+    {
+      "item": "sakura:glass_liqueur"
+    }
+  ],
+  "result": {
+    "item": "sakura:glass_rusty_nail"
+  }
+}

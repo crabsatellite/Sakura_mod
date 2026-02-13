@@ -16,9 +16,13 @@ import cn.mcmod.sakura.fluid.BucketItemRegistry;
 import cn.mcmod.sakura.fluid.FluidRegistry;
 import cn.mcmod.sakura.item.FoodRegistry;
 import cn.mcmod.sakura.item.ItemRegistry;
+import cn.mcmod.sakura.item.DrinkRegistry;
+import cn.mcmod.sakura.item.enums.SakuraAlcoholSet;
+import cn.mcmod.sakura.item.enums.SakuraCocktailSet;
 import cn.mcmod.sakura.item.enums.SakuraCuisineSet;
 import cn.mcmod.sakura.item.enums.SakuraFoodSet;
 import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
+import cn.mcmod.sakura.item.enums.SakuraTeaSet;
 import cn.mcmod.sakura.tags.SakuraFluidTags;
 import cn.mcmod.sakura.tags.SakuraItemTags;
 import cn.mcmod_mmf.mmlib.data.AbstractRecipeProvider;
@@ -50,6 +54,13 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         registerCraftingRecipe(consumer);
+        registerBuildingBlockRecipes(consumer);
+        registerWeaponArmorRecipes(consumer);
+        registerToolRecipes(consumer);
+        registerDecorationRecipes(consumer);
+        registerMissingBlockRecipes(consumer);
+        registerSmeltingRecipes(consumer);
+        registerDrinkRecipes(consumer);
         registerMortarRecipe(consumer);
         registerCookingRecipe(consumer);
         registerFermenterRecipe(consumer);
@@ -158,6 +169,25 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
         makeItemToBucket(BucketItemRegistry.FOOD_OIL_BUCKET, Ingredient.of(SakuraItemTags.SEEDS_RAPESEED))
                 .unlockedBy("has_seeds", has(SakuraItemTags.SEEDS_RAPESEED)).save(consumer);
 
+        // Grape Fluid Bucket: 8 grapes + bucket
+        makeItemToBucket(BucketItemRegistry.GRAPE_FLUID_BUCKET, Ingredient.of(SakuraItemTags.CROPS_GRAPE))
+                .unlockedBy("has_grape", has(SakuraItemTags.CROPS_GRAPE))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "grape_fluid_bucket"));
+
+        // Green Grape Fluid Bucket: 8 green grapes + bucket
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BucketItemRegistry.GREEN_GRAPE_FLUID_BUCKET.get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(Items.BUCKET)
+                .unlockedBy("has_green_grape", has(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "green_grape_fluid_bucket"));
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.DOUGH_BUCKWHEAT).get(), 3)
                 .requires(SakuraItemTags.FLOUR_BUCKWHEAT).requires(SakuraItemTags.FLOUR_BUCKWHEAT)
                 .requires(SakuraItemTags.FLOUR_BUCKWHEAT).requires(SakuraItemTags.WATER)
@@ -168,29 +198,49 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
                 .requires(SakuraItemTags.FLOUR_RICE).requires(SakuraItemTags.WATER)
                 .unlockedBy("has_flour", has(SakuraItemTags.FLOUR_RICE)).save(consumer);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKO_TAMAGOYAKI.get()).requires(SakuraItemTags.SOUPS)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKU_TAMAGOYAKI.get()).requires(SakuraItemTags.SOUPS)
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()).requires(BlockRegistry.OBON.get())
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TAMAGOYAKI).get())
                 .unlockedBy("has_obon", has(BlockRegistry.OBON.get())).save(consumer);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOUKU_FISH_COOKED.get()).requires(SakuraItemTags.SOUPS)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKU_FISH_COOKED.get()).requires(SakuraItemTags.SOUPS)
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()).requires(BlockRegistry.OBON.get())
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.FISH_BAKE).get())
                 .unlockedBy("has_obon", has(BlockRegistry.OBON.get())).save(consumer);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOUKU_FISH_SALT.get()).requires(SakuraItemTags.SOUPS)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKU_FISH_SALT.get()).requires(SakuraItemTags.SOUPS)
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()).requires(BlockRegistry.OBON.get())
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.FISH_BAKE_SALT).get())
                 .unlockedBy("has_obon", has(BlockRegistry.OBON.get())).save(consumer);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOUKU_FISH_RAW.get()).requires(SakuraItemTags.SOUPS)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKU_FISH_RAW.get()).requires(SakuraItemTags.SOUPS)
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()).requires(BlockRegistry.OBON.get())
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SASHIMI).get())
                 .unlockedBy("has_obon", has(BlockRegistry.OBON.get())).save(consumer);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKO_YAKINIKU.get()).requires(SakuraItemTags.SOUPS)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKU_YAKINIKU.get()).requires(SakuraItemTags.SOUPS)
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()).requires(BlockRegistry.OBON.get())
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.YAKINIKU).get())
+                .unlockedBy("has_obon", has(BlockRegistry.OBON.get())).save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKU_TEMPURA.get()).requires(SakuraItemTags.SOUPS)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()).requires(BlockRegistry.OBON.get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TEMPURA).get())
+                .unlockedBy("has_obon", has(BlockRegistry.OBON.get())).save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKU_FRIED.get()).requires(SakuraItemTags.SOUPS)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()).requires(BlockRegistry.OBON.get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.FRIED_CHICKEN).get())
+                .unlockedBy("has_obon", has(BlockRegistry.OBON.get())).save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKU_KATSU.get()).requires(SakuraItemTags.SOUPS)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()).requires(BlockRegistry.OBON.get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.KATSU).get())
+                .unlockedBy("has_obon", has(BlockRegistry.OBON.get())).save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TEISHOKU_BURGER.get()).requires(SakuraItemTags.SOUPS)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()).requires(BlockRegistry.OBON.get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BURGER_DISH).get())
                 .unlockedBy("has_obon", has(BlockRegistry.OBON.get())).save(consumer);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, FoodRegistry.FOODSET.get(SakuraFoodSet.SASHIMI).get())
@@ -364,6 +414,1357 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
                 .group("sakura").unlockedBy("has_item", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BAMBOO_SUNBURNT).get()))
                 .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_charcoal_sunburnt_from_smelt"));
 
+        // ===== BENTO RECIPES =====
+        // Bento Standard: bento_box + rice_cooked + tempura + vegetable + cooked_meat
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.CUISINES.get(SakuraCuisineSet.BENTO_STANDARD).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BENTO_BOX).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TEMPURA).get())
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.COOKED_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.COOKED_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.COOKED_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.COOKED_MUTTON))))
+                .unlockedBy("has_bento_box", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BENTO_BOX).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bento_standard"));
+
+        // Bento Deluxe: bento_box + rice_cooked + tempura + vegetable + seaweed + cooked_meat
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.CUISINES.get(SakuraCuisineSet.BENTO_DELUXE).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BENTO_BOX).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TEMPURA).get())
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(SakuraItemTags.CROPS_SEAWEED)
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.COOKED_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.COOKED_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.COOKED_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.COOKED_MUTTON))))
+                .unlockedBy("has_bento_box", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BENTO_BOX).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bento_deluxe"));
+
+        // Bento Premium: bento_box + omurice + vegetable
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.CUISINES.get(SakuraCuisineSet.BENTO_PREMIUM).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BENTO_BOX).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.OMURICE).get())
+                .requires(SakuraItemTags.VEGETABLES)
+                .unlockedBy("has_bento_box", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BENTO_BOX).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bento_premium"));
+
+        // Bento Supreme: bento_box + rice_cooked + curry_sauce + vegetable + cooked_meat
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.CUISINES.get(SakuraCuisineSet.BENTO_SUPREME).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BENTO_BOX).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CURRY_SAUCE).get())
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.COOKED_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.COOKED_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.COOKED_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.COOKED_MUTTON))))
+                .unlockedBy("has_bento_box", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BENTO_BOX).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bento_supreme"));
+
+        // ===== MISSING ONIGIRI/FOOD RECIPES =====
+        // Onigiri Fish: rice_cooked + noodle_soup + fish
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.ONIGIRI_FISH).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.COOKED_FISHES)
+                .unlockedBy("has_rice", has(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "onigiri_fish"));
+
+        // Onigiri Matsutake: rice_cooked + kelp + matsutake
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.ONIGIRI_MATSUTAKE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get())
+                .requires(Items.DRIED_KELP)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.MATSUTAKE).get())
+                .unlockedBy("has_rice", has(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "onigiri_matsutake"));
+
+        // Okinoyaki Plus: okinoyaki + worcester_sauce + mayo
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.OKINOYAKI_PLUS).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.OKINOYAKI).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.WORCESTER_SAUCE).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MAYO).get())
+                .unlockedBy("has_okinoyaki", has(FoodRegistry.FOODSET.get(SakuraFoodSet.OKINOYAKI).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "okinoyaki_plus"));
+
+        // Okinoyaki Final: okinoyaki_plus + bonito_shaving
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.OKINOYAKI_FINAL).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.OKINOYAKI_PLUS).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BONITO_SHAVING).get())
+                .unlockedBy("has_okinoyaki_plus", has(FoodRegistry.FOODSET.get(SakuraFoodSet.OKINOYAKI_PLUS).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "okinoyaki_final"));
+
+        // Taiyaki Mocha: raw_taiyaki + mocha (then smelted, but also as crafting)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.TAIYAKI_MOCHA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TAIYAKI).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MOCHA).get())
+                .unlockedBy("has_taiyaki", has(FoodRegistry.FOODSET.get(SakuraFoodSet.TAIYAKI).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "taiyaki_mocha"));
+
+        // Mocha Cookie: flour + egg + mocha + milk + sugar
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.MOCHA_COOKIE).get(), 2)
+                .requires(SakuraItemTags.FLOUR).requires(SakuraItemTags.EGGS)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MOCHA).get())
+                .requires(SakuraItemTags.MILK).requires(SakuraItemTags.SUGAR)
+                .unlockedBy("has_mocha", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MOCHA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "mocha_cookie"));
+
+        // Pound Cake Mocha: pound_cake + mocha
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.POUND_CAKE_MOCHA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.POUND_CAKE).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MOCHA).get())
+                .unlockedBy("has_pound_cake", has(FoodRegistry.FOODSET.get(SakuraFoodSet.POUND_CAKE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pound_cake_mocha"));
+
+        // Rice Curry Cheese Katsu: rice_curry_cheese + katsu
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY_CHEESE_KATSU).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY_CHEESE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.KATSU).get())
+                .unlockedBy("has_curry_cheese", has(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY_CHEESE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "rice_curry_cheese_katsu"));
+
+        // Rice Curry Cheese Burger: rice_curry_cheese + burger
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY_CHEESE_BURGER).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY_CHEESE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BURGER).get())
+                .unlockedBy("has_curry_cheese", has(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY_CHEESE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "rice_curry_cheese_burger"));
+
+        // Imogaranawa Piece: 3 dried_imogara + water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.IMOGARANAWA_PIECE).get(), 3)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.DRIED_IMOGARA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.DRIED_IMOGARA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.DRIED_IMOGARA).get())
+                .requires(SakuraItemTags.WATER)
+                .unlockedBy("has_dried_imogara", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.DRIED_IMOGARA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "imogaranawa_piece"));
+
+        // Miso Ball: miso + dried_rice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MISO_BALL).get())
+                .requires(SakuraItemTags.MISO)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_RICE).get())
+                .unlockedBy("has_miso", has(SakuraItemTags.MISO))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "miso_ball"));
+
+        // Hyorogan (military ration): dried_rice + miso + sake_kasu
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.HYOROGAN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_RICE).get())
+                .requires(SakuraItemTags.MISO)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SAKE_KASU).get())
+                .unlockedBy("has_dried_rice", has(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_RICE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "hyorogan"));
+
+        // Suikatsugan (military water ration): dried_rice + ume + sake_kasu + sugar
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.SUIKATSUGAN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_RICE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.UME).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SAKE_KASU).get())
+                .requires(SakuraItemTags.SUGAR)
+                .unlockedBy("has_dried_rice", has(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_RICE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "suikatsugan"));
+
+        // Croquette Dish: croquette + sliced_cabbage
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.CROQUETTE_DISH).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.CROQUETTE).get())
+                .requires(SakuraItemTags.SALAD_INGREDIENTS_CABBAGE)
+                .unlockedBy("has_croquette", has(FoodRegistry.FOODSET.get(SakuraFoodSet.CROQUETTE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "croquette_dish"));
+
+        // ===== ADDITIONAL MISSING CRAFTING RECIPES =====
+
+        // Pound Cake: flour + egg + grape + milk + sugar -> 2
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.POUND_CAKE).get(), 2)
+                .requires(SakuraItemTags.FLOUR).requires(SakuraItemTags.EGGS)
+                .requires(SakuraItemTags.CROPS_GRAPE).requires(SakuraItemTags.MILK)
+                .requires(SakuraItemTags.SUGAR)
+                .unlockedBy("has_flour", has(SakuraItemTags.FLOUR))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pound_cake"));
+
+        // Ehoumaki: seaweed + veggie + raw_fish + tamagoyaki + rice_cooked -> 3
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.EHOUMAKI).get(), 3)
+                .requires(SakuraItemTags.CROPS_SEAWEED).requires(SakuraItemTags.VEGETABLES)
+                .requires(SakuraItemTags.RAW_FISHES)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TAMAGOYAKI).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get())
+                .unlockedBy("has_rice", has(FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ehoumaki"));
+
+        // Raw Taiyaki: flour + sugar + egg + egg + red_bean_paste -> 2
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.RAW_TAIYAKI).get(), 2)
+                .requires(SakuraItemTags.FLOUR).requires(SakuraItemTags.SUGAR)
+                .requires(SakuraItemTags.EGGS).requires(SakuraItemTags.EGGS)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.REDBEAN_PASTE).get())
+                .unlockedBy("has_redbean_paste", has(FoodRegistry.FOODSET.get(SakuraFoodSet.REDBEAN_PASTE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "raw_taiyaki"));
+
+        // Dorayaki: flour*2 + sugar + egg*2 + red_bean_paste*2 -> 3
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.DORAYAKI).get(), 3)
+                .requires(SakuraItemTags.FLOUR).requires(SakuraItemTags.FLOUR)
+                .requires(SakuraItemTags.SUGAR)
+                .requires(SakuraItemTags.EGGS).requires(SakuraItemTags.EGGS)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.REDBEAN_PASTE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.REDBEAN_PASTE).get())
+                .unlockedBy("has_redbean_paste", has(FoodRegistry.FOODSET.get(SakuraFoodSet.REDBEAN_PASTE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "dorayaki"));
+
+        // Dough Okinoyaki: dough + salt + raw_meat + veggie + egg -> 2
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.DOUGH_OKINOYAKI).get(), 2)
+                .requires(SakuraItemTags.DOUGH)
+                .requires(SakuraItemTags.SALT)
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.RAW_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_MUTTON))))
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(SakuraItemTags.EGGS)
+                .unlockedBy("has_dough", has(SakuraItemTags.DOUGH))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "dough_okinoyaki"));
+
+        // Ohagi: mochi + red_bean_paste
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.OHAGI).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.MOCHI).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.REDBEAN_PASTE).get())
+                .unlockedBy("has_mochi", has(FoodRegistry.FOODSET.get(SakuraFoodSet.MOCHI).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ohagi"));
+
+    }
+
+    private void registerBuildingBlockRecipes(Consumer<FinishedRecipe> consumer) {
+        // ===== STAIRS from planks (6 planks -> 4 stairs) =====
+        makeStair(consumer, BlockRegistry.SAKURA_STAIRS, BlockRegistry.SAKURA_PLANK);
+        makeStair(consumer, BlockRegistry.MAPLE_STAIRS, BlockRegistry.MAPLE_PLANK);
+        makeStair(consumer, BlockRegistry.BAMBOO_PLANK_STAIRS, BlockRegistry.BAMBOO_PLANK);
+
+        // Stairs from bamboo blocks
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.BAMBOO_STAIRS.get(), 4)
+                .pattern("#  ").pattern("## ").pattern("###")
+                .define('#', BlockRegistry.BAMBOO_BLOCK.get())
+                .unlockedBy("has_item", has(BlockRegistry.BAMBOO_BLOCK.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_stair_from_block"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.BAMBOO_STAIRS_SUNBURNT.get(), 4)
+                .pattern("#  ").pattern("## ").pattern("###")
+                .define('#', BlockRegistry.BAMBOO_BLOCK_SUNBURNT.get())
+                .unlockedBy("has_item", has(BlockRegistry.BAMBOO_BLOCK_SUNBURNT.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_stair_sunburnt_from_block"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.STRAW_STAIRS.get(), 4)
+                .pattern("#  ").pattern("## ").pattern("###")
+                .define('#', BlockRegistry.STRAW_BLOCK.get())
+                .unlockedBy("has_item", has(BlockRegistry.STRAW_BLOCK.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "straw_stair_from_block"));
+
+        // ===== SLABS from planks (3 planks -> 6 slabs) =====
+        makeSlab(consumer, BlockRegistry.SAKURA_SLAB, BlockRegistry.SAKURA_PLANK);
+        makeSlab(consumer, BlockRegistry.MAPLE_SLAB, BlockRegistry.MAPLE_PLANK);
+        makeSlab(consumer, BlockRegistry.BAMBOO_PLANK_SLAB, BlockRegistry.BAMBOO_PLANK);
+
+        // Slabs from bamboo blocks
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.BAMBOO_SLAB.get(), 6)
+                .pattern("###")
+                .define('#', BlockRegistry.BAMBOO_BLOCK.get())
+                .unlockedBy("has_item", has(BlockRegistry.BAMBOO_BLOCK.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_slab_from_block"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.BAMBOO_SLAB_SUNBURNT.get(), 6)
+                .pattern("###")
+                .define('#', BlockRegistry.BAMBOO_BLOCK_SUNBURNT.get())
+                .unlockedBy("has_item", has(BlockRegistry.BAMBOO_BLOCK_SUNBURNT.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_slab_sunburnt_from_block"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.STRAW_SLAB.get(), 6)
+                .pattern("###")
+                .define('#', BlockRegistry.STRAW_BLOCK.get())
+                .unlockedBy("has_item", has(BlockRegistry.STRAW_BLOCK.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "straw_slab_from_block"));
+
+        // ===== FENCES (bamboo) =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.BAMBOO_FENCE.get(), 3)
+                .pattern("#I#").pattern("#I#")
+                .define('#', SakuraItemTags.BAMBOO).define('I', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_bamboo", has(SakuraItemTags.BAMBOO))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_fence"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.BAMBOO_FENCE_SUNBURNT.get(), 3)
+                .pattern("#I#").pattern("#I#")
+                .define('#', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BAMBOO_SUNBURNT).get()).define('I', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_bamboo", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BAMBOO_SUNBURNT).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_fence_sunburnt"));
+
+        // ===== DOOR (bamboo) =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, BlockRegistry.BAMBOO_DOOR.get(), 3)
+                .pattern("##").pattern("##").pattern("##")
+                .define('#', SakuraItemTags.BAMBOO)
+                .unlockedBy("has_bamboo", has(SakuraItemTags.BAMBOO))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_door"));
+
+        // ===== KAWARA (roof tiles) =====
+        // Kawara block from clay + gray dye (like terracotta)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.KAWARA_BLOCK.get(), 8)
+                .pattern("###").pattern("#D#").pattern("###")
+                .define('#', Items.CLAY_BALL).define('D', Tags.Items.DYES_GRAY)
+                .unlockedBy("has_clay", has(Items.CLAY_BALL))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "kawara_block"));
+        // Kawara stairs from kawara block
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.KAWARA.get(), 4)
+                .pattern("#  ").pattern("## ").pattern("###")
+                .define('#', BlockRegistry.KAWARA_BLOCK.get())
+                .unlockedBy("has_kawara", has(BlockRegistry.KAWARA_BLOCK.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "kawara_stairs"));
+
+        // ===== TATAMI CARPETS =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.TATAMI_CARPET.get(), 3)
+                .pattern("##")
+                .define('#', BlockRegistry.TATAMI.get())
+                .unlockedBy("has_tatami", has(BlockRegistry.TATAMI.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "tatami_carpet"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.TATAMI_CARPET_WAXED.get(), 3)
+                .pattern("##")
+                .define('#', BlockRegistry.TATAMI_WAXED.get())
+                .unlockedBy("has_tatami", has(BlockRegistry.TATAMI_WAXED.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "tatami_ns_carpet"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.TATAMI_CARPET_TAN.get(), 3)
+                .pattern("##")
+                .define('#', BlockRegistry.TATAMI_SUNBURNT.get())
+                .unlockedBy("has_tatami", has(BlockRegistry.TATAMI_SUNBURNT.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "tatami_tan_carpet"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.TATAMI_CARPET_TAN_WAXED.get())
+                .requires(BlockRegistry.TATAMI_CARPET_TAN.get()).requires(Items.HONEYCOMB)
+                .unlockedBy("has_tatami", has(BlockRegistry.TATAMI_CARPET_TAN.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "tatami_tan_ns_carpet"));
+    }
+
+    private void registerWeaponArmorRecipes(Consumer<FinishedRecipe> consumer) {
+        // ===== WEAPONS =====
+        // Katana: 2 tamahagane + 1 stick (vertical sword pattern)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.KATANA.get())
+                .pattern(" T").pattern(" T").pattern(" S")
+                .define('T', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get())
+                .define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_tamahagane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "katana"));
+
+        // Tachi: 2 steel + 1 stick
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.TACHI.get())
+                .pattern(" T").pattern(" T").pattern(" S")
+                .define('T', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.STEEL_INGOT).get())
+                .define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_steel", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.STEEL_INGOT).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "tachi"));
+
+        // Sakura Katana: 2 sakura diamond + 1 stick
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SAKURA_KATANA.get())
+                .pattern(" T").pattern(" T").pattern(" S")
+                .define('T', ItemRegistry.SAKURA_DIAMOND.get())
+                .define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_katana"));
+
+        // Kodachi: 1 tamahagane + 1 stick (short sword)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.KODACHI.get())
+                .pattern("T").pattern("S")
+                .define('T', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get())
+                .define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_tamahagane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "kodachi"));
+
+        // Sakura Kodachi
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SAKURA_KODACHI.get())
+                .pattern("T").pattern("S")
+                .define('T', ItemRegistry.SAKURA_DIAMOND.get())
+                .define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_kodachi"));
+
+        // Shinai: 2 bamboo + 1 stick (practice sword)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SHINAI.get())
+                .pattern(" B").pattern(" B").pattern(" S")
+                .define('B', SakuraItemTags.BAMBOO)
+                .define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_bamboo", has(SakuraItemTags.BAMBOO))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "shinai"));
+
+        // Sheath: leather + lumber
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SHEATH.get())
+                .pattern("L").pattern("W")
+                .define('L', Items.LEATHER).define('W', SakuraItemTags.LUMBER)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sheath"));
+
+        // Katana Sheath: katana + sheath
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, ItemRegistry.KATANA_SHEATH.get())
+                .requires(ItemRegistry.KATANA.get()).requires(ItemRegistry.SHEATH.get())
+                .unlockedBy("has_katana", has(ItemRegistry.KATANA.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "katana_sheath"));
+
+        // Sakura Katana Sheath
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, ItemRegistry.SAKURA_KATANA_SHEATH.get())
+                .requires(ItemRegistry.SAKURA_KATANA.get()).requires(ItemRegistry.SHEATH.get())
+                .unlockedBy("has_sakura_katana", has(ItemRegistry.SAKURA_KATANA.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_katana_sheath"));
+
+        // ===== SAMURAI ARMOR (tamahagane in standard patterns) =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SAMURAI_HELMET.get())
+                .pattern("TTT").pattern("T T")
+                .define('T', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get())
+                .unlockedBy("has_tamahagane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "samurai_helmet"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SAMURAI_CHEST.get())
+                .pattern("T T").pattern("TTT").pattern("TTT")
+                .define('T', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get())
+                .unlockedBy("has_tamahagane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "samurai_chest"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SAMURAI_PANTS.get())
+                .pattern("TTT").pattern("T T").pattern("T T")
+                .define('T', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get())
+                .unlockedBy("has_tamahagane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "samurai_pants"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SAMURAI_SHOES.get())
+                .pattern("T T").pattern("T T")
+                .define('T', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get())
+                .unlockedBy("has_tamahagane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "samurai_shoes"));
+
+        // ===== SOLDIER ARMOR (iron + leather) =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SOLDIER_HELMET.get())
+                .pattern("ILI").pattern("L L")
+                .define('I', Tags.Items.INGOTS_IRON).define('L', Items.LEATHER)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soldier_helmet"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SOLDIER_CHEST.get())
+                .pattern("L L").pattern("ILI").pattern("LIL")
+                .define('I', Tags.Items.INGOTS_IRON).define('L', Items.LEATHER)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soldier_chest"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SOLDIER_PANTS.get())
+                .pattern("ILI").pattern("L L").pattern("I I")
+                .define('I', Tags.Items.INGOTS_IRON).define('L', Items.LEATHER)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soldier_pants"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.SOLDIER_SHOES.get())
+                .pattern("I I").pattern("L L")
+                .define('I', Tags.Items.INGOTS_IRON).define('L', Items.LEATHER)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soldier_shoes"));
+
+        // ===== COSMETIC ARMOR =====
+        // Kimono: silk in leggings pattern
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.KIMONO.get())
+                .pattern("SSS").pattern("S S").pattern("S S")
+                .define('S', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SILK).get())
+                .unlockedBy("has_silk", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SILK).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "kimono"));
+
+        // Haori: silk in chestplate pattern
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.HAORI.get())
+                .pattern("S S").pattern("SSS").pattern("SSS")
+                .define('S', ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SILK).get())
+                .unlockedBy("has_silk", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SILK).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "haori"));
+
+        // Straw Hat: straw in helmet pattern
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ItemRegistry.STRAW_HAT.get())
+                .pattern("SSS").pattern("S S")
+                .define('S', SakuraItemTags.STRAW)
+                .unlockedBy("has_straw", has(SakuraItemTags.STRAW))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "strawhat"));
+    }
+
+    private void registerToolRecipes(Consumer<FinishedRecipe> consumer) {
+        // ===== HAMMERS =====
+        // Stone Hammer
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.STONE_HAMMER.get())
+                .pattern("SS").pattern(" L")
+                .define('S', Tags.Items.COBBLESTONE).define('L', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "stone_hammer"));
+
+        // Iron Hammer
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.IRON_HAMMER.get())
+                .pattern("II").pattern(" L")
+                .define('I', Tags.Items.INGOTS_IRON).define('L', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "iron_hammer"));
+
+        // Sakura Hammer
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.SAKURA_HAMMER.get())
+                .pattern("DD").pattern(" L")
+                .define('D', ItemRegistry.SAKURA_DIAMOND.get()).define('L', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_hammer"));
+
+        // ===== BROOM =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.BROOM.get())
+                .pattern("S").pattern("B").pattern("B")
+                .define('S', Tags.Items.STRING).define('B', SakuraItemTags.BAMBOO)
+                .unlockedBy("has_bamboo", has(SakuraItemTags.BAMBOO))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "broom"));
+
+        // ===== SAKURA TIER TOOLS =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.SAKURA_AXE.get())
+                .pattern("DD").pattern("DL").pattern(" L")
+                .define('D', ItemRegistry.SAKURA_DIAMOND.get()).define('L', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_axe"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.SAKURA_PICKAXE.get())
+                .pattern("DDD").pattern(" L ").pattern(" L ")
+                .define('D', ItemRegistry.SAKURA_DIAMOND.get()).define('L', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_pickaxe"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.SAKURA_SHOVEL.get())
+                .pattern("D").pattern("L").pattern("L")
+                .define('D', ItemRegistry.SAKURA_DIAMOND.get()).define('L', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_shovel"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.SAKURA_HOE.get())
+                .pattern("DD").pattern(" L").pattern(" L")
+                .define('D', ItemRegistry.SAKURA_DIAMOND.get()).define('L', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_hoe"));
+
+        // ===== SAKURA KNIVES =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.SAKURA_KNIFE_FISH.get())
+                .pattern("  D").pattern(" D ").pattern("L  ")
+                .define('D', ItemRegistry.SAKURA_DIAMOND.get()).define('L', SakuraItemTags.LUMBER)
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_knife_fish"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.SAKURA_KNIFE_NOODLE.get())
+                .pattern("DD").pattern(" L")
+                .define('D', ItemRegistry.SAKURA_DIAMOND.get()).define('L', SakuraItemTags.LUMBER)
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_knife_noodle"));
+
+        // Iron Noodle Knife
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ItemRegistry.IRON_NOODLE_KNIFE.get())
+                .pattern("II").pattern(" L")
+                .define('I', Tags.Items.INGOTS_IRON).define('L', SakuraItemTags.LUMBER)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "knife_noodle"));
+
+        // ===== CUP =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ItemRegistry.CUP.get(), 4)
+                .pattern("# #").pattern(" # ")
+                .define('#', Items.CLAY_BALL)
+                .unlockedBy("has_clay", has(Items.CLAY_BALL))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "cup"));
+
+        // ===== EMPTY BOTTLE =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get(), 4)
+                .pattern("# #").pattern("# #").pattern(" # ")
+                .define('#', Tags.Items.GLASS)
+                .unlockedBy("has_glass", has(Tags.Items.GLASS))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "empty_bottle"));
+
+        // ===== BENTO BOX =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BENTO_BOX).get())
+                .pattern("L L").pattern("LLL")
+                .define('L', SakuraItemTags.LUMBER)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bento_box"));
+    }
+
+    private void registerDecorationRecipes(Consumer<FinishedRecipe> consumer) {
+        // ===== LANTERNS =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.STONE_LANTERN.get())
+                .pattern(" S ").pattern("STS").pattern(" S ")
+                .define('S', Tags.Items.STONE).define('T', Items.TORCH)
+                .unlockedBy("has_stone", has(Tags.Items.STONE))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "stone_lantern"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.COBBLESTONE_LANTERN.get())
+                .pattern(" C ").pattern("CTC").pattern(" C ")
+                .define('C', Tags.Items.COBBLESTONE).define('T', Items.TORCH)
+                .unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "cobblestone_lantern"));
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, BlockRegistry.MOSSY_STONE_LANTERN.get())
+                .requires(BlockRegistry.STONE_LANTERN.get()).requires(Items.VINE)
+                .unlockedBy("has_lantern", has(BlockRegistry.STONE_LANTERN.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "mossy_stone_lantern"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.RED_LANTERN.get())
+                .pattern(" I ").pattern("PTP").pattern(" I ")
+                .define('I', Tags.Items.INGOTS_IRON).define('P', Items.RED_WOOL).define('T', Items.TORCH)
+                .unlockedBy("has_wool", has(Items.RED_WOOL))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "red_lantern"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.WHITE_LANTERN.get())
+                .pattern(" I ").pattern("PTP").pattern(" I ")
+                .define('I', Tags.Items.INGOTS_IRON).define('P', Items.WHITE_WOOL).define('T', Items.TORCH)
+                .unlockedBy("has_wool", has(Items.WHITE_WOOL))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "white_lantern"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.BAMBOO_LANTERN.get())
+                .pattern(" B ").pattern("BTB").pattern(" B ")
+                .define('B', SakuraItemTags.BAMBOO).define('T', Items.TORCH)
+                .unlockedBy("has_bamboo", has(SakuraItemTags.BAMBOO))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_lantern"));
+
+        // ===== FURNITURE =====
+        // Windbell
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.WINDBELL.get())
+                .pattern(" I ").pattern("IGI").pattern(" S ")
+                .define('I', Tags.Items.INGOTS_IRON).define('G', Tags.Items.GLASS).define('S', Tags.Items.STRING)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "windbell"));
+
+        // Andon (paper lantern)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.ANDON.get())
+                .pattern("PPP").pattern("PTP").pattern("LLL")
+                .define('P', Items.PAPER).define('T', Items.TORCH).define('L', SakuraItemTags.LUMBER)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "andon"));
+
+        // Zabuton (sitting cushion)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.ZABUTON.get())
+                .pattern("WW")
+                .define('W', Items.RED_WOOL)
+                .unlockedBy("has_wool", has(Items.RED_WOOL))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "zabuton"));
+
+        // Futon (bedding)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.FUTON.get())
+                .pattern("WWW").pattern("SSS")
+                .define('W', Items.WHITE_WOOL).define('S', SakuraItemTags.STRAW)
+                .unlockedBy("has_wool", has(Items.WHITE_WOOL))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "futon"));
+
+        // Taiko (drum)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.TAIKO.get())
+                .pattern("LLL").pattern("LSL").pattern("LLL")
+                .define('L', SakuraItemTags.LUMBER).define('S', Items.LEATHER)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "taiko"));
+
+        // ===== NOREN (curtains) =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.NOREN_WHITE.get())
+                .pattern("LLL").pattern("W W").pattern("W W")
+                .define('L', SakuraItemTags.LUMBER).define('W', Items.WHITE_WOOL)
+                .unlockedBy("has_wool", has(Items.WHITE_WOOL))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "noren_white"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.NOREN_BLUE.get())
+                .pattern("LLL").pattern("W W").pattern("W W")
+                .define('L', SakuraItemTags.LUMBER).define('W', Items.BLUE_WOOL)
+                .unlockedBy("has_wool", has(Items.BLUE_WOOL))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "noren_blue"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.NOREN_PINK.get())
+                .pattern("LLL").pattern("W W").pattern("W W")
+                .define('L', SakuraItemTags.LUMBER).define('W', Items.PINK_WOOL)
+                .unlockedBy("has_wool", has(Items.PINK_WOOL))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "noren_pink"));
+    }
+
+    private void registerMissingBlockRecipes(Consumer<FinishedRecipe> consumer) {
+        // ===== SHOJI (sliding door panel) =====
+        // 1.12.2: SPP / SPP / SPP  S=lumber, P=paper
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.SHOJI.get())
+                .pattern("SPP").pattern("SPP").pattern("SPP")
+                .define('S', SakuraItemTags.LUMBER).define('P', Items.PAPER)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "shoji"));
+
+        // ===== TATARA (iron smelting station) =====
+        // 1.12.2: shapeless - iron ore + bamboo charcoal block + hammer
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BlockRegistry.TATARA.get())
+                .requires(Tags.Items.ORES_IRON)
+                .requires(BlockRegistry.BAMBOO_CHARCOAL_BLOCK.get())
+                .requires(ItemRegistry.IRON_HAMMER.get())
+                .unlockedBy("has_bamboo_charcoal_block", has(BlockRegistry.BAMBOO_CHARCOAL_BLOCK.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "tatara"));
+
+        // ===== MAPLE_CAULDRON (maple syrup collector) =====
+        // 1.12.2: #P# / #P# / # #  #=iron, P=lumber
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BlockRegistry.MAPLE_CAULDRON.get())
+                .pattern("#P#").pattern("#P#").pattern("# #")
+                .define('#', Tags.Items.INGOTS_IRON).define('P', SakuraItemTags.LUMBER)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "maple_cauldron"));
+
+        // ===== MAPLE_SPILE (tree tap) =====
+        // 1.12.2: PPP / ### / #    P=lumber, #=iron
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BlockRegistry.MAPLE_SPILE.get())
+                .pattern("PPP").pattern("###").pattern("#  ")
+                .define('#', Tags.Items.INGOTS_IRON).define('P', SakuraItemTags.LUMBER)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "maple_spile"));
+
+        // ===== CAMPFIRE_IDLE (sakura campfire) =====
+        // 1.12.2:  #  / #S#   #=logWood, S=lumber
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BlockRegistry.CAMPFIRE_IDLE.get())
+                .pattern(" # ").pattern("#S#")
+                .define('#', ItemTags.LOGS).define('S', SakuraItemTags.LUMBER)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "campfire_idle"));
+
+        // ===== SAKURA_DIAMOND_BLOCK (storage block: 9 diamonds -> block) =====
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.SAKURA_DIAMOND_BLOCK.get())
+                .pattern("###").pattern("###").pattern("###")
+                .define('#', ItemRegistry.SAKURA_DIAMOND.get())
+                .unlockedBy("has_sakura_diamond", has(ItemRegistry.SAKURA_DIAMOND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_diamond_block"));
+
+        // ===== SAKURA_DIAMOND decomposition (block -> 9 diamonds) =====
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ItemRegistry.SAKURA_DIAMOND.get(), 9)
+                .requires(BlockRegistry.SAKURA_DIAMOND_BLOCK.get())
+                .unlockedBy("has_sakura_diamond_block", has(BlockRegistry.SAKURA_DIAMOND_BLOCK.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_diamond_from_block"));
+
+        // ===== GRAPE_SPLINT =====
+        // 1.12.2:  S  / SSS /  S   S=lumber
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.GRAPE_SPLINT.get())
+                .pattern(" S ").pattern("SSS").pattern(" S ")
+                .define('S', SakuraItemTags.LUMBER)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "grape_splint"));
+
+        // ===== GRAPE_SPLINT_STAND =====
+        // 1.12.2:  S  / S#S /  S   #=fenceWood, S=lumber -> yields 2
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.GRAPE_SPLINT_STAND.get(), 2)
+                .pattern(" S ").pattern("S#S").pattern(" S ")
+                .define('#', Tags.Items.FENCES_WOODEN).define('S', SakuraItemTags.LUMBER)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "grape_splint_stand"));
+
+        // ===== PEPPER_SPLINT =====
+        // 1.12.2: S S /  #  / S S   #=lumber, S=stickWood -> yields 2
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.PEPPER_SPLINT.get(), 2)
+                .pattern("S S").pattern(" # ").pattern("S S")
+                .define('#', SakuraItemTags.LUMBER).define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pepper_splint"));
+
+        // ===== VANILLA_SPLINT =====
+        // 1.12.2: #S# / S S / #S#   #=lumber, S=stickWood -> yields 2
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.VANILLA_SPLINT.get(), 2)
+                .pattern("#S#").pattern("S S").pattern("#S#")
+                .define('#', SakuraItemTags.LUMBER).define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "vanilla_splint"));
+
+        // ===== STRAW_WEB (drying rack) =====
+        // 1.12.2:     / HHH / S S   H=straw, S=lumber
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.STRAW_WEB.get())
+                .pattern("HHH").pattern("S S")
+                .define('H', SakuraItemTags.STRAW).define('S', SakuraItemTags.LUMBER)
+                .unlockedBy("has_straw", has(SakuraItemTags.STRAW))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "straw_web"));
+
+        // ===== KITUNEBI (fox fire lantern) =====
+        // 1.12.2: LLL / WTW / LLL   T=lit_pumpkin(jack_o_lantern), W=lumber, L=lapis -> yields 16
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.KITUNEBI.get(), 16)
+                .pattern("LLL").pattern("WTW").pattern("LLL")
+                .define('T', Items.JACK_O_LANTERN).define('W', SakuraItemTags.LUMBER).define('L', Tags.Items.GEMS_LAPIS)
+                .unlockedBy("has_jack_o_lantern", has(Items.JACK_O_LANTERN))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "kitunebi"));
+    }
+
+    private void registerSmeltingRecipes(Consumer<FinishedRecipe> consumer) {
+        // Iron Sand -> Iron Nuggets (smelting)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(BlockRegistry.IRON_SAND.get()), RecipeCategory.MISC, Items.IRON_INGOT, 0.7F, 200)
+                .group("sakura").unlockedBy("has_iron_sand", has(BlockRegistry.IRON_SAND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "iron_ingot_from_iron_sand"));
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(BlockRegistry.IRON_SAND.get()), RecipeCategory.MISC, Items.IRON_INGOT, 0.7F, 100)
+                .group("sakura").unlockedBy("has_iron_sand", has(BlockRegistry.IRON_SAND.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "iron_ingot_from_iron_sand_blasting"));
+
+        // Sakura Diamond Ore -> Sakura Diamond (smelting/blasting)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(BlockRegistry.SAKURA_DIAMOND_ORE.get()), RecipeCategory.MISC, ItemRegistry.SAKURA_DIAMOND.get(), 1.0F, 200)
+                .group("sakura").unlockedBy("has_ore", has(BlockRegistry.SAKURA_DIAMOND_ORE.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_diamond_from_smelting"));
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(BlockRegistry.SAKURA_DIAMOND_ORE.get()), RecipeCategory.MISC, ItemRegistry.SAKURA_DIAMOND.get(), 1.0F, 100)
+                .group("sakura").unlockedBy("has_ore", has(BlockRegistry.SAKURA_DIAMOND_ORE.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_diamond_from_blasting"));
+
+        // Zuku -> Tamahagane (smelting iron processing chain)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.ZUKU).get()), RecipeCategory.MISC, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.ZUKU_INGOT).get(), 0.5F, 200)
+                .group("sakura").unlockedBy("has_zuku", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.ZUKU).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "zuku_ingot_from_smelting"));
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SAGEGANE).get()), RecipeCategory.MISC, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get(), 0.7F, 200)
+                .group("sakura").unlockedBy("has_sagegane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SAGEGANE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "tamahagane_from_smelting"));
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()), RecipeCategory.MISC, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.STEEL_INGOT).get(), 0.7F, 200)
+                .group("sakura").unlockedBy("has_tamahagane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "steel_ingot_from_smelting"));
+
+        // Maple Log -> Charcoal (smelting)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(BlockRegistry.MAPLE_LOG.get()), RecipeCategory.MISC, Items.CHARCOAL, 0.15F, 200)
+                .group("sakura").unlockedBy("has_maple_log", has(BlockRegistry.MAPLE_LOG.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "charcoal_from_maple_log"));
+
+        // Sakura Log -> Charcoal (smelting)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(BlockRegistry.SAKURA_LOG.get()), RecipeCategory.MISC, Items.CHARCOAL, 0.15F, 200)
+                .group("sakura").unlockedBy("has_sakura_log", has(BlockRegistry.SAKURA_LOG.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "charcoal_from_sakura_log"));
+
+        // Vanilla -> Vanilla Roast (smelting/smoking/campfire)
+        foodSmeltingRecipes("vanilla_roast", ItemRegistry.MATERIALS.get(SakuraNormalItemSet.VANILLA).get(),
+                ItemRegistry.MATERIALS.get(SakuraNormalItemSet.VANILLA_ROAST).get(), 0.35F, consumer);
+
+        // Chestnut -> Chestnut Toasted (smelting/smoking/campfire)
+        foodSmeltingRecipes("chestnut_toasted", ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CHESTNUT).get(),
+                FoodRegistry.FOODSET.get(SakuraFoodSet.CHESTNUT_TOASTED).get(), 0.35F, consumer);
+
+        // Matsutake -> Roast Matsutake (smelting/smoking/campfire)
+        foodSmeltingRecipes("roast_matsutake", FoodRegistry.FOODSET.get(SakuraFoodSet.MATSUTAKE).get(),
+                FoodRegistry.FOODSET.get(SakuraFoodSet.ROAST_MATSUTAKE).get(), 0.35F, consumer);
+
+        // Raw Taiyaki -> Taiyaki (smelting/smoking/campfire)
+        foodSmeltingRecipes("taiyaki", FoodRegistry.FOODSET.get(SakuraFoodSet.RAW_TAIYAKI).get(),
+                FoodRegistry.FOODSET.get(SakuraFoodSet.TAIYAKI).get(), 0.35F, consumer);
+
+        // Boiled Bonito -> Smoked Bonito (smoking/smelting - drying process)
+        foodSmeltingRecipes("smoked_bonito", FoodRegistry.FOODSET.get(SakuraFoodSet.BOILED_BONITO).get(),
+                FoodRegistry.FOODSET.get(SakuraFoodSet.SMOKED_BONITO).get(), 0.35F, consumer);
+
+        // Smoked Bonito -> Dried Bonito (smelting - further drying)
+        foodSmeltingRecipes("dried_bonito", FoodRegistry.FOODSET.get(SakuraFoodSet.SMOKED_BONITO).get(),
+                FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_BONITO).get(), 0.35F, consumer);
+
+        // Brown Rice Cooked -> Dried Brown Rice (smelting/smoking - drying)
+        foodSmeltingRecipes("dried_brown_rice", FoodRegistry.FOODSET.get(SakuraFoodSet.BROWN_RICE_COOKED).get(),
+                FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_BROWN_RICE).get(), 0.35F, consumer);
+
+        // Rice Cooked -> Dried Rice (smelting/smoking - drying)
+        foodSmeltingRecipes("dried_rice", FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_COOKED).get(),
+                FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_RICE).get(), 0.35F, consumer);
+
+        // Seaweed Raw -> Seaweed (dried) (smelting/smoking - drying)
+        foodSmeltingRecipes("seaweed_dried", FoodRegistry.FOODSET.get(SakuraFoodSet.SEAWEED_RAW).get(),
+                ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SEAWEED).get(), 0.1F, consumer);
+
+        // Imogara -> Dried Imogara (smelting/smoking - drying)
+        foodSmeltingRecipes("dried_imogara", ItemRegistry.MATERIALS.get(SakuraNormalItemSet.IMOGARA).get(),
+                ItemRegistry.MATERIALS.get(SakuraNormalItemSet.DRIED_IMOGARA).get(), 0.1F, consumer);
+
+        // Dough Okinoyaki -> Okinoyaki (smelting/smoking/campfire)
+        foodSmeltingRecipes("okinoyaki", FoodRegistry.FOODSET.get(SakuraFoodSet.DOUGH_OKINOYAKI).get(),
+                FoodRegistry.FOODSET.get(SakuraFoodSet.OKINOYAKI).get(), 0.35F, consumer);
+
+        // Brown Rice -> Fried Brown Rice (smelting - roasting)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BROWN_RICE).get()), RecipeCategory.FOOD, FoodRegistry.FOODSET.get(SakuraFoodSet.FRIED_BROWN_RICE).get(), 0.35F, 200)
+                .group("sakura").unlockedBy("has_brown_rice", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BROWN_RICE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "fried_brown_rice_from_smelting"));
+
+        // Chestnut Burrs -> Chestnut (smelting to remove burrs)
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CHESTNUT_BURRS).get()), RecipeCategory.MISC, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CHESTNUT).get(), 0.15F, 200)
+                .group("sakura").unlockedBy("has_chestnut_burrs", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CHESTNUT_BURRS).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "chestnut_from_smelting"));
+    }
+
+    private void registerDrinkRecipes(Consumer<FinishedRecipe> consumer) {
+        // ===== TEA DRINKS (CookingPot) =====
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.GREEN_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.GREEN_TEA_LEAVES).get())
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "green_tea_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.BLACK_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BLACK_TEA_LEAVES).get())
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "black_tea_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.EARL_GREY).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EARL_GREY_LEAVES).get())
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "earl_grey_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.FRUIT_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.FRUIT_TEA_LEAVES).get())
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "fruit_tea_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.MINT_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MINT_TEA_LEAVES).get())
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "mint_tea_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.BARLEY_TEA).get())
+                .requires(SakuraItemTags.GRAIN_WHEAT)
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "barley_tea_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.BROWN_RICE_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RICE_TEA_LEAVES).get())
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "brown_rice_tea_cooking"));
+
+        // Milk teas: tea + milk
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.MILK_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BLACK_TEA_LEAVES).get())
+                .requires(SakuraItemTags.MILK)
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "milk_tea_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.MILK_GREEN_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.GREEN_TEA_LEAVES).get())
+                .requires(SakuraItemTags.MILK)
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "milk_green_tea_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.MILK_EARL_GREY).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EARL_GREY_LEAVES).get())
+                .requires(SakuraItemTags.MILK)
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "milk_earl_grey_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.MILK_FRUIT_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.FRUIT_TEA_LEAVES).get())
+                .requires(SakuraItemTags.MILK)
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "milk_fruit_tea_cooking"));
+
+        // Lemon teas: tea + lemon
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.LEMON_BLACK_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BLACK_TEA_LEAVES).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON).get())
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "lemon_black_tea_cooking"));
+
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        DrinkRegistry.TEAS.get(SakuraTeaSet.LEMON_GREEN_TEA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.GREEN_TEA_LEAVES).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON).get())
+                .requires(ItemRegistry.CUP.get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "lemon_green_tea_cooking"));
+
+        // ===== ALCOHOL DRINKS (shapeless: bottle + cup/container = filled drink) =====
+        // These are filled from fluid using L2IS (LiquidToItem) in game, but we provide a crafting alternative
+        // Beer glass
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BEER).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.BEER_BUCKET.get())
+                .unlockedBy("has_beer", has(BucketItemRegistry.BEER_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_beer"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_DOBUROKU).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.DOBUROKU_BUCKET.get())
+                .unlockedBy("has_doburoku", has(BucketItemRegistry.DOBUROKU_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_doburoku"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_SAKE).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.SAKE_BUCKET.get())
+                .unlockedBy("has_sake", has(BucketItemRegistry.SAKE_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_sake"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_SHOUCHU).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.SHOUCHU_BUCKET.get())
+                .unlockedBy("has_shouchu", has(BucketItemRegistry.SHOUCHU_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_shouchu"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.RED_WINE_BUCKET.get())
+                .unlockedBy("has_red_wine", has(BucketItemRegistry.RED_WINE_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_red_wine"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHITE_WINE).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.WHITE_WINE_BUCKET.get())
+                .unlockedBy("has_white_wine", has(BucketItemRegistry.WHITE_WINE_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_white_wine"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_CHAMPAGNE).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.CHAMPAGNE_BUCKET.get())
+                .unlockedBy("has_champagne", has(BucketItemRegistry.CHAMPAGNE_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_champagne"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.RUM_BUCKET.get())
+                .unlockedBy("has_rum", has(BucketItemRegistry.RUM_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_rum"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.WHISKEY_BUCKET.get())
+                .unlockedBy("has_whiskey", has(BucketItemRegistry.WHISKEY_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_whiskey"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BRANDY).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.BRANDY_BUCKET.get())
+                .unlockedBy("has_brandy", has(BucketItemRegistry.BRANDY_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_brandy"));
+
+        // ===== BASE SPIRITS =====
+        // Gin and tequila - glass filled from bucket
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.GIN_BUCKET.get())
+                .unlockedBy("has_gin", has(BucketItemRegistry.GIN_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_gin"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_TEQUILA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.TEQUILA_BUCKET.get())
+                .unlockedBy("has_tequila", has(BucketItemRegistry.TEQUILA_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_tequila"));
+        // Vodka, liqueur, cocoa_liqueur have fluids - glass filled from bucket
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.VODKA_BUCKET.get())
+                .unlockedBy("has_vodka", has(BucketItemRegistry.VODKA_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_vodka"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_LIQUEUR).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.LIQUEUR_BUCKET.get())
+                .unlockedBy("has_liqueur", has(BucketItemRegistry.LIQUEUR_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_liqueur"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_COCOA_LIQUEUR).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .requires(BucketItemRegistry.COCOA_LIQUEUR_BUCKET.get())
+                .unlockedBy("has_cocoa_liqueur", has(BucketItemRegistry.COCOA_LIQUEUR_BUCKET.get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_cocoa_liqueur"));
+
+        // ===== COCKTAILS (combining alcohol drinks) =====
+        // Kir: white wine + blackcurrant juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_KIR).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHITE_WINE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BLACKCURRANT_JUICE).get())
+                .unlockedBy("has_white_wine", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHITE_WINE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_kir"));
+
+        // Kir Royale: champagne + blackcurrant juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_KIR_ROYALE).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_CHAMPAGNE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BLACKCURRANT_JUICE).get())
+                .unlockedBy("has_champagne", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_CHAMPAGNE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_kir_royale"));
+
+        // Cassis Orange: blackcurrant juice + orange juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_CASSIS_ORANGE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BLACKCURRANT_JUICE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ORANGE_JUICE).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .unlockedBy("has_juice", has(FoodRegistry.FOODSET.get(SakuraFoodSet.BLACKCURRANT_JUICE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_cassis_orange"));
+
+        // Cassis Soda: blackcurrant juice + soda water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_CASSIS_SODA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BLACKCURRANT_JUICE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.EMPTY_BOTTLE).get())
+                .unlockedBy("has_juice", has(FoodRegistry.FOODSET.get(SakuraFoodSet.BLACKCURRANT_JUICE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_cassis_soda"));
+
+        // Mimosa: champagne + orange juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_MIMOSA).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_CHAMPAGNE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ORANGE_JUICE).get())
+                .unlockedBy("has_champagne", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_CHAMPAGNE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_mimosa"));
+
+        // Shandy Gaff: beer + soda water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_SHANDY_GAFF).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BEER).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .unlockedBy("has_beer", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BEER).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_shandy_gaff"));
+
+        // Red Eye: beer + tomato sauce
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_RED_EYE).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BEER).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TOMATO_SAUCE).get())
+                .unlockedBy("has_beer", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BEER).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_red_eye"));
+
+        // Highball: whiskey + soda water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_HIGHBALL).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .unlockedBy("has_whiskey", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_highball"));
+
+        // Gin Tonic: gin + soda water + lemon
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_GIN_TONIC).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON).get())
+                .unlockedBy("has_gin", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_gin_tonic"));
+
+        // Gimlet: gin + lemon juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_GIMLET).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .unlockedBy("has_gin", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_gimlet"));
+
+        // Gin Fizz: gin + lemon juice + soda water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_GIN_FIZZ).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .unlockedBy("has_gin", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_gin_fizz"));
+
+        // Screwdriver: vodka + orange juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_SCREWDRIVER).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ORANGE_JUICE).get())
+                .unlockedBy("has_vodka", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_screwdriver"));
+
+        // Salty Dog: vodka + lemon juice + salt
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_SALTY_DOG).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .requires(SakuraItemTags.SALT)
+                .unlockedBy("has_vodka", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_salty_dog"));
+
+        // Moscow Mule: vodka + soda water + lemon
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_MOSCOW_MULE).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON).get())
+                .unlockedBy("has_vodka", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_moscow_mule"));
+
+        // Tequila Sunrise: tequila + orange juice + lemon juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_TEQUILA_SUNRISE).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_TEQUILA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ORANGE_JUICE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .unlockedBy("has_tequila", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_TEQUILA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_tequila_sunrise"));
+
+        // Margarita: tequila + lemon juice + salt
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_MARGARITA).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_TEQUILA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .requires(SakuraItemTags.SALT)
+                .unlockedBy("has_tequila", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_TEQUILA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_margarita"));
+
+        // Cuba Libre: rum + soda water + lemon
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_CUBA_LIBRE).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON).get())
+                .unlockedBy("has_rum", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_cuba_libre"));
+
+        // Daiquiri: rum + lemon juice + sugar
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_DAIQUIRI).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .requires(SakuraItemTags.SUGAR)
+                .unlockedBy("has_rum", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_daiquiri"));
+
+        // Grog: rum + lemon juice + sugar (hot)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_GROG).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .requires(SakuraItemTags.SUGAR).requires(SakuraItemTags.SUGAR)
+                .unlockedBy("has_rum", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_grog"));
+
+        // Hot Toddy: whiskey + lemon juice + sugar
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_HOT_TODDY).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .requires(SakuraItemTags.SUGAR)
+                .unlockedBy("has_whiskey", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_hot_toddy"));
+
+        // Sangria: red wine + orange juice + fruit
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_SANGRIA).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ORANGE_JUICE).get())
+                .requires(Items.APPLE)
+                .unlockedBy("has_red_wine", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_sangria"));
+
+        // Spritzer: white wine + soda water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_SPRITZER).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHITE_WINE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .unlockedBy("has_white_wine", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHITE_WINE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_spritzer"));
+
+        // Martini: gin + white wine
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_MARTINI).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHITE_WINE).get())
+                .unlockedBy("has_gin", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_martini"));
+
+        // Americano: red wine + liqueur + soda water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_AMERICANO).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_LIQUEUR).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .unlockedBy("has_red_wine", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_americano"));
+
+        // Negroni: gin + red wine + liqueur
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_NEGRONI).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_LIQUEUR).get())
+                .unlockedBy("has_gin", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_negroni"));
+
+        // Alexander: brandy + cocoa liqueur + milk
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_ALEXANDER).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BRANDY).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_COCOA_LIQUEUR).get())
+                .requires(SakuraItemTags.MILK)
+                .unlockedBy("has_brandy", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BRANDY).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_alexander"));
+
+        // Bellini: champagne + lemon juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_BELLINI).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_CHAMPAGNE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .unlockedBy("has_champagne", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_CHAMPAGNE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_bellini"));
+
+        // Kalimotxo: red wine + soda water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_KALIMOTXO).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .unlockedBy("has_red_wine", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_kalimotxo"));
+
+        // Kitty: red wine + orange juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_KITTY).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ORANGE_JUICE).get())
+                .unlockedBy("has_red_wine", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RED_WINE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_kitty"));
+
+        // Operator: white wine + orange juice + soda water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_OPERATOR).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHITE_WINE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ORANGE_JUICE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .unlockedBy("has_white_wine", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHITE_WINE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_operator"));
+
+        // Matador: tequila + orange juice + lemon
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_MATADOR).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_TEQUILA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ORANGE_JUICE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON).get())
+                .unlockedBy("has_tequila", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_TEQUILA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_matador"));
+
+        // Hot Buttered Rum: rum + sugar + milk
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_HOT_BUTTERED_RUM).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get())
+                .requires(SakuraItemTags.SUGAR)
+                .requires(SakuraItemTags.MILK)
+                .unlockedBy("has_rum", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_hot_buttered_rum"));
+
+        // Pina Colada: rum + milk + sugar
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_PINA_COLADA).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get())
+                .requires(SakuraItemTags.MILK)
+                .requires(SakuraItemTags.SUGAR).requires(SakuraItemTags.SUGAR)
+                .unlockedBy("has_rum", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_pina_colada"));
+
+        // Black Russian: vodka + cocoa liqueur
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_BLACK_RUSSIAN).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_COCOA_LIQUEUR).get())
+                .unlockedBy("has_vodka", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_black_russian"));
+
+        // Godfather: whiskey + liqueur + almond
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_GODFATHER).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_LIQUEUR).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ALMOND).get())
+                .unlockedBy("has_whiskey", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_godfather"));
+
+        // Godmother: vodka + liqueur + almond
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_GODMOTHER).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_LIQUEUR).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.ALMOND).get())
+                .unlockedBy("has_vodka", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_godmother"));
+
+        // Sidecar: brandy + liqueur + lemon juice
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_SIDECAR).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BRANDY).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_LIQUEUR).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .unlockedBy("has_brandy", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_BRANDY).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_sidecar"));
+
+        // Bloody Mary: vodka + tomato sauce + lemon juice + salt
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_BLOODY_MARY).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TOMATO_SAUCE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .requires(SakuraItemTags.SALT)
+                .unlockedBy("has_vodka", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_VODKA).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_bloody_mary"));
+
+        // Old Fashioned: whiskey + sugar + lemon
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_OLD_FASHIONED).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get())
+                .requires(SakuraItemTags.SUGAR)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON).get())
+                .unlockedBy("has_whiskey", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_old_fashioned"));
+
+        // Whiskey Sour: whiskey + lemon juice + sugar
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_WHISKEY_SOUR).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .requires(SakuraItemTags.SUGAR)
+                .unlockedBy("has_whiskey", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_whiskey_sour"));
+
+        // Mojito: rum + lemon juice + sugar + soda water
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_MOJITO).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get())
+                .requires(SakuraItemTags.SUGAR)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get())
+                .unlockedBy("has_rum", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_RUM).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_mojito"));
+
+        // Rusty Nail: whiskey + liqueur
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_RUSTY_NAIL).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_LIQUEUR).get())
+                .unlockedBy("has_whiskey", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_WHISKEY).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_rusty_nail"));
+
+        // Saketini: sake + gin
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_SAKETINI).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_SAKE).get())
+                .requires(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_GIN).get())
+                .unlockedBy("has_sake", has(DrinkRegistry.ALCOHOLS.get(SakuraAlcoholSet.GLASS_SAKE).get()))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "glass_saketini"));
     }
 
     private void registerMortarRecipe(Consumer<FinishedRecipe> consumer) {
@@ -448,6 +1849,72 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
                 .requires(SakuraItemTags.RICE_RICE)
                 .save(consumer, new ResourceLocation(SakuraMod.MODID, "flour_rice_from_mortar"));
 
+        // Blaze rod -> blaze powder (3 + 2 bonus)
+        StoneMortarRecipeBuilder.mortar(Items.BLAZE_POWDER, 3)
+                .addResult(Items.BLAZE_POWDER, 2)
+                .requires(Items.BLAZE_ROD)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "blaze_powder_from_mortar"));
+
+        // Fish paste (surimi) from potato + fish + egg
+        StoneMortarRecipeBuilder.mortar(FoodRegistry.FOODSET.get(SakuraFoodSet.SURIMI).get(), 8)
+                .requires(Tags.Items.CROPS_POTATO)
+                .requires(SakuraItemTags.RAW_FISHES)
+                .requires(SakuraItemTags.RAW_FISHES)
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "surimi_paste_from_mortar"));
+
+        // Flour from potato (2)
+        StoneMortarRecipeBuilder.mortar(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.FLOUR).get(), 2)
+                .requires(Tags.Items.CROPS_POTATO)
+                .requires(Tags.Items.CROPS_POTATO)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "flour_from_potato_mortar"));
+
+        // Flour from bread (2)
+        StoneMortarRecipeBuilder.mortar(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.FLOUR).get(), 2)
+                .requires(SakuraItemTags.BREAD)
+                .requires(SakuraItemTags.BREAD)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "flour_from_bread_mortar"));
+
+        // Green tea leaves -> Mocha (matcha/ground tea) - 4 tea leaves = 6 mocha
+        StoneMortarRecipeBuilder.mortar(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MOCHA).get(), 3)
+                .addResult(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MOCHA).get(), 3)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.GREEN_TEA_LEAVES).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.GREEN_TEA_LEAVES).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.GREEN_TEA_LEAVES).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.GREEN_TEA_LEAVES).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "mocha_from_mortar"));
+
+        // Dried bonito -> Bonito shavings - 4 dried bonito = 32 bonito shavings (split as 16+16)
+        StoneMortarRecipeBuilder.mortar(FoodRegistry.FOODSET.get(SakuraFoodSet.BONITO_SHAVING).get(), 16)
+                .addResult(FoodRegistry.FOODSET.get(SakuraFoodSet.BONITO_SHAVING).get(), 16)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_BONITO).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_BONITO).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_BONITO).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_BONITO).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bonito_shaving_from_mortar"));
+
+        // Bun -> Breadcrumbs (4) - grinding buns into crumbs
+        StoneMortarRecipeBuilder.mortar(FoodRegistry.FOODSET.get(SakuraFoodSet.BREADCRUMBS).get(), 4)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BUN).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "breadcrumbs_from_bun_mortar"));
+
+        // Cocktail base ingredient recipes
+        // Lemon -> Lemon Juice (2)
+        StoneMortarRecipeBuilder.mortar(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON_JUICE).get(), 2)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "lemon_juice_from_mortar"));
+
+        // Apple -> Orange Juice (2) - apples as citrus substitute
+        StoneMortarRecipeBuilder.mortar(FoodRegistry.FOODSET.get(SakuraFoodSet.ORANGE_JUICE).get(), 2)
+                .requires(Items.APPLE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "orange_juice_from_mortar"));
+
+        // Sweet Berries -> Blackcurrant Juice (2)
+        StoneMortarRecipeBuilder.mortar(FoodRegistry.FOODSET.get(SakuraFoodSet.BLACKCURRANT_JUICE).get(), 2)
+                .requires(Items.SWEET_BERRIES)
+                .requires(Items.SWEET_BERRIES)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "blackcurrant_juice_from_mortar"));
+
     }
 
     private void registerFarmerDelightRecipes(Consumer<FinishedRecipe> consumer) {
@@ -502,7 +1969,14 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
                 .cooking(FluidIngredient.EMPTY, FoodRegistry.CUISINES.get(SakuraCuisineSet.PORK_STICK).get(), 2)
                 .requires(SakuraItemTags.RAW_PORK).requires(SakuraItemTags.BAMBOO)
                 .save(consumer, new ResourceLocation(SakuraMod.MODID, "pork_stick_cooking"));
-        
+
+        // Soda Water - water + sugar in cooking pot
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SODA_WATER).get(), 2)
+                .requires(Items.SUGAR)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soda_water_cooking"));
+
         CookingPotRecipeBuilder
                 .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
                         FoodRegistry.FOODSET.get(SakuraFoodSet.TOFU).get(), 2)
@@ -723,7 +2197,7 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
         
         CookingPotRecipeBuilder
                 .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
-                        FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_KATSU).get())
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.KATSU_DISH).get())
                 .requires(SakuraItemTags.RICE_RICE)
                 .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.KATSU).get())
                 .requires(SakuraItemTags.EGGS)
@@ -929,13 +2403,669 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
                 .requires(SakuraItemTags.RICE_RICE).requires(SakuraItemTags.EGGS).requires(SakuraItemTags.VEGETABLES)
                 .requires(SakuraItemTags.SALT)
                 .save(consumer, new ResourceLocation(SakuraMod.MODID, "rice_fried_cooking"));
+
+        // ==========================================
+        // RAMEN RECIPES
+        // ==========================================
+        // Plain ramen: raw ramen + noodle soup + water
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RAMEN).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_cooking"));
+
+        // Beef ramen
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RAMEN_BEEF).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.RAW_BEEF)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_beef_cooking"));
+
+        // Egg ramen
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RAMEN_EGG).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_egg_cooking"));
+
+        // Tempura ramen
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RAMEN_TEMPURA).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TEMPURA).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_tempura_cooking"));
+
+        // Fried tofu ramen
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RAMEN_FRIEDTOFU).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.TOFU_FRIED)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_friedtofu_cooking"));
+
+        // Katsu ramen
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RAMEN_KATSU).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.KATSU).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_katsu_cooking"));
+
+        // Chicken ramen (fried chicken)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RAMEN_CHICKEN).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.FRIED_CHICKEN).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_chicken_cooking"));
+
+        // Croquette ramen
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RAMEN_CROQUETTE).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.CROQUETTE).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_croquette_cooking"));
+
+        // Large ramen (all toppings)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RAMEN_LARGE).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.RAW_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_MUTTON))))
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_large_cooking"));
+
+        // ==========================================
+        // UDON RECIPES
+        // ==========================================
+        // Plain udon
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.UDON).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_cooking"));
+
+        // Beef udon
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.UDON_BEEF).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.RAW_BEEF)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_beef_cooking"));
+
+        // Egg udon
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.UDON_EGG).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_egg_cooking"));
+
+        // Tempura udon
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.UDON_TEMPURA).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TEMPURA).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_tempura_cooking"));
+
+        // Fried tofu udon
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.UDON_FRIEDTOFU).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.TOFU_FRIED)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_friedtofu_cooking"));
+
+        // Katsu udon
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.UDON_KATSU).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.KATSU).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_katsu_cooking"));
+
+        // Chicken udon (fried chicken)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.UDON_CHICKEN).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.FRIED_CHICKEN).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_chicken_cooking"));
+
+        // Croquette udon
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.UDON_CROQUETTE).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.CROQUETTE).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_croquette_cooking"));
+
+        // Large udon
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.UDON_LARGE).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.RAW_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_MUTTON))))
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_large_cooking"));
+
+        // Yaki udon (fried)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.FOOD_OIL, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.YAKI_UDON).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get())
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.RAW_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_MUTTON))))
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(SakuraItemTags.SOYSAUCE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "yaki_udon_cooking"));
+
+        // ==========================================
+        // SOBA RECIPES
+        // ==========================================
+        // Plain soba
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_cooking"));
+
+        // Beef soba
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA_BEEF).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.RAW_BEEF)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_beef_cooking"));
+
+        // Egg soba
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA_EGG).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_egg_cooking"));
+
+        // Tempura soba
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA_TEMPURA).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.TEMPURA).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_tempura_cooking"));
+
+        // Fried tofu soba
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA_FRIEDTOFU).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(SakuraItemTags.TOFU_FRIED)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_friedtofu_cooking"));
+
+        // Katsu soba
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA_KATSU).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.KATSU).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_katsu_cooking"));
+
+        // Chicken soba
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA_CHICKEN).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.FRIED_CHICKEN).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_chicken_cooking"));
+
+        // Croquette soba
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA_CROQUETTE).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.CROQUETTE).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_croquette_cooking"));
+
+        // Large soba
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA_LARGE).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.RAW_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_MUTTON))))
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_large_cooking"));
+
+        // Yaki soba (fried)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.FOOD_OIL, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.YAKI_SOBA).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.RAW_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_MUTTON))))
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(SakuraItemTags.SOYSAUCE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "yaki_soba_cooking"));
+
+        // Zaru soba (cold soba)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.SOBA_ZARU).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get())
+                .requires(SakuraItemTags.SOYSAUCE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_zaru_cooking"));
+
+        // ==========================================
+        // PASTA RECIPES
+        // ==========================================
+        // Pasta tomato
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.PASTA_TOMATO).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.PASTA_RAW).get())
+                .requires(SakuraItemTags.TOMATOSAUCE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pasta_tomato_cooking"));
+
+        // Pasta mushroom
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.PASTA_MUSHROOM).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.PASTA_RAW).get())
+                .requires(SakuraItemTags.MUSHROOMS)
+                .requires(SakuraItemTags.MUSHROOMS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pasta_mushroom_cooking"));
+
+        // Pasta white sauce
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.PASTA_WHITESAUCE).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.PASTA_RAW).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.WHITE_SAUCE).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pasta_whitesauce_cooking"));
+
+        // Yaki pasta (fried)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.FOOD_OIL, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.YAKI_PASTA).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.PASTA_RAW).get())
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.RAW_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_MUTTON))))
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(SakuraItemTags.SOYSAUCE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "yaki_pasta_cooking"));
+
+        // ==========================================
+        // NOODLE SOUP (dashi-based)
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get(), 4)
+                .requires(SakuraItemTags.DASHI)
+                .requires(SakuraItemTags.SOYSAUCE)
+                .requires(Items.DRIED_KELP)
+                .requires(SakuraItemTags.SALT)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "noodle_soup_cooking"));
+
+        // ==========================================
+        // WHITE SAUCE
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        ItemRegistry.MATERIALS.get(SakuraNormalItemSet.WHITE_SAUCE).get(), 2)
+                .requires(SakuraItemTags.MILK)
+                .requires(SakuraItemTags.FLOUR)
+                .requires(SakuraItemTags.SALT)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "white_sauce_cooking"));
+
+        // ==========================================
+        // CURRY SAUCE
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CURRY_SAUCE).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CURRY_POWDER).get())
+                .requires(SakuraItemTags.CROPS_ONION)
+                .requires(Tags.Items.CROPS_POTATO)
+                .requires(Tags.Items.CROPS_CARROT)
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.RAW_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_MUTTON))))
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "curry_sauce_cooking"));
+
+        // ==========================================
+        // CURRY RICE
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY).get())
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CURRY_SAUCE).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "rice_curry_cooking"));
+
+        // Curry katsu rice
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY_KATSU).get())
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CURRY_SAUCE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.KATSU).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "rice_curry_katsu_cooking"));
+
+        // Curry burger rice
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY_BURGER).get())
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CURRY_SAUCE).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BURGER).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "rice_curry_burger_cooking"));
+
+        // Curry cheese rice
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_CURRY_CHEESE).get())
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CURRY_SAUCE).get())
+                .requires(SakuraItemTags.CHEESE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "rice_curry_cheese_cooking"));
+
+        // Curry omurice
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.FOOD_OIL, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.CURRY_OMURICE).get())
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CURRY_SAUCE).get())
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "curry_omurice_cooking"));
+
+        // ==========================================
+        // WHITE STEW
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.WHITE_STEW).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.WHITE_SAUCE).get())
+                .requires(SakuraItemTags.RAW_CHICKEN)
+                .requires(Tags.Items.CROPS_CARROT)
+                .requires(Tags.Items.CROPS_POTATO)
+                .requires(SakuraItemTags.MUSHROOMS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "white_stew_cooking"));
+
+        // ==========================================
+        // PUDDING AND SWEETS
+        // ==========================================
+        // Pudding (vanilla)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.PUDDING).get(), 2)
+                .requires(SakuraItemTags.MILK)
+                .requires(SakuraItemTags.SUGAR)
+                .requires(SakuraItemTags.EGGS)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.VANILLA).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pudding_cooking"));
+
+        // Maple pudding
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.PUDDING_MAPLE).get(), 2)
+                .requires(SakuraItemTags.MILK)
+                .requires(SakuraItemTags.SUGAR)
+                .requires(SakuraItemTags.EGGS)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.VANILLA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MAPLE_SYRUP).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pudding_maple_cooking"));
+
+        // Mocha pudding
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.PUDDING_MOCHA).get(), 2)
+                .requires(SakuraItemTags.MILK)
+                .requires(SakuraItemTags.SUGAR)
+                .requires(SakuraItemTags.EGGS)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.VANILLA).get())
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MOCHA).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pudding_mocha_cooking"));
+
+        // ==========================================
+        // MATSUTAKE RICE
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_MATSUTAKE).get())
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.MATSUTAKE).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "rice_matsutake_cooking"));
+
+        // ==========================================
+        // EGG DISHES
+        // ==========================================
+        // Soft-boiled egg
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.EGG_SOFT).get(), 2)
+                .requires(SakuraItemTags.EGGS)
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "egg_soft_cooking"));
+
+        // Soy sauce egg
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.EGG_SOYSAUCE).get(), 2)
+                .requires(SakuraItemTags.EGGS)
+                .requires(SakuraItemTags.EGGS)
+                .requires(SakuraItemTags.SOYSAUCE)
+                .requires(SakuraItemTags.SUGAR)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "egg_soysauce_cooking"));
+
+        // ==========================================
+        // ODEN
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.ODEN).get(), 2)
+                .requires(Items.STICK)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.SURIMI).get())
+                .requires(SakuraItemTags.CROPS_RADISH)
+                .requires(SakuraItemTags.EGGS)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "oden_cooking"));
+
+        // ==========================================
+        // CHAWANMUSHI
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.CHAWANMUSHI).get(), 2)
+                .requires(SakuraItemTags.EGGS)
+                .requires(SakuraItemTags.VEGETABLES)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NOODLE_SOUP).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "chawanmushi_cooking"));
+
+        // ==========================================
+        // OCHAZUKE
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.OCHAZUKE).get())
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.GREEN_TEA_LEAVES).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ochazuke_cooking"));
+
+        // ==========================================
+        // FRUIT SALAD (using cooking pot as mixing)
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 50),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.FRUITSALAD).get(), 2)
+                .requires(Items.APPLE)
+                .requires(SakuraItemTags.SUGAR)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.LEMON).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "fruitsalad_cooking"));
+
+        // ==========================================
+        // MABODOFU (mapo tofu)
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.MABODOFU).get(), 2)
+                .requires(SakuraItemTags.TOFU)
+                .requires(SakuraItemTags.MISO)
+                .requires(SakuraItemTags.SALT)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "mabodofu_cooking"));
+
+        // Mabodofu variant using miso ball
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.MABODOFU).get(), 2)
+                .requires(SakuraItemTags.TOFU)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MISO_BALL).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "mabodofu_cooking_misoball"));
+
+        // ==========================================
+        // MABOQIEZI (mapo eggplant)
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.MABOQIEZI).get(), 2)
+                .requires(SakuraItemTags.CROPS_EGGPLANT)
+                .requires(SakuraItemTags.MISO)
+                .requires(SakuraItemTags.SALT)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "maboqiezi_cooking"));
+
+        // ==========================================
+        // RICE PORK FRIED (special variant)
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.FOOD_OIL, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.RICE_PORK_FRIED).get())
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(SakuraItemTags.RAW_PORK)
+                .requires(SakuraItemTags.EGGS)
+                .requires(SakuraItemTags.VEGETABLES)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "rice_pork_fried_cooking"));
+
+        // ==========================================
+        // BONITO PROCESSING
+        // ==========================================
+        // Boiled bonito (machined bonito + water)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 125),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.BOILED_BONITO).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.MACHINED_BONITO).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "boiled_bonito_cooking"));
+
+        // ==========================================
+        // WORCESTER SAUCE
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        ItemRegistry.MATERIALS.get(SakuraNormalItemSet.WORCESTER_SAUCE).get(), 2)
+                .requires(SakuraItemTags.SOYSAUCE)
+                .requires(SakuraItemTags.SUGAR)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.VINEGAR).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "worcester_sauce_cooking"));
+
+        // ==========================================
+        // VINEGAR
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        ItemRegistry.MATERIALS.get(SakuraNormalItemSet.VINEGAR).get(), 2)
+                .requires(SakuraItemTags.GRAIN)
+                .requires(SakuraItemTags.GRAIN)
+                .requires(SakuraItemTags.SALT)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "vinegar_cooking"));
+
+        // ==========================================
+        // MAYO (mayonnaise)
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.FOOD_OIL, 125),
+                        ItemRegistry.MATERIALS.get(SakuraNormalItemSet.MAYO).get(), 2)
+                .requires(SakuraItemTags.EGGS)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.VINEGAR).get())
+                .requires(SakuraItemTags.SALT)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "mayo_cooking"));
+
+        // ==========================================
+        // ZOSUI (rice porridge with fish)
+        // ==========================================
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.ZOSUI).get(), 2)
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(Ingredient.fromValues(Stream.of(new Ingredient.TagValue(SakuraItemTags.RAW_CHICKEN),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_PORK),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_BEEF),
+                        new Ingredient.TagValue(SakuraItemTags.RAW_MUTTON),
+                        new Ingredient.TagValue(SakuraItemTags.FISHES))))
+                .requires(SakuraItemTags.SOYSAUCE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "zosui_cooking"));
+
+        // Zosui zuiki (taro variant)
+        CookingPotRecipeBuilder
+                .cooking(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 250),
+                        FoodRegistry.FOODSET.get(SakuraFoodSet.ZOSUI_ZUIKI).get(), 2)
+                .requires(SakuraItemTags.RICE_RICE)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.DRIED_IMOGARA).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "zosui_zuiki_cooking"));
+
     }
 
     private void registerFermenterRecipe(Consumer<FinishedRecipe> consumer) {
     	
         FermenterRecipeBuilder
 		        .fermenting(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 100),
-		        		FoodRegistry.FOODSET.get(SakuraFoodSet.PICKELD_RADISH).get(), 2, FluidStack.EMPTY, 0, 400)
+		        		FoodRegistry.FOODSET.get(SakuraFoodSet.PICKLED_RADISH).get(), 2, FluidStack.EMPTY, 0, 400)
 		        .requires(SakuraItemTags.CROPS_RADISH)
 		        .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NUKA).get())
 		        .requires(SakuraItemTags.SALT)
@@ -943,7 +3073,7 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
         
         FermenterRecipeBuilder
 		        .fermenting(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 100),
-		        		FoodRegistry.FOODSET.get(SakuraFoodSet.PICKELD_EGGPLANT).get(), 2, FluidStack.EMPTY, 0, 400)
+		        		FoodRegistry.FOODSET.get(SakuraFoodSet.PICKLED_EGGPLANT).get(), 2, FluidStack.EMPTY, 0, 400)
 		        .requires(SakuraItemTags.CROPS_EGGPLANT)
 		        .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.NUKA).get())
 		        .requires(SakuraItemTags.SALT)
@@ -964,7 +3094,7 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
                 .fermenting(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 200),
                         new FluidStack(FluidRegistry.BEER.get(), 100))
                 .requires(SakuraItemTags.GRAIN)
-                .requires(SakuraItemTags.BROWN_MUSHROOMS)
+                .requires(SakuraItemTags.CROPS_HOP)
                 .requires(SakuraItemTags.SUGAR_SUGAR)
                 .save(consumer, new ResourceLocation(SakuraMod.MODID, "basic_beer_fermenting"));
         
@@ -1019,6 +3149,34 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
                 .requires(SakuraItemTags.CROPS_SOYBEAN)
                 .requires(SakuraItemTags.KOUJI)
                 .save(consumer, new ResourceLocation(SakuraMod.MODID, "miso_fermenting"));
+
+        // Red wine: grape + sugar + yeast → red wine
+        FermenterRecipeBuilder
+                .fermenting(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 200),
+                        new FluidStack(FluidRegistry.RED_WINE.get(), 100))
+                .requires(SakuraItemTags.CROPS_GRAPE)
+                .requires(SakuraItemTags.CROPS_GRAPE)
+                .requires(SakuraItemTags.SUGAR)
+                .requires(SakuraItemTags.YEAST)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "red_wine_fermenting"));
+
+        // White wine: green grape + sugar + yeast → white wine
+        FermenterRecipeBuilder
+                .fermenting(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 200),
+                        new FluidStack(FluidRegistry.WHITE_WINE.get(), 100))
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(SakuraItemTags.SUGAR)
+                .requires(SakuraItemTags.YEAST)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "white_wine_fermenting"));
+
+        // Champagne: white wine + sugar + yeast → champagne
+        FermenterRecipeBuilder
+                .fermenting(FluidIngredient.fromFluid(FluidRegistry.WHITE_WINE.get(), 200),
+                        new FluidStack(FluidRegistry.CHAMPAGNE.get(), 100))
+                .requires(SakuraItemTags.SUGAR)
+                .requires(SakuraItemTags.YEAST)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "champagne_fermenting"));
     }
 
     private void registerDistillerRecipe(Consumer<FinishedRecipe> consumer) {
@@ -1054,6 +3212,68 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
                 .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SAKE_KASU).get())
                 .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SAKE_KASU).get())
                 .save(consumer, new ResourceLocation(SakuraMod.MODID, "shouchu_from_sakekasu_distillation"));
+
+        // Vodka: water + potatoes (3x) → vodka
+        DistillerRecipeBuilder
+                .distillation(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 200),
+                        new FluidStack(FluidRegistry.VODKA.get(), 100))
+                .requires(Items.POTATO)
+                .requires(Items.POTATO)
+                .requires(Items.POTATO)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "vodka_distillation"));
+
+        // Liqueur: base spirit + fruit + sugar → liqueur
+        DistillerRecipeBuilder
+                .distillation(FluidIngredient.fromTag(SakuraFluidTags.BREWERS_ALCOHOL, 200),
+                        new FluidStack(FluidRegistry.LIQUEUR.get(), 200))
+                .requires(Items.APPLE)
+                .requires(Items.APPLE)
+                .requires(Items.SUGAR)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "liqueur_distillation"));
+
+        // Cocoa Liqueur: base spirit + cocoa beans + sugar → cocoa liqueur
+        DistillerRecipeBuilder
+                .distillation(FluidIngredient.fromTag(SakuraFluidTags.BREWERS_ALCOHOL, 200),
+                        new FluidStack(FluidRegistry.COCOA_LIQUEUR.get(), 200))
+                .requires(Items.COCOA_BEANS)
+                .requires(Items.COCOA_BEANS)
+                .requires(Items.SUGAR)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "cocoa_liqueur_distillation"));
+
+        // Gin: base spirit + sweet berries (juniper substitute) → gin
+        DistillerRecipeBuilder
+                .distillation(FluidIngredient.fromTag(SakuraFluidTags.BREWERS_ALCOHOL, 200),
+                        new FluidStack(FluidRegistry.GIN.get(), 200))
+                .requires(Items.SWEET_BERRIES)
+                .requires(Items.SWEET_BERRIES)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "gin_distillation"));
+
+        // Tequila: water + cactus (agave substitute) → tequila
+        DistillerRecipeBuilder
+                .distillation(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 200),
+                        new FluidStack(FluidRegistry.TEQUILA.get(), 100))
+                .requires(Items.CACTUS)
+                .requires(Items.CACTUS)
+                .requires(Items.SUGAR)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "tequila_distillation"));
+
+        // Brandy: grape + sugar → brandy (from red grapes)
+        DistillerRecipeBuilder
+                .distillation(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 200),
+                        new FluidStack(FluidRegistry.BRANDY.get(), 100))
+                .requires(SakuraItemTags.CROPS_GRAPE)
+                .requires(SakuraItemTags.CROPS_GRAPE)
+                .requires(SakuraItemTags.SUGAR)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "brandy_grape_distillation"));
+
+        // Brandy: green grape + sugar → brandy (from green grapes)
+        DistillerRecipeBuilder
+                .distillation(FluidIngredient.fromTag(SakuraFluidTags.WATER_WATER, 200),
+                        new FluidStack(FluidRegistry.BRANDY.get(), 100))
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.GRAPE_GREEN).get())
+                .requires(SakuraItemTags.SUGAR)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "brandy_green_grape_distillation"));
     }
 
     private void registerChoppingRecipes(Consumer<FinishedRecipe> consumer) {
@@ -1071,6 +3291,116 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
                 .addByproduce(FoodRegistry.FOODSET.get(SakuraFoodSet.SLICED_CABBAGE).get())
                 .addByproduceWithChance(FoodRegistry.FOODSET.get(SakuraFoodSet.SLICED_CABBAGE).get(), 0.5F)
                 .save(consumer, new ResourceLocation(SakuraMod.MODID, "sliced_cabbage_chopping"));
+
+        // Sashimi slicing: machined fish -> sashimi with fish knife
+        ChoppingBoardRecipeBuilder.chop(FoodRegistry.FOODSET.get(SakuraFoodSet.SASHIMI).get())
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.MACHINED_FISH).get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .addByproduce(FoodRegistry.FOODSET.get(SakuraFoodSet.SASHIMI).get())
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sashimi_chopping"));
+
+        // Ramen block -> raw ramen noodles with noodle knife
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get(), 4)
+                .requires(BlockItemRegistry.RAMEN_BLOCK.get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_NOODLE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "ramen_raw_chopping"));
+
+        // Udon unfinished block -> raw udon with noodle knife
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get(), 4)
+                .requires(BlockItemRegistry.UDON_UNFINISHED.get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_NOODLE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "udon_raw_chopping"));
+
+        // Soba block -> raw soba with noodle knife
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get(), 4)
+                .requires(BlockItemRegistry.SOBA_BLOCK.get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_NOODLE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "soba_raw_chopping"));
+
+        // Pasta block -> raw pasta with noodle knife
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.PASTA_RAW).get(), 4)
+                .requires(BlockItemRegistry.PASTA_BLOCK.get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_NOODLE)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "pasta_raw_chopping"));
+
+        // Bonito machining: bonito -> machined bonito with fish knife
+        ChoppingBoardRecipeBuilder.chop(FoodRegistry.FOODSET.get(SakuraFoodSet.MACHINED_BONITO).get(), 2)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.BONITO).get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .addByproduceWithChance(Items.BONE_MEAL, 0.5F)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "machined_bonito_chopping"));
+
+        // Dried bonito -> bonito shavings with fish knife
+        ChoppingBoardRecipeBuilder.chop(FoodRegistry.FOODSET.get(SakuraFoodSet.BONITO_SHAVING).get(), 4)
+                .requires(FoodRegistry.FOODSET.get(SakuraFoodSet.DRIED_BONITO).get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .addByproduce(FoodRegistry.FOODSET.get(SakuraFoodSet.BONITO_SHAVING).get(), 2)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bonito_shaving_chopping"));
+
+        // Onion slicing: onion -> sliced onion (reuse sliced cabbage mechanic pattern)
+        ChoppingBoardRecipeBuilder.chop(FoodRegistry.FOODSET.get(SakuraFoodSet.ONION).get(), 2)
+                .requires(SakuraItemTags.CROPS_ONION)
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sliced_onion_chopping"));
+
+        // Radish slicing
+        ChoppingBoardRecipeBuilder.chop(FoodRegistry.FOODSET.get(SakuraFoodSet.RADISH).get(), 2)
+                .requires(SakuraItemTags.CROPS_RADISH)
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sliced_radish_chopping"));
+
+        // Eggplant slicing
+        ChoppingBoardRecipeBuilder.chop(FoodRegistry.FOODSET.get(SakuraFoodSet.EGGPLANT).get(), 2)
+                .requires(SakuraItemTags.CROPS_EGGPLANT)
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sliced_eggplant_chopping"));
+
+        // Tomato slicing
+        ChoppingBoardRecipeBuilder.chop(FoodRegistry.FOODSET.get(SakuraFoodSet.TOMATO).get(), 2)
+                .requires(SakuraItemTags.CROPS_TOMATO)
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sliced_tomato_chopping"));
+
+        // Lumber from logs: chopping board with axe
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.LUMBER_SAKURA).get(), 8)
+                .requires(BlockRegistry.SAKURA_LOG.get())
+                .requiresTool(SakuraItemTags.TOOLS_AXES)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "sakura_lumber_chopping"));
+
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.LUMBER_MAPLE).get(), 8)
+                .requires(BlockRegistry.MAPLE_LOG.get())
+                .requiresTool(SakuraItemTags.TOOLS_AXES)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "maple_lumber_chopping"));
+
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.LUMBER_BAMBOO).get(), 8)
+                .requires(SakuraItemTags.BAMBOO)
+                .requiresTool(SakuraItemTags.TOOLS_AXES)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "bamboo_lumber_chopping"));
+
+        // Chestnut: remove burrs with knife
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CHESTNUT).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CHESTNUT_BURRS).get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "chestnut_chopping"));
+
+        // Peppercorn -> black pepper with mortar-like chopping
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BLACK_PEPPER).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.PEPPERCORN_GREEN).get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "black_pepper_chopping"));
+
+        // Peppercorn red -> white pepper
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.WHITE_PEPPER).get(), 2)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.PEPPERCORN_RED).get())
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "white_pepper_chopping"));
+
+        // Seaweed slicing
+        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SEAWEED).get(), 2)
+                .requires(SakuraItemTags.CROPS_SEAWEED)
+                .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
+                .save(consumer, new ResourceLocation(SakuraMod.MODID, "seaweed_chopping"));
+
     }
 
     private void foodSmeltingRecipes(String name, ItemLike ingredient, ItemLike result, float experience,
@@ -1118,5 +3448,13 @@ public class SakuraRecipeProvider extends AbstractRecipeProvider {
     public ShapelessRecipeBuilder makeBlockToIngot(Supplier<? extends Item> result, Supplier<? extends Item> ingredient){
         return ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,result.get(),9).requires(ingredient.get())
                 .group("sakura").unlockedBy("has_ingredient",has(ingredient.get()));
+    }
+
+    private void makeStair(Consumer<FinishedRecipe> consumer, Supplier<? extends Block> stairBlock, Supplier<? extends Block> plankBlock) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, stairBlock.get(), 4)
+                .pattern("#  ").pattern("## ").pattern("###")
+                .define('#', plankBlock.get())
+                .group("sakura").unlockedBy("has_planks", has(plankBlock.get()))
+                .save(consumer);
     }
 }

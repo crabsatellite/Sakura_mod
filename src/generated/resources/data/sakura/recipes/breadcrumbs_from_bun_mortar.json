@@ -1,0 +1,16 @@
+{
+  "type": "sakura:stone_mortar",
+  "experience": 0.0,
+  "ingredients": [
+    {
+      "item": "sakura:bun"
+    }
+  ],
+  "recipeTime": 200,
+  "results": [
+    {
+      "count": 4,
+      "item": "sakura:breadcrumbs"
+    }
+  ]
+}

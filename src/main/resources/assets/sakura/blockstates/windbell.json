@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "hanging=false,waterlogged=false": { "model": "sakura:block/windbell" },
+    "hanging=false,waterlogged=true":  { "model": "sakura:block/windbell" },
+    "hanging=true,waterlogged=false":  { "model": "sakura:block/windbell" },
+    "hanging=true,waterlogged=true":   { "model": "sakura:block/windbell" }
+  }
+}

@@ -8,6 +8,12 @@
     "#forge:seeds/tomato",
     "#forge:seeds/buckwheat",
     "#forge:seeds/rapeseed",
-    "#forge:seeds/redbean"
+    "#forge:seeds/redbean",
+    "#forge:seeds/soybean",
+    "#forge:seeds/pepper",
+    "#forge:seeds/vanilla",
+    "#forge:seeds/grape",
+    "#forge:seeds/hop",
+    "#forge:seeds/seaweed"
   ]
 }

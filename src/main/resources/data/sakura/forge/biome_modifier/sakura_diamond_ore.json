@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#sakura:has_sakura_diamond",
+  "features": "sakura:ore_sakura_diamond",
+  "step": "underground_ores"
+}

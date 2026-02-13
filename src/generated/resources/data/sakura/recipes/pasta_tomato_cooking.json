@@ -1,0 +1,20 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 250,
+    "fluidTag": "forge:water/water"
+  },
+  "ingredients": [
+    {
+      "item": "sakura:pasta_raw"
+    },
+    {
+      "tag": "forge:tomatosauce"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "item": "sakura:pasta_tomato"
+  }
+}

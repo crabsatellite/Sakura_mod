@@ -1,5 +1,22 @@
 {
   "values": [
-    "sakura:stone_mortar"
+    "sakura:stone_mortar",
+    "sakura:sakura_diamond_ore",
+    "sakura:iron_sand",
+    "sakura:kawara_block",
+    "sakura:kawara",
+    "sakura:stone_lantern",
+    "sakura:cobblestone_lantern",
+    "sakura:mossy_stone_lantern",
+    "sakura:red_lantern",
+    "sakura:white_lantern",
+    "sakura:bamboo_lantern",
+    "sakura:windbell",
+    "sakura:cooking_pot",
+    "sakura:fermenter",
+    "sakura:distiller",
+    "sakura:sakura_diamond_block",
+    "sakura:tatara",
+    "sakura:barrel_out"
   ]
 }

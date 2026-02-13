@@ -1,0 +1,16 @@
+{
+  "type": "sakura:stone_mortar",
+  "experience": 0.0,
+  "ingredients": [
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "recipeTime": 200,
+  "results": [
+    {
+      "count": 2,
+      "item": "sakura:orange_juice"
+    }
+  ]
+}

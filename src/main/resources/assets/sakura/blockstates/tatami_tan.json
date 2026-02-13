@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "sakura:block/tatami_tan" },
+    "facing=south": { "model": "sakura:block/tatami_tan", "y": 180 },
+    "facing=west": { "model": "sakura:block/tatami_tan", "y": 270 },
+    "facing=east": { "model": "sakura:block/tatami_tan", "y": 90 }
+  }
+}

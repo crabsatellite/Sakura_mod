@@ -1,0 +1,7 @@
+{
+  "parent": "sakura:item/haori",
+  "textures": {
+    "0": "sakura:item/haori_base",
+    "particle": "sakura:item/haori_base"
+  }
+}

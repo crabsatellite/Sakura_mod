@@ -1,0 +1,6 @@
+{
+  "parent": "sakura:block/campfire_lit",
+  "textures": {
+    "particle": "sakura:block/pot"
+  }
+}

@@ -1,7 +1,20 @@
 {
   "type": "minecraft:tree",
   "config": {
-    "decorators": [],
+    "decorators": [
+      {
+        "type": "sakura:fallen_leaves",
+        "fallen_block": "sakura:fallen_leaves_orange",
+        "radius_x": 5,
+        "radius_z": 5,
+        "search_down": 4,
+        "search_up": 3
+      },
+      {
+        "type": "sakura:maple_sap_log",
+        "chance": 0.5
+      }
+    ],
     "dirt_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {

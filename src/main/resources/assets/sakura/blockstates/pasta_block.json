@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "cutting=0": { "model": "sakura:block/pasta_block" },
+    "cutting=1": { "model": "sakura:block/pasta_block" },
+    "cutting=2": { "model": "sakura:block/pasta_block" },
+    "cutting=3": { "model": "sakura:block/pasta_block" },
+    "cutting=4": { "model": "sakura:block/pasta_block" },
+    "cutting=5": { "model": "sakura:block/pasta_block" },
+    "cutting=6": { "model": "sakura:block/pasta_block" },
+    "cutting=7": { "model": "sakura:block/pasta_block" }
+  }
+}

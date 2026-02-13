@@ -1,0 +1,66 @@
+{
+  "type": "minecraft:tree",
+  "config": {
+    "decorators": [
+      {
+        "type": "sakura:fallen_leaves",
+        "fallen_block": "sakura:fallen_leaves_orange",
+        "radius_x": 6,
+        "radius_z": 6,
+        "search_down": 4,
+        "search_up": 3
+      },
+      {
+        "type": "sakura:maple_sap_log",
+        "chance": 0.5
+      }
+    ],
+    "dirt_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:dirt"
+      }
+    },
+    "foliage_placer": {
+      "type": "minecraft:fancy_foliage_placer",
+      "height": 4,
+      "offset": 4,
+      "radius": 3
+    },
+    "foliage_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "sakura:mapleleaves_orange",
+        "Properties": {
+          "distance": "7",
+          "persistent": "false",
+          "waterlogged": "false"
+        }
+      }
+    },
+    "force_dirt": false,
+    "ignore_vines": true,
+    "minimum_size": {
+      "type": "minecraft:two_layers_feature_size",
+      "limit": 0,
+      "lower_size": 0,
+      "min_clipped_height": 4,
+      "upper_size": 0
+    },
+    "trunk_placer": {
+      "type": "minecraft:fancy_trunk_placer",
+      "base_height": 5,
+      "height_rand_a": 8,
+      "height_rand_b": 4
+    },
+    "trunk_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "sakura:maple_log",
+        "Properties": {
+          "axis": "y"
+        }
+      }
+    }
+  }
+}

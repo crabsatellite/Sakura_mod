@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:bento_box"
+    },
+    {
+      "item": "sakura:rice_cooked"
+    },
+    {
+      "item": "sakura:curry_sauce"
+    },
+    {
+      "tag": "forge:vegetables"
+    },
+    [
+      {
+        "tag": "forge:cooked_beef"
+      },
+      {
+        "tag": "forge:cooked_chicken"
+      },
+      {
+        "tag": "forge:cooked_pork"
+      },
+      {
+        "tag": "forge:cooked_mutton"
+      }
+    ]
+  ],
+  "result": {
+    "item": "sakura:bento_supreme"
+  }
+}

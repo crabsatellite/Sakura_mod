@@ -1,0 +1,22 @@
+{
+  "type": "sakura:distillation",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 200,
+    "fluidTag": "sakura:brewers_alcohol"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:sweet_berries"
+    },
+    {
+      "item": "minecraft:sweet_berries"
+    }
+  ],
+  "recipeTime": 400,
+  "result_fluid": {
+    "amount": 200,
+    "fluid": "sakura:gin"
+  },
+  "results": []
+}

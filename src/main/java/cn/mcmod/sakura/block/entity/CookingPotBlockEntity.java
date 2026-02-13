@@ -51,6 +51,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
     private LazyOptional<IItemHandler> inputHandler;
     private LazyOptional<IItemHandler> outputHandler;
 
+    private final FluidTank tank;
     private LazyOptional<FluidTank> fluidTank;
     protected final ContainerData tileData;
     private final Object2IntOpenHashMap<ResourceLocation> experienceTracker;
@@ -68,7 +69,8 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
         this.inputHandler = LazyOptional.of(() -> new CookingPotItemHandler(inventory, Direction.UP));
         this.outputHandler = LazyOptional.of(() -> new CookingPotItemHandler(inventory, Direction.DOWN));
         this.tileData = createIntArray();
-        this.fluidTank = LazyOptional.of(this::createFluidHandler);
+        this.tank = createFluidHandler();
+        this.fluidTank = LazyOptional.of(() -> this.tank);
         this.experienceTracker = new Object2IntOpenHashMap<>();
         this.checkNewRecipe = true;
     }
@@ -84,7 +86,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
             }
         } else if (blockEntity.recipeTime > 0) {
             if (state.is(BlockRegistry.COOKING_POT.get()))
-                state.setValue(CookingPotBlock.OPEN, true);
+                level.setBlockAndUpdate(pos, state.setValue(CookingPotBlock.OPEN, true));
             blockEntity.recipeTime = 0;
         }
 
@@ -108,13 +110,18 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
         }
 
         if (lastRecipeID != null) {
-            Recipe<RecipeWrapper> recipe = level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.COOKING_RECIPE_TYPE.get()).stream()
-                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst().get();
-            if (recipe instanceof CookingPotRecipe cookingRecipe) {
-                if (cookingRecipe.matchesWithFluid(this.fluidTank.orElse(new FluidTank(0)).getFluid(), inventoryWrapper,
-                        level)) {
-                    return Optional.of(cookingRecipe);
+            Optional<? extends Recipe<RecipeWrapper>> recipeOpt = level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.COOKING_RECIPE_TYPE.get()).stream()
+                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst();
+            if (recipeOpt.isPresent()) {
+                Recipe<RecipeWrapper> recipe = recipeOpt.get();
+                if (recipe instanceof CookingPotRecipe cookingRecipe) {
+                    if (cookingRecipe.matchesWithFluid(this.tank.getFluid(), inventoryWrapper,
+                            level)) {
+                        return Optional.of(cookingRecipe);
+                    }
                 }
+            } else {
+                lastRecipeID = null;
             }
         }
 
@@ -122,7 +129,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
             List<CookingPotRecipe> recipes = level.getRecipeManager().getRecipesFor(RecipeTypeRegistry.COOKING_RECIPE_TYPE.get(),
                     inventoryWrapper, level);
             for(CookingPotRecipe recipe : recipes) {
-                if(recipe.matchesWithFluid(this.fluidTank.orElse(new FluidTank(0)).getFluid(),
+                if(recipe.matchesWithFluid(this.tank.getFluid(),
                         inventoryWrapper, level)) {
                   lastRecipeID = recipe.getId();
                   return Optional.of(recipe);
@@ -178,7 +185,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
             outStack.grow(resultStack.getCount());
         }
         if(recipe.getRequiredFluid() != FluidIngredient.EMPTY)
-            this.fluidTank.orElse(new FluidTank(0)).drain(recipe.getRequiredFluid().getRequiredAmount(),
+            this.tank.drain(recipe.getRequiredFluid().getRequiredAmount(),
                     FluidAction.EXECUTE);
 
         trackRecipeExperience(recipe);
@@ -262,7 +269,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
         inventory.deserializeNBT(compound.getCompound("Inventory"));
         recipeTime = compound.getInt("RecipeTime");
         recipeTimeTotal = compound.getInt("RecipeTimeTotal");
-        fluidTank.ifPresent(fluid -> fluid.readFromNBT(compound.getCompound("FluidTank")));
+        tank.readFromNBT(compound.getCompound("FluidTank"));
         CompoundTag compoundRecipes = compound.getCompound("RecipesUsed");
         for (String key : compoundRecipes.getAllKeys()) {
             experienceTracker.put(new ResourceLocation(key), compoundRecipes.getInt(key));
@@ -276,7 +283,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
         compound.putInt("RecipeTime", recipeTime);
         compound.putInt("RecipeTimeTotal", recipeTimeTotal);
         compound.put("Inventory", inventory.serializeNBT());
-        fluidTank.ifPresent(fluid -> compound.put("FluidTank", fluid.writeToNBT(nbt)));
+        compound.put("FluidTank", tank.writeToNBT(nbt));
         CompoundTag compoundRecipes = new CompoundTag();
         experienceTracker
                 .forEach((recipeId, craftedAmount) -> compoundRecipes.putInt(recipeId.toString(), craftedAmount));
@@ -384,7 +391,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
         super.reviveCaps();
         inputHandler = LazyOptional.of(() -> new CookingPotItemHandler(inventory, Direction.UP));
         outputHandler = LazyOptional.of(() -> new CookingPotItemHandler(inventory, Direction.DOWN));
-        fluidTank = LazyOptional.of(this::createFluidHandler);
+        fluidTank = LazyOptional.of(() -> this.tank);
     }
 
 }

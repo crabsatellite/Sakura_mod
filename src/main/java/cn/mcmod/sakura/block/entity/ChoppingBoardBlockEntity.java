@@ -38,7 +38,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
     private final ItemStackHandler inventory;
-    private final LazyOptional<IItemHandler> inputHandler;
+    private LazyOptional<IItemHandler> inputHandler;
     private ResourceLocation lastRecipeID;
     
     private int recipeTime;
@@ -113,12 +113,17 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
             return Optional.empty();
 
         if (lastRecipeID != null) {
-            Recipe<RecipeWrapper> recipe = level.getRecipeManager()
+            Optional<? extends Recipe<RecipeWrapper>> recipeOpt = level.getRecipeManager()
                     .getAllRecipesFor(RecipeTypeRegistry.CHOPPING_RECIPE_TYPE.get()).stream()
-                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst().get();
-            if (recipe instanceof ChoppingRecipe && recipe.matches(recipeWrapper, level)
-                    && ((ChoppingRecipe) recipe).getTool().test(toolStack)) {
-                return Optional.of((ChoppingRecipe) recipe);
+                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst();
+            if (recipeOpt.isPresent()) {
+                Recipe<RecipeWrapper> recipe = recipeOpt.get();
+                if (recipe instanceof ChoppingRecipe && recipe.matches(recipeWrapper, level)
+                        && ((ChoppingRecipe) recipe).getTool().test(toolStack)) {
+                    return Optional.of((ChoppingRecipe) recipe);
+                }
+            } else {
+                lastRecipeID = null;
             }
         }
 
@@ -168,7 +173,7 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
     }
     
     public boolean setResult(ChoppingRecipe recipe) {
-        ItemStack resultItem = recipe.getResultItem(null);
+        ItemStack resultItem = recipe.getResultItem(level.registryAccess());
         if (!resultItem.isEmpty()) {
             if(resultItem.getCount() > 1) {
                 for(int i=1;i < resultItem.getCount(); i++) {
@@ -210,7 +215,7 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
     @Override
     @Nonnull
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
+        if (!this.isRemoved() && cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
             return inputHandler.cast();
         }
         return super.getCapability(cap, side);
@@ -226,6 +231,18 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
     public void setRemoved() {
         super.setRemoved();
         inputHandler.invalidate();
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        inputHandler.invalidate();
+    }
+
+    @Override
+    public void reviveCaps() {
+        super.reviveCaps();
+        inputHandler = LazyOptional.of(() -> inventory);
     }
 
     private ItemStackHandler createHandler() {

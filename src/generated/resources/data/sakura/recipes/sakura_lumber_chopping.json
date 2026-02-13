@@ -1,0 +1,16 @@
+{
+  "type": "sakura:chopping",
+  "byproducts": [],
+  "experience": 1.0,
+  "ingredient": {
+    "item": "sakura:sakura_log"
+  },
+  "recipeTime": 1,
+  "result": {
+    "count": 8,
+    "item": "sakura:lumber_sakura"
+  },
+  "tool": {
+    "tag": "forge:tools/axes"
+  }
+}

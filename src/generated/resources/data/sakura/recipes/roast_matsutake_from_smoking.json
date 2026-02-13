@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.35,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:matsutake"
+  },
+  "result": "sakura:roast_matsutake"
+}

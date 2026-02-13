@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "sakura:ume_checked",
+    "features": [
+      {
+        "chance": 0.1,
+        "feature": "sakura:fancy_ume_checked"
+      }
+    ]
+  }
+}

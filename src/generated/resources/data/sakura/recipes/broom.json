@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "tag": "forge:bamboo"
+    },
+    "S": {
+      "tag": "forge:string"
+    }
+  },
+  "pattern": [
+    "S",
+    "B",
+    "B"
+  ],
+  "result": {
+    "item": "sakura:broom"
+  },
+  "show_notification": true
+}

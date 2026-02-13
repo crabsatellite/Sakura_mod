@@ -1,0 +1,20 @@
+{
+  "type": "sakura:stone_mortar",
+  "experience": 0.0,
+  "ingredients": [
+    {
+      "item": "minecraft:blaze_rod"
+    }
+  ],
+  "recipeTime": 200,
+  "results": [
+    {
+      "count": 3,
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "count": 2,
+      "item": "minecraft:blaze_powder"
+    }
+  ]
+}

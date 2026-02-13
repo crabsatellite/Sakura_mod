@@ -88,7 +88,7 @@ public class DistillerCategory implements IRecipeCategory<DistillerRecipe> {
             }
         }
         if(!recipe.getResultFluid().isEmpty())
-            builder.addSlot(RecipeIngredientRole.INPUT, 93, 1)
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 93, 1)
             .setFluidRenderer(DistillerBlockEntity.TANK_CAPACITY, true, 16, 52)
             .addIngredient(ForgeTypes.FLUID_STACK, recipe.getResultFluid());
     }

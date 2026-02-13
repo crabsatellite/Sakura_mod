@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "type=bottom,waterlogged=false": { "model": "sakura:block/slab_straw_block" },
+    "type=bottom,waterlogged=true": { "model": "sakura:block/slab_straw_block" },
+    "type=top,waterlogged=false": { "model": "sakura:block/slab_straw_block_top" },
+    "type=top,waterlogged=true": { "model": "sakura:block/slab_straw_block_top" },
+    "type=double,waterlogged=false": { "model": "sakura:block/straw_block" },
+    "type=double,waterlogged=true": { "model": "sakura:block/straw_block" }
+  }
+}

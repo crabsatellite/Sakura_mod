@@ -10,6 +10,12 @@
     "sakura:redbean_crop",
     "sakura:rice_crop_root",
     "sakura:taro_crop",
-    "sakura:tomato_crop"
+    "sakura:tomato_crop",
+    "sakura:soybean_crop",
+    "sakura:pepper_crop",
+    "sakura:vanilla_crop",
+    "sakura:grape_crop",
+    "sakura:hops_crop",
+    "sakura:seaweed_crop"
   ]
 }

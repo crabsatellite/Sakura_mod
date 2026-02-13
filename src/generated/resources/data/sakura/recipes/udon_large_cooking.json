@@ -1,0 +1,41 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 250,
+    "fluidTag": "forge:water/water"
+  },
+  "ingredients": [
+    {
+      "item": "sakura:udon_raw"
+    },
+    {
+      "item": "sakura:noodle_soup"
+    },
+    [
+      {
+        "tag": "forge:raw_chicken"
+      },
+      {
+        "tag": "forge:raw_pork"
+      },
+      {
+        "tag": "forge:raw_beef"
+      },
+      {
+        "tag": "forge:raw_mutton"
+      }
+    ],
+    {
+      "tag": "forge:vegetables"
+    },
+    {
+      "tag": "forge:eggs"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "count": 2,
+    "item": "sakura:udon_large"
+  }
+}

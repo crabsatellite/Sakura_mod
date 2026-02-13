@@ -41,8 +41,8 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 public class StoneMortarBlockEntity extends SyncedBlockEntity implements MenuProvider {
 
     private final ItemStackHandler inventory;
-    private final LazyOptional<IItemHandler> inputHandler;
-    private final LazyOptional<IItemHandler> outputHandler;
+    private LazyOptional<IItemHandler> inputHandler;
+    private LazyOptional<IItemHandler> outputHandler;
 
     protected final ContainerData tileData;
     private final Object2IntOpenHashMap<ResourceLocation> experienceTracker;
@@ -99,12 +99,17 @@ public class StoneMortarBlockEntity extends SyncedBlockEntity implements MenuPro
         }
 
         if (lastRecipeID != null) {
-            Recipe<RecipeWrapper> recipe = level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.STONE_MORTAR_RECIPE_TYPE.get()).stream()
-                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst().get();
-            if (recipe instanceof StoneMortarRecipe) {
-                if (recipe.matches(inventoryWrapper, level)) {
-                    return Optional.of((StoneMortarRecipe) recipe);
+            Optional<? extends Recipe<RecipeWrapper>> recipeOpt = level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.STONE_MORTAR_RECIPE_TYPE.get()).stream()
+                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst();
+            if (recipeOpt.isPresent()) {
+                Recipe<RecipeWrapper> recipe = recipeOpt.get();
+                if (recipe instanceof StoneMortarRecipe) {
+                    if (recipe.matches(inventoryWrapper, level)) {
+                        return Optional.of((StoneMortarRecipe) recipe);
+                    }
                 }
+            } else {
+                lastRecipeID = null;
             }
         }
 
@@ -232,7 +237,7 @@ public class StoneMortarBlockEntity extends SyncedBlockEntity implements MenuPro
     @Override
     @Nonnull
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
+        if (!this.isRemoved() && cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
             if (side == null || side.equals(Direction.UP)) {
                 return inputHandler.cast();
             } else {
@@ -259,6 +264,20 @@ public class StoneMortarBlockEntity extends SyncedBlockEntity implements MenuPro
         super.setRemoved();
         inputHandler.invalidate();
         outputHandler.invalidate();
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        inputHandler.invalidate();
+        outputHandler.invalidate();
+    }
+
+    @Override
+    public void reviveCaps() {
+        super.reviveCaps();
+        inputHandler = LazyOptional.of(() -> new StoneMortarItemHandler(inventory, Direction.UP));
+        outputHandler = LazyOptional.of(() -> new StoneMortarItemHandler(inventory, Direction.DOWN));
     }
 
     @Override
@@ -353,7 +372,7 @@ public class StoneMortarBlockEntity extends SyncedBlockEntity implements MenuPro
 
     @OnlyIn(Dist.CLIENT)
     public int getRotation() {
-        return this.recipeTime != 0 ? 360 * this.recipeTime / this.recipeTimeTotal : 0;
+        return (this.recipeTime != 0 && this.recipeTimeTotal != 0) ? 360 * this.recipeTime / this.recipeTimeTotal : 0;
     }
 
 }

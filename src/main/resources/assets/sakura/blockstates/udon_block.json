@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "cutting=0": { "model": "sakura:block/noodle_0" },
+    "cutting=1": { "model": "sakura:block/noodle_1" },
+    "cutting=2": { "model": "sakura:block/noodle_2" },
+    "cutting=3": { "model": "sakura:block/noodle_3" },
+    "cutting=4": { "model": "sakura:block/noodle_4" },
+    "cutting=5": { "model": "sakura:block/noodle_5" },
+    "cutting=6": { "model": "sakura:block/noodle_6" },
+    "cutting=7": { "model": "sakura:block/noodle_7" }
+  }
+}

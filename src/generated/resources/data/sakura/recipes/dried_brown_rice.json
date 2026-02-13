@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.35,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:brown_rice_cooked"
+  },
+  "result": "sakura:dried_brown_rice"
+}

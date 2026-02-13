@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,lit=false": { "model": "sakura:block/tatara" },
+    "facing=south,lit=false": { "model": "sakura:block/tatara", "y": 180 },
+    "facing=west,lit=false": { "model": "sakura:block/tatara", "y": 270 },
+    "facing=east,lit=false": { "model": "sakura:block/tatara", "y": 90 },
+    "facing=north,lit=true": { "model": "sakura:block/tatara_smelting" },
+    "facing=south,lit=true": { "model": "sakura:block/tatara_smelting", "y": 180 },
+    "facing=west,lit=true": { "model": "sakura:block/tatara_smelting", "y": 270 },
+    "facing=east,lit=true": { "model": "sakura:block/tatara_smelting", "y": 90 }
+  }
+}

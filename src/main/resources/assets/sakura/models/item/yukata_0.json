@@ -1,0 +1,7 @@
+{
+  "parent": "sakura:item/kimono",
+  "textures": {
+    "0": "sakura:item/yukata_0",
+    "particle": "sakura:item/yukata_0"
+  }
+}

@@ -47,7 +47,7 @@ public class FermenterRecipe extends AbstractRecipe {
     }
 
     public FluidIngredient getRequiredFluid() {
-        return inputFluid;
+        return inputFluid != null ? inputFluid : FluidIngredient.EMPTY;
     }
 
     public boolean matchesWithFluid(FluidStack fluid, RecipeWrapper inv, Level worldIn) {
@@ -94,7 +94,7 @@ public class FermenterRecipe extends AbstractRecipe {
     }
     
     public FluidStack getResultFluid() {
-        return outputFluid;
+        return outputFluid != null ? outputFluid : FluidStack.EMPTY;
     }
 
     @Override

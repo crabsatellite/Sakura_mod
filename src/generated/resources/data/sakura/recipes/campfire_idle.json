@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "minecraft:logs"
+    },
+    "S": {
+      "tag": "forge:lumber"
+    }
+  },
+  "pattern": [
+    " # ",
+    "#S#"
+  ],
+  "result": {
+    "item": "sakura:campfire_idle"
+  },
+  "show_notification": true
+}

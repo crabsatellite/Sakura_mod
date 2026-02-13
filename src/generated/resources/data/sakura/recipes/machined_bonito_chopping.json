@@ -1,0 +1,21 @@
+{
+  "type": "sakura:chopping",
+  "byproducts": [
+    {
+      "chance": 0.5,
+      "item": "minecraft:bone_meal"
+    }
+  ],
+  "experience": 1.0,
+  "ingredient": {
+    "item": "sakura:bonito"
+  },
+  "recipeTime": 1,
+  "result": {
+    "count": 2,
+    "item": "sakura:machined_bonito"
+  },
+  "tool": {
+    "tag": "sakura:tools/knives/fish"
+  }
+}

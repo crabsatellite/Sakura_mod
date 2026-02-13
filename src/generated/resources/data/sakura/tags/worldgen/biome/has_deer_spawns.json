@@ -1,0 +1,14 @@
+{
+  "values": [
+    "#minecraft:is_forest",
+    "#minecraft:is_taiga",
+    {
+      "id": "sakura:bamboo_forest",
+      "required": false
+    },
+    {
+      "id": "sakura:maple_forest",
+      "required": false
+    }
+  ]
+}

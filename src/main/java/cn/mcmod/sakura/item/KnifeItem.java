@@ -16,7 +16,7 @@ public class KnifeItem extends DiggerItem {
     public KnifeItem(Tier tier, float attackDamageIn, float attackSpeedIn, Properties properties) {
         super(attackDamageIn, attackSpeedIn, tier, SakuraBlockTags.MINEABLE_WITH_KNIFE, properties);
     }
-    
+
     @Override
     public boolean canAttackBlock(BlockState state, Level worldIn, BlockPos pos, Player player) {
         return !player.isCreative();
@@ -28,4 +28,17 @@ public class KnifeItem extends DiggerItem {
         return true;
     }
 
+    @Override
+    public boolean hasCraftingRemainingItem() {
+        return true;
+    }
+
+    @Override
+    public ItemStack getCraftingRemainingItem(ItemStack stack) {
+        ItemStack copy = stack.copy();
+        if (copy.hurt(1, net.minecraft.util.RandomSource.create(), null)) {
+            return ItemStack.EMPTY;
+        }
+        return copy;
+    }
 }

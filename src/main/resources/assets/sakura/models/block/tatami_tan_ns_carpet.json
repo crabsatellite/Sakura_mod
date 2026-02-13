@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/carpet",
+  "textures": {
+    "wool": "sakura:block/tatami_tan_ns"
+  }
+}

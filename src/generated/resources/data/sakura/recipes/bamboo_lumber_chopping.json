@@ -1,0 +1,16 @@
+{
+  "type": "sakura:chopping",
+  "byproducts": [],
+  "experience": 1.0,
+  "ingredient": {
+    "tag": "forge:bamboo"
+  },
+  "recipeTime": 1,
+  "result": {
+    "count": 8,
+    "item": "sakura:lumber_bamboo"
+  },
+  "tool": {
+    "tag": "forge:tools/axes"
+  }
+}

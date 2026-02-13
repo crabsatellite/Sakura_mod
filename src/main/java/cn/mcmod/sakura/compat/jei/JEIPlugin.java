@@ -11,7 +11,9 @@ import cn.mcmod.sakura.compat.jei.category.ChoppingCategory;
 import cn.mcmod.sakura.compat.jei.category.CookingPotCategory;
 import cn.mcmod.sakura.compat.jei.category.DistillerCategory;
 import cn.mcmod.sakura.compat.jei.category.FermenterCategory;
+import cn.mcmod.sakura.compat.jei.category.L2ISCategory;
 import cn.mcmod.sakura.compat.jei.category.StoneMortarCategory;
+import cn.mcmod.sakura.recipes.LiquidToItemRecipe;
 import cn.mcmod.sakura.container.CookingPotContainer;
 import cn.mcmod.sakura.container.DistillerContainer;
 import cn.mcmod.sakura.container.FermenterContainer;
@@ -20,6 +22,7 @@ import cn.mcmod.sakura.recipes.ChoppingRecipe;
 import cn.mcmod.sakura.recipes.CookingPotRecipe;
 import cn.mcmod.sakura.recipes.DistillerRecipe;
 import cn.mcmod.sakura.recipes.FermenterRecipe;
+import cn.mcmod.sakura.recipes.LiquidToItemRegistry;
 import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
 import cn.mcmod.sakura.recipes.StoneMortarRecipe;
 import mezz.jei.api.IModPlugin;
@@ -58,8 +61,11 @@ public class JEIPlugin implements IModPlugin {
     public static final mezz.jei.api.recipe.RecipeType<DistillerRecipe> DISTILLER_JEI_TYPE = 
             mezz.jei.api.recipe.RecipeType.create(SakuraMod.MODID, "distillation", DistillerRecipe.class);
     
-    public static final mezz.jei.api.recipe.RecipeType<ChoppingRecipe> CHOPPING_JEI_TYPE = 
+    public static final mezz.jei.api.recipe.RecipeType<ChoppingRecipe> CHOPPING_JEI_TYPE =
             mezz.jei.api.recipe.RecipeType.create(SakuraMod.MODID, "chopping", ChoppingRecipe.class);
+
+    public static final mezz.jei.api.recipe.RecipeType<LiquidToItemRecipe> L2IS_JEI_TYPE =
+            mezz.jei.api.recipe.RecipeType.create(SakuraMod.MODID, "liquid_to_item", LiquidToItemRecipe.class);
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
@@ -68,6 +74,7 @@ public class JEIPlugin implements IModPlugin {
         registry.addRecipeCategories(new FermenterCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new DistillerCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new ChoppingCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new L2ISCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -77,6 +84,7 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipes(FERMENTER_JEI_TYPE, findRecipesByType(RecipeTypeRegistry.FERMENTER_RECIPE_TYPE.get()));
         registration.addRecipes(DISTILLER_JEI_TYPE, findRecipesByType(RecipeTypeRegistry.DISTILLER_RECIPE_TYPE.get()));
         registration.addRecipes(CHOPPING_JEI_TYPE, findRecipesByType(RecipeTypeRegistry.CHOPPING_RECIPE_TYPE.get()));
+        registration.addRecipes(L2IS_JEI_TYPE, LiquidToItemRegistry.getRecipes());
     }
 
     @Override
@@ -86,6 +94,7 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.FERMENTER.get()), FERMENTER_JEI_TYPE);
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.DISTILLER.get()), DISTILLER_JEI_TYPE);
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CHOPPING_BOARD.get()), CHOPPING_JEI_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.BARREL_OUT.get()), L2IS_JEI_TYPE);
     }
 
     @Override

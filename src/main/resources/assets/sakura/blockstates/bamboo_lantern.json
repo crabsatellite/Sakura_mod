@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "hanging=false,waterlogged=false": { "model": "sakura:block/bamboo_lantern" },
+    "hanging=false,waterlogged=true":  { "model": "sakura:block/bamboo_lantern" },
+    "hanging=true,waterlogged=false":  { "model": "sakura:block/bamboo_lantern" },
+    "hanging=true,waterlogged=true":   { "model": "sakura:block/bamboo_lantern" }
+  }
+}

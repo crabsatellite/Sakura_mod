@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "sakura:block/tatami_tan",
+    "top": "sakura:block/tatami_tan",
+    "side": "sakura:block/tatami_tan"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "sakura:chopping",
+  "byproducts": [],
+  "experience": 1.0,
+  "ingredient": {
+    "item": "sakura:peppercorn_red"
+  },
+  "recipeTime": 1,
+  "result": {
+    "count": 2,
+    "item": "sakura:white_pepper"
+  },
+  "tool": {
+    "tag": "sakura:tools/knives/fish"
+  }
+}

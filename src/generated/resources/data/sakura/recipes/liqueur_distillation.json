@@ -1,0 +1,25 @@
+{
+  "type": "sakura:distillation",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 200,
+    "fluidTag": "sakura:brewers_alcohol"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "recipeTime": 400,
+  "result_fluid": {
+    "amount": 200,
+    "fluid": "sakura:liqueur"
+  },
+  "results": []
+}

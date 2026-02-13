@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "sakura:patch_wild_pepper",
+  "step": "vegetal_decoration"
+}

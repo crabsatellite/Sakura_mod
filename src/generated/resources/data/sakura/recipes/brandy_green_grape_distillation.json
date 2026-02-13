@@ -1,0 +1,25 @@
+{
+  "type": "sakura:distillation",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 200,
+    "fluidTag": "forge:water/water"
+  },
+  "ingredients": [
+    {
+      "item": "sakura:grape_green"
+    },
+    {
+      "item": "sakura:grape_green"
+    },
+    {
+      "tag": "forge:sugar"
+    }
+  ],
+  "recipeTime": 400,
+  "result_fluid": {
+    "amount": 100,
+    "fluid": "sakura:brandy"
+  },
+  "results": []
+}

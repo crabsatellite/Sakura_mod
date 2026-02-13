@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "item": "sakura:sakura_diamond"
+    },
+    "L": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "DD",
+    " L"
+  ],
+  "result": {
+    "item": "sakura:sakura_hammer"
+  },
+  "show_notification": true
+}

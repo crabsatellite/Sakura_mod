@@ -48,6 +48,8 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
     private LazyOptional<IItemHandler> inputHandler;
     private LazyOptional<IItemHandler> outputHandler;
 
+    private final FluidTank inputTank;
+    private final FluidTank outputTank;
     private LazyOptional<FluidTank> inputfluidTank;
     private LazyOptional<FluidTank> outputfluidTank;
     protected final ContainerData tileData;
@@ -66,8 +68,10 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
         this.inputHandler = LazyOptional.of(() -> new FermenterItemHandler(inventory, Direction.UP));
         this.outputHandler = LazyOptional.of(() -> new FermenterItemHandler(inventory, Direction.DOWN));
         this.tileData = createIntArray();
-        this.inputfluidTank = LazyOptional.of(this::createInputFluidHandler);
-        this.outputfluidTank = LazyOptional.of(this::createFluidHandler);
+        this.inputTank = createInputFluidHandler();
+        this.outputTank = createFluidHandler();
+        this.inputfluidTank = LazyOptional.of(() -> this.inputTank);
+        this.outputfluidTank = LazyOptional.of(() -> this.outputTank);
         this.experienceTracker = new Object2IntOpenHashMap<>();
         this.checkNewRecipe = true;
     }
@@ -91,10 +95,11 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
     }
 
     private boolean hasInput() {
-        if(this.inputfluidTank.isPresent()) {
-            return !this.inputfluidTank.orElse(new FluidTank(0)).isEmpty();
+        // Check fluid tank
+        if (!this.inputTank.isEmpty()) {
+            return true;
         }
-        
+        // Check item slots
         for (int i = 0; i < 3; ++i) {
             if (!inventory.getStackInSlot(i).isEmpty()) {
                 return true;
@@ -108,14 +113,19 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
         }
 
         if (lastRecipeID != null) {
-            Recipe<RecipeWrapper> recipe = level.getRecipeManager()
+            Optional<? extends Recipe<RecipeWrapper>> recipeOpt = level.getRecipeManager()
                     .getAllRecipesFor(RecipeTypeRegistry.FERMENTER_RECIPE_TYPE.get()).stream()
-                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst().get();
-            if (recipe instanceof FermenterRecipe cookingRecipe) {
-                if (cookingRecipe.matchesWithFluid(this.inputfluidTank.orElse(new FluidTank(0)).getFluid(),
-                        inventoryWrapper, level)) {
-                    return Optional.of(cookingRecipe);
+                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst();
+            if (recipeOpt.isPresent()) {
+                Recipe<RecipeWrapper> recipe = recipeOpt.get();
+                if (recipe instanceof FermenterRecipe cookingRecipe) {
+                    if (cookingRecipe.matchesWithFluid(this.inputTank.getFluid(),
+                            inventoryWrapper, level)) {
+                        return Optional.of(cookingRecipe);
+                    }
                 }
+            } else {
+                lastRecipeID = null;
             }
         }
 
@@ -124,7 +134,7 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
                     .getRecipesFor(RecipeTypeRegistry.FERMENTER_RECIPE_TYPE.get(), inventoryWrapper, level);
             for(FermenterRecipe recipe : recipes) {
                 if (recipe.matchesWithFluid(
-                        this.inputfluidTank.orElse(new FluidTank(0)).getFluid(), inventoryWrapper, level)) {
+                        this.inputTank.getFluid(), inventoryWrapper, level)) {
                     lastRecipeID = recipe.getId();
                     return Optional.of(recipe);
                 }
@@ -138,14 +148,10 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
     protected boolean canWork(FermenterRecipe recipe) {
         if (hasInput()) {
             NonNullList<ItemStack> resultStacks = recipe.getResultItemList();
-            boolean fluid_flag = !(recipe.getResultFluid().isEmpty());
-            if (this.outputfluidTank.isPresent()) {
-                FluidTank outTank = this.outputfluidTank.orElse(null);
-                fluid_flag = (outTank.getFluid().isFluidEqual(recipe.getResultFluid())
-                        && outTank.getSpace() >= recipe.getResultFluid().getAmount())
-                        || outTank.isEmpty()
+            boolean fluid_flag = (this.outputTank.getFluid().isFluidEqual(recipe.getResultFluid())
+                        && this.outputTank.getSpace() >= recipe.getResultFluid().getAmount())
+                        || this.outputTank.isEmpty()
                         || recipe.getResultFluid().isEmpty();
-            }
             if (resultStacks.size() <= 0) {
                 return fluid_flag && recipe.getRequiredFluid() != FluidIngredient.EMPTY;
             } else {
@@ -196,10 +202,10 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
         }
 
         if (recipe.getRequiredFluid() != FluidIngredient.EMPTY)
-            this.inputfluidTank.orElse(new FluidTank(0)).drain(recipe.getRequiredFluid().getRequiredAmount(),
+            this.inputTank.drain(recipe.getRequiredFluid().getRequiredAmount(),
                     FluidAction.EXECUTE);
         if (!recipe.getResultFluid().isEmpty())
-            this.outputfluidTank.orElse(new FluidTank(0)).fill(recipe.getResultFluid(), FluidAction.EXECUTE);
+            this.outputTank.fill(recipe.getResultFluid(), FluidAction.EXECUTE);
 
         trackRecipeExperience(recipe);
 
@@ -285,8 +291,8 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
         inventory.deserializeNBT(compound.getCompound("Inventory"));
         recipeTime = compound.getInt("RecipeTime");
         recipeTimeTotal = compound.getInt("RecipeTimeTotal");
-        inputfluidTank.ifPresent(fluid -> fluid.readFromNBT(compound.getCompound("InputFluidTank")));
-        outputfluidTank.ifPresent(fluid -> fluid.readFromNBT(compound.getCompound("OutputFluidTank")));
+        inputTank.readFromNBT(compound.getCompound("InputFluidTank"));
+        outputTank.readFromNBT(compound.getCompound("OutputFluidTank"));
         CompoundTag compoundRecipes = compound.getCompound("RecipesUsed");
         for (String key : compoundRecipes.getAllKeys()) {
             experienceTracker.put(new ResourceLocation(key), compoundRecipes.getInt(key));
@@ -300,9 +306,9 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
         compound.putInt("RecipeTime", recipeTime);
         compound.putInt("RecipeTimeTotal", recipeTimeTotal);
         compound.put("Inventory", inventory.serializeNBT());
-        inputfluidTank.ifPresent(fluid -> compound.put("InputFluidTank", fluid.writeToNBT(nbt)));
+        compound.put("InputFluidTank", inputTank.writeToNBT(nbt));
         CompoundTag nbt2 = new CompoundTag();
-        outputfluidTank.ifPresent(fluid -> compound.put("OutputFluidTank", fluid.writeToNBT(nbt2)));
+        compound.put("OutputFluidTank", outputTank.writeToNBT(nbt2));
         CompoundTag compoundRecipes = new CompoundTag();
         experienceTracker
                 .forEach((recipeId, craftedAmount) -> compoundRecipes.putInt(recipeId.toString(), craftedAmount));
@@ -418,8 +424,8 @@ public class FermenterBlockEntity extends SyncedBlockEntity implements MenuProvi
         super.reviveCaps();
         inputHandler = LazyOptional.of(() -> new FermenterItemHandler(inventory, Direction.UP));
         outputHandler = LazyOptional.of(() -> new FermenterItemHandler(inventory, Direction.DOWN));
-        inputfluidTank = LazyOptional.of(this::createInputFluidHandler);
-        outputfluidTank = LazyOptional.of(this::createFluidHandler);
+        inputfluidTank = LazyOptional.of(() -> this.inputTank);
+        outputfluidTank = LazyOptional.of(() -> this.outputTank);
     }
 
 }

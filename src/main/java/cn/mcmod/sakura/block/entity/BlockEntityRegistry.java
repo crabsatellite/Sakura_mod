@@ -34,4 +34,30 @@ public class BlockEntityRegistry {
     public static final RegistryObject<BlockEntityType<ChoppingBoardBlockEntity>> CHOPPING_BOARD = BLOCK_ENTITIES.register(
             "chopping_board",
             () -> BlockEntityType.Builder.of(ChoppingBoardBlockEntity::new, BlockRegistry.CHOPPING_BOARD.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<CampfireBlockEntity>> CAMPFIRE = BLOCK_ENTITIES.register(
+            "campfire",
+            () -> BlockEntityType.Builder.of(CampfireBlockEntity::new,
+                    BlockRegistry.CAMPFIRE_IDLE.get(), BlockRegistry.CAMPFIRE_LIT.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<CampfirePotBlockEntity>> CAMPFIRE_POT = BLOCK_ENTITIES.register(
+            "campfire_pot",
+            () -> BlockEntityType.Builder.of(CampfirePotBlockEntity::new,
+                    BlockRegistry.CAMPFIRE_POT_IDLE.get(), BlockRegistry.CAMPFIRE_POT_LIT.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<MapleCauldronBlockEntity>> MAPLE_CAULDRON = BLOCK_ENTITIES.register(
+            "maple_cauldron",
+            () -> BlockEntityType.Builder.of(MapleCauldronBlockEntity::new, BlockRegistry.MAPLE_CAULDRON.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<ShojiBlockEntity>> SHOJI = BLOCK_ENTITIES.register(
+            "shoji",
+            () -> BlockEntityType.Builder.of(ShojiBlockEntity::new, BlockRegistry.SHOJI.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<BarrelOutputBlockEntity>> BARREL_OUTPUT = BLOCK_ENTITIES.register(
+            "barrel_output",
+            () -> BlockEntityType.Builder.of(BarrelOutputBlockEntity::new, BlockRegistry.BARREL_OUT.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<StrawWebBlockEntity>> STRAW_WEB = BLOCK_ENTITIES.register(
+            "straw_web",
+            () -> BlockEntityType.Builder.of(StrawWebBlockEntity::new, BlockRegistry.STRAW_WEB.get()).build(null));
 }

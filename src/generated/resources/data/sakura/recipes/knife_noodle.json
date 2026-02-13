@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "L": {
+      "tag": "forge:lumber"
+    }
+  },
+  "pattern": [
+    "II",
+    " L"
+  ],
+  "result": {
+    "item": "sakura:knife_noodle"
+  },
+  "show_notification": true
+}

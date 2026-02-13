@@ -1,0 +1,38 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 250,
+    "fluidTag": "forge:water/water"
+  },
+  "ingredients": [
+    {
+      "tag": "sakura:rice/rice"
+    },
+    [
+      {
+        "tag": "forge:raw_chicken"
+      },
+      {
+        "tag": "forge:raw_pork"
+      },
+      {
+        "tag": "forge:raw_beef"
+      },
+      {
+        "tag": "forge:raw_mutton"
+      },
+      {
+        "tag": "forge:fishes"
+      }
+    ],
+    {
+      "tag": "forge:soysauce"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "count": 2,
+    "item": "sakura:zosui"
+  }
+}

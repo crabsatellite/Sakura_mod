@@ -1,0 +1,20 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 125,
+    "fluidTag": "forge:water/water"
+  },
+  "ingredients": [
+    {
+      "item": "sakura:rice_tea_leaves"
+    },
+    {
+      "item": "sakura:cup"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "item": "sakura:brown_rice_tea"
+  }
+}

@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"0": "block/planks_oak",
+		"0": "minecraft:block/oak_planks",
 		"cross": "sakura:block/grape_vine_2",
 		"particle": "sakura:block/grape_vine_2"
 	},

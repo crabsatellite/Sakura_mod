@@ -29,15 +29,29 @@ public class SakuraFluidTagsProvider extends FluidTagsProvider {
         tag(FluidTags.WATER).add(FluidRegistry.WHISKEY.get(),FluidRegistry.WHISKEY_FLOWING.get());
         tag(FluidTags.WATER).add(FluidRegistry.BEER.get(),FluidRegistry.BEER_FLOWING.get());
         
-        tag(FluidTags.WATER).add(FluidRegistry.RUM.get(),FluidRegistry.RUM.get());
+        tag(FluidTags.WATER).add(FluidRegistry.RUM.get(),FluidRegistry.RUM_FLOWING.get());
         tag(FluidTags.WATER).add(FluidRegistry.CHAMPAGNE.get(),FluidRegistry.CHAMPAGNE_FLOWING.get());
-        tag(FluidTags.WATER).add(FluidRegistry.BRANDY.get(),FluidRegistry.BRANDY.get());
-        
+        tag(FluidTags.WATER).add(FluidRegistry.BRANDY.get(),FluidRegistry.BRANDY_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.VODKA.get(),FluidRegistry.VODKA_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.LIQUEUR.get(),FluidRegistry.LIQUEUR_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.COCOA_LIQUEUR.get(),FluidRegistry.COCOA_LIQUEUR_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.GIN.get(),FluidRegistry.GIN_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.TEQUILA.get(),FluidRegistry.TEQUILA_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.GRAPE_FLUID.get(),FluidRegistry.GRAPE_FLUID_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.GREEN_GRAPE_FLUID.get(),FluidRegistry.GREEN_GRAPE_FLUID_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.YEAST_LIQUID.get(),FluidRegistry.YEAST_LIQUID_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.MAPLE_SYRUP.get(),FluidRegistry.MAPLE_SYRUP_FLOWING.get());
+        tag(FluidTags.WATER).add(FluidRegistry.HOT_SPRING_WATER.get(),FluidRegistry.HOT_SPRING_WATER_FLOWING.get());
+
         tag(SakuraFluidTags.WATER_WATER).add(Fluids.WATER, Fluids.FLOWING_WATER).addOptional(new ResourceLocation("tfc:river_water"));
         tag(SakuraFluidTags.BREWERS_ALCOHOL)
             .add(FluidRegistry.RUM.get(),FluidRegistry.RUM_FLOWING.get())
             .add(FluidRegistry.WHISKEY.get(),FluidRegistry.WHISKEY_FLOWING.get())
-            .add(FluidRegistry.SHOUCHU.get(),FluidRegistry.SHOUCHU_FLOWING.get());
+            .add(FluidRegistry.SHOUCHU.get(),FluidRegistry.SHOUCHU_FLOWING.get())
+            .add(FluidRegistry.VODKA.get(),FluidRegistry.VODKA_FLOWING.get())
+            .add(FluidRegistry.BRANDY.get(),FluidRegistry.BRANDY_FLOWING.get())
+            .add(FluidRegistry.GIN.get(),FluidRegistry.GIN_FLOWING.get())
+            .add(FluidRegistry.TEQUILA.get(),FluidRegistry.TEQUILA_FLOWING.get());
         tag(SakuraFluidTags.FOOD_OIL).addTag(SakuraFluidTags.PLANTOIL);
         tag(SakuraFluidTags.PLANTOIL).add(FluidRegistry.FOOD_OIL.get(),FluidRegistry.FOOD_OIL_FLOWING.get()).addOptional(new ResourceLocation("tfc:flowing_olive_oil")).addOptional(new ResourceLocation("tfc:olive_oil"));
     }

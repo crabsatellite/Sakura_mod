@@ -1,0 +1,29 @@
+{
+  "type": "sakura:stone_mortar",
+  "experience": 0.0,
+  "ingredients": [
+    {
+      "item": "sakura:green_tea_leaves"
+    },
+    {
+      "item": "sakura:green_tea_leaves"
+    },
+    {
+      "item": "sakura:green_tea_leaves"
+    },
+    {
+      "item": "sakura:green_tea_leaves"
+    }
+  ],
+  "recipeTime": 200,
+  "results": [
+    {
+      "count": 3,
+      "item": "sakura:mocha"
+    },
+    {
+      "count": 3,
+      "item": "sakura:mocha"
+    }
+  ]
+}

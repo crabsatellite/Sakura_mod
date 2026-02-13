@@ -1,0 +1,27 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 125,
+    "fluidTag": "forge:water/water"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:stick"
+    },
+    {
+      "item": "sakura:surimi"
+    },
+    {
+      "tag": "forge:crops/radish"
+    },
+    {
+      "tag": "forge:eggs"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "count": 2,
+    "item": "sakura:oden"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "sakura:glass_hot_toddy"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_whiskey": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sakura:glass_whiskey"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_whiskey",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "sakura:glass_hot_toddy"
+    ]
+  },
+  "sends_telemetry_event": false
+}

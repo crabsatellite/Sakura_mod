@@ -10,6 +10,12 @@
     "#forge:crops/taro",
     "#forge:seeds/rapeseed",
     "#forge:crops/redbean",
-    "#forge:crops/pumpkin"
+    "#forge:crops/pumpkin",
+    "#forge:crops/soybean",
+    "#forge:crops/pepper",
+    "#forge:crops/vanilla",
+    "#forge:crops/grape",
+    "#forge:crops/hop",
+    "#forge:crops/seaweed"
   ]
 }

@@ -41,7 +41,7 @@ public class CookingPotRecipe extends AbstractRecipe {
     }
 
     public FluidIngredient getRequiredFluid() {
-        return fluidInput;
+        return fluidInput != null ? fluidInput : FluidIngredient.EMPTY;
     }
 
     public boolean matchesWithFluid(FluidStack fluid, RecipeWrapper inv, Level worldIn) {

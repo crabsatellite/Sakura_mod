@@ -79,15 +79,17 @@ public class DistillerContainer extends AbstractContainerMenu {
                 }
 
                 slot.onQuickCraft(itemStack1, itemStack);
-            } else if (index >= 7) {
-                if (index >= 7 && index < 34) {
-                    if (!this.moveItemStackTo(itemStack1, 33, 42, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (index >= 33 && index < 42 && !this.moveItemStackTo(itemStack1, 7, 33, false)) {
-                    return ItemStack.EMPTY;
+            } else if (index >= 6) {
+            	if (!this.moveItemStackTo(itemStack1, 0, 3, false)) {
+	                if (index >= 6 && index < 33) {
+	                    if (!this.moveItemStackTo(itemStack1, 33, 42, false)) {
+	                        return ItemStack.EMPTY;
+	                    }
+	                } else if (index >= 33 && index < 42 && !this.moveItemStackTo(itemStack1, 6, 33, false)) {
+	                    return ItemStack.EMPTY;
+	                }
                 }
-            } else if (!this.moveItemStackTo(itemStack1, 7, 42, false)) {
+            } else if (!this.moveItemStackTo(itemStack1, 6, 42, false)) {
                 return ItemStack.EMPTY;
             }
 

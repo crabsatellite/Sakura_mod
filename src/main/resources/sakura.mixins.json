@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "cn.mcmod.sakura.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "sakura.refmap.json",
+  "mixins": [
+    "MultiNoiseBiomeSourceMixin",
+    "BiomeSourceMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

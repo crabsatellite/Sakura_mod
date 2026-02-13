@@ -1,0 +1,29 @@
+{
+  "type": "sakura:stone_mortar",
+  "experience": 0.0,
+  "ingredients": [
+    {
+      "item": "sakura:dried_bonito"
+    },
+    {
+      "item": "sakura:dried_bonito"
+    },
+    {
+      "item": "sakura:dried_bonito"
+    },
+    {
+      "item": "sakura:dried_bonito"
+    }
+  ],
+  "recipeTime": 200,
+  "results": [
+    {
+      "count": 16,
+      "item": "sakura:bonito_shaving"
+    },
+    {
+      "count": 16,
+      "item": "sakura:bonito_shaving"
+    }
+  ]
+}

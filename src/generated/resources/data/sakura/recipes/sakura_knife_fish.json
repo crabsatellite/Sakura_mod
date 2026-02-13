@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "item": "sakura:sakura_diamond"
+    },
+    "L": {
+      "tag": "forge:lumber"
+    }
+  },
+  "pattern": [
+    "  D",
+    " D ",
+    "L  "
+  ],
+  "result": {
+    "item": "sakura:sakura_knife_fish"
+  },
+  "show_notification": true
+}
