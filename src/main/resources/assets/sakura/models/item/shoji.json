@@ -1,3 +1,6 @@
 {
-  "parent": "sakura:block/shoji"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "sakura:item/shoji"
+  }
 }

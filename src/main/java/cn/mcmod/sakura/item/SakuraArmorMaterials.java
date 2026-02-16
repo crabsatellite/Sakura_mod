@@ -12,17 +12,18 @@ import java.util.function.Supplier;
 
 public enum SakuraArmorMaterials implements ArmorMaterial {
     // Protection array order: [BOOTS, LEGS, CHEST, HEAD] (indexed by EquipmentSlot ordinal)
-    STRAW("straw", 6, new int[]{0, 0, 0, 1}, 30,
+    STRAW("straw", "strawhat", 6, new int[]{0, 0, 0, 1}, 30,
             SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    SAMURAI("samurai", 33, new int[]{5, 8, 9, 5}, 20,
+    SAMURAI("samurai", "samurai_armor", 33, new int[]{5, 8, 9, 5}, 20,
             SoundEvents.ARMOR_EQUIP_IRON, 3.5F, 0.0F, () -> Ingredient.EMPTY),
-    SOLDIER("soldier", 16, new int[]{2, 5, 6, 2}, 14,
+    SOLDIER("soldier", "soldier_armor", 16, new int[]{2, 5, 6, 2}, 14,
             SoundEvents.ARMOR_EQUIP_IRON, 0.5F, 0.0F, () -> Ingredient.of(Items.IRON_INGOT)),
-    KIMONO("kimono", 1, new int[]{0, 0, 0, 0}, 0,
+    KIMONO("kimono", "kimono_base", 1, new int[]{0, 0, 0, 0}, 0,
             SoundEvents.WOOL_PLACE, 0.0F, 0.0F, () -> Ingredient.EMPTY);
 
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
     private final String name;
+    private final String textureName;
     private final int durabilityMultiplier;
     private final int[] slotProtections;
     private final int enchantmentValue;
@@ -31,9 +32,10 @@ public enum SakuraArmorMaterials implements ArmorMaterial {
     private final float knockbackResistance;
     private final Supplier<Ingredient> repairIngredient;
 
-    SakuraArmorMaterials(String name, int durabilityMult, int[] protections, int enchant,
+    SakuraArmorMaterials(String name, String textureName, int durabilityMult, int[] protections, int enchant,
                          SoundEvent sound, float tough, float kb, Supplier<Ingredient> repair) {
         this.name = name;
+        this.textureName = textureName;
         this.durabilityMultiplier = durabilityMult;
         this.slotProtections = protections;
         this.enchantmentValue = enchant;
@@ -81,5 +83,13 @@ public enum SakuraArmorMaterials implements ArmorMaterial {
     @Override
     public float getKnockbackResistance() {
         return this.knockbackResistance;
+    }
+
+    /**
+     * Returns the plain texture name for this armor material (without namespace).
+     * Used for armor texture resolution (e.g., "samurai", "soldier", "straw", "kimono").
+     */
+    public String getTextureName() {
+        return this.textureName;
     }
 }

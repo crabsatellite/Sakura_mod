@@ -1,3 +1,7 @@
 {
-  "parent": "sakura:block/noodle_0"
+  "parent": "sakura:block/noodle_0",
+  "textures": {
+    "0": "sakura:block/soba",
+    "particle": "sakura:block/soba"
+  }
 }

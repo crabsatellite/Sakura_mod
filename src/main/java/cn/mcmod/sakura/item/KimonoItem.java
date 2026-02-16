@@ -1,12 +1,21 @@
 package cn.mcmod.sakura.item;
 
 import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.client.renderer.KimonoArmorRenderer;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 /**
  * Kimono armor item with support for pattern-specific armor textures.
@@ -16,7 +25,7 @@ import javax.annotation.Nullable;
  * texture is determined by the pattern name passed to the constructor.
  *
  * Armor texture files are located at:
- *   assets/sakura/textures/block/models/armor/{patternName}.png
+ *   assets/sakura/textures/models/armor/{patternName}.png
  *
  * The vanilla armor texture resolution path uses:
  *   assets/{namespace}/textures/models/armor/{material}_layer_{layer}.png
@@ -37,7 +46,7 @@ public class KimonoItem extends ArmorItem {
      * Creates a kimono/haori with a specific pattern texture.
      *
      * @param patternName the pattern texture name (e.g. "kimono_1", "haori_2", "yukata_0", "kimono_miko").
-     *                    Must correspond to a texture file at textures/block/models/armor/{patternName}.png
+     *                    Must correspond to a texture file at textures/models/armor/{patternName}.png
      */
     public KimonoItem(ArmorMaterial material, Type type, Properties properties, @Nullable String patternName) {
         super(material, type, properties);
@@ -47,12 +56,43 @@ public class KimonoItem extends ArmorItem {
     @Override
     public @Nullable String getArmorTexture(ItemStack stack, Entity entity, net.minecraft.world.entity.EquipmentSlot slot, String type) {
         if (this.patternName != null) {
-            // Pattern-specific armor texture
-            return new ResourceLocation(SakuraMod.MODID,
-                    "textures/block/models/armor/" + this.patternName + ".png").toString();
+            // Pattern-specific armor texture (correct path matching 1.12.2)
+            // ResourceLocation path is relative to assets/{namespace}/, so include "textures/models/armor/"
+            return SakuraMod.MODID + ":textures/models/armor/" + this.patternName + ".png";
         }
         // Default: use the base kimono armor material texture path
         // This falls through to vanilla resolution: sakura:textures/models/armor/kimono_layer_1.png / _layer_2.png
         return null;
+    }
+
+    /**
+     * Gets the texture name for this kimono pattern.
+     * Used by the custom renderer to select the appropriate texture.
+     */
+    public String getTextureName() {
+        return patternName != null ? patternName : "kimono_base";
+    }
+
+    /**
+     * Initialize client-side extensions for custom armor rendering.
+     * This enables the custom kimono model instead of the default armor model.
+     */
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack,
+                    EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
+                HumanoidModel<?> model = KimonoArmorRenderer.getModel(getTextureName());
+
+                // Copy pose from the original model for correct animations
+                KimonoArmorRenderer.copyModelPose(original, model);
+
+                // Update visibility based on the equipment slot
+                KimonoArmorRenderer.updateModelForSlot(model, equipmentSlot);
+
+                return model;
+            }
+        });
     }
 }

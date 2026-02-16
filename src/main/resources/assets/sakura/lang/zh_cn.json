@@ -723,8 +723,14 @@
 	"container.sakura.cooking_pot": "烹饪锅",
 	"container.sakura.distiller": "蒸馏桶",
 	"container.sakura.fermenter": "酿造桶",
+	"container.sakura.barrel_output": "储藏桶",
+	"container.sakura.campfire_pot": "篝火锅",
+	"container.sakura.maple_cauldron": "枫糖大锅",
 
 	"sakura.block.nabe.not_cooked": "还没煮熟。",
+	"sakura.block.chopping_board.has_chopped": "物品已经切好了。",
+	"sakura.block.chopping_board.invalid_item": "此物品无法在砧板上切割。",
+	"sakura.block.chopping_board.invalid_tool": "此工具无法用于切割。",
 
 	"barrel.contains.fluid": "这个桶含有%1$s液体",
 	"barrel.contains.nonfluid": "这个桶是空的",
@@ -735,6 +741,7 @@
 	"sakura.jei.distillation": "蒸馏桶",
 	"sakura.jei.chopping": "砧板",
 	"sakura.jei.liquid_item": "液体装桶",
+	"sakura.jei.liquid_to_item": "液体转物品",
 	"sakura.jei.straw_web": "风干",
 
 	"sakura.jei.chopping.count": "需要切%s刀",

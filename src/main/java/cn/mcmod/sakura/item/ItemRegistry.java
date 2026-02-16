@@ -135,20 +135,20 @@ public class ItemRegistry {
     public static final RegistryObject<Item> KATANA_SHEATH = register("katana_sheath", () -> new SheathKatanaItem(SakuraMod.defaultItemProperties().stacksTo(1).durability(250), () -> KATANA.get(), () -> SHEATH.get()));
     public static final RegistryObject<Item> SAKURA_KATANA_SHEATH = register("sakura_katana_sheath", () -> new SheathKatanaItem(SakuraMod.defaultItemProperties().stacksTo(1).durability(1561), () -> SAKURA_KATANA.get(), () -> SHEATH.get()));
 
-    // Armor - Straw Hat
-    public static final RegistryObject<Item> STRAW_HAT = register("strawhat", () -> new SamuraiArmorItem(SakuraArmorMaterials.STRAW, ArmorItem.Type.HELMET, SakuraMod.defaultItemProperties()));
+    // Armor - Straw Hat (uses soldier model variant, no custom armor model needed for just a hat)
+    public static final RegistryObject<Item> STRAW_HAT = register("strawhat", () -> new SamuraiArmorItem(SakuraArmorMaterials.STRAW, ArmorItem.Type.HELMET, SakuraMod.defaultItemProperties(), true));
 
-    // Armor - Samurai set
-    public static final RegistryObject<Item> SAMURAI_HELMET = register("samurai_helmet", () -> new SamuraiArmorItem(SakuraArmorMaterials.SAMURAI, ArmorItem.Type.HELMET, SakuraMod.defaultItemProperties()));
-    public static final RegistryObject<Item> SAMURAI_CHEST = register("samurai_chest", () -> new SamuraiArmorItem(SakuraArmorMaterials.SAMURAI, ArmorItem.Type.CHESTPLATE, SakuraMod.defaultItemProperties()));
-    public static final RegistryObject<Item> SAMURAI_PANTS = register("samurai_pants", () -> new SamuraiArmorItem(SakuraArmorMaterials.SAMURAI, ArmorItem.Type.LEGGINGS, SakuraMod.defaultItemProperties()));
-    public static final RegistryObject<Item> SAMURAI_SHOES = register("samurai_shoes", () -> new SamuraiArmorItem(SakuraArmorMaterials.SAMURAI, ArmorItem.Type.BOOTS, SakuraMod.defaultItemProperties()));
+    // Armor - Samurai set (isSoldier=false → full samurai model with ornaments)
+    public static final RegistryObject<Item> SAMURAI_HELMET = register("samurai_helmet", () -> new SamuraiArmorItem(SakuraArmorMaterials.SAMURAI, ArmorItem.Type.HELMET, SakuraMod.defaultItemProperties(), false));
+    public static final RegistryObject<Item> SAMURAI_CHEST = register("samurai_chest", () -> new SamuraiArmorItem(SakuraArmorMaterials.SAMURAI, ArmorItem.Type.CHESTPLATE, SakuraMod.defaultItemProperties(), false));
+    public static final RegistryObject<Item> SAMURAI_PANTS = register("samurai_pants", () -> new SamuraiArmorItem(SakuraArmorMaterials.SAMURAI, ArmorItem.Type.LEGGINGS, SakuraMod.defaultItemProperties(), false));
+    public static final RegistryObject<Item> SAMURAI_SHOES = register("samurai_shoes", () -> new SamuraiArmorItem(SakuraArmorMaterials.SAMURAI, ArmorItem.Type.BOOTS, SakuraMod.defaultItemProperties(), false));
 
-    // Armor - Soldier set
-    public static final RegistryObject<Item> SOLDIER_HELMET = register("soldier_helmet", () -> new SamuraiArmorItem(SakuraArmorMaterials.SOLDIER, ArmorItem.Type.HELMET, SakuraMod.defaultItemProperties()));
-    public static final RegistryObject<Item> SOLDIER_CHEST = register("soldier_chest", () -> new SamuraiArmorItem(SakuraArmorMaterials.SOLDIER, ArmorItem.Type.CHESTPLATE, SakuraMod.defaultItemProperties()));
-    public static final RegistryObject<Item> SOLDIER_PANTS = register("soldier_pants", () -> new SamuraiArmorItem(SakuraArmorMaterials.SOLDIER, ArmorItem.Type.LEGGINGS, SakuraMod.defaultItemProperties()));
-    public static final RegistryObject<Item> SOLDIER_SHOES = register("soldier_shoes", () -> new SamuraiArmorItem(SakuraArmorMaterials.SOLDIER, ArmorItem.Type.BOOTS, SakuraMod.defaultItemProperties()));
+    // Armor - Soldier set (isSoldier=true → simplified soldier model)
+    public static final RegistryObject<Item> SOLDIER_HELMET = register("soldier_helmet", () -> new SamuraiArmorItem(SakuraArmorMaterials.SOLDIER, ArmorItem.Type.HELMET, SakuraMod.defaultItemProperties(), true));
+    public static final RegistryObject<Item> SOLDIER_CHEST = register("soldier_chest", () -> new SamuraiArmorItem(SakuraArmorMaterials.SOLDIER, ArmorItem.Type.CHESTPLATE, SakuraMod.defaultItemProperties(), true));
+    public static final RegistryObject<Item> SOLDIER_PANTS = register("soldier_pants", () -> new SamuraiArmorItem(SakuraArmorMaterials.SOLDIER, ArmorItem.Type.LEGGINGS, SakuraMod.defaultItemProperties(), true));
+    public static final RegistryObject<Item> SOLDIER_SHOES = register("soldier_shoes", () -> new SamuraiArmorItem(SakuraArmorMaterials.SOLDIER, ArmorItem.Type.BOOTS, SakuraMod.defaultItemProperties(), true));
 
     // Armor - Cosmetic: plain kimono and haori (no pattern)
     public static final RegistryObject<Item> KIMONO = register("kimono", () -> new KimonoItem(SakuraArmorMaterials.KIMONO, ArmorItem.Type.LEGGINGS, SakuraMod.defaultItemProperties()));

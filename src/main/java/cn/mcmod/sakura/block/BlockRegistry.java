@@ -344,12 +344,12 @@ public class BlockRegistry {
             () -> new Block(Block.Properties.copy(Blocks.SAND).mapColor(MapColor.COLOR_GRAY)));
 
     public static final RegistryObject<Block> WILD_PEPPER = BLOCKS.register("wild_pepper",
-            () -> new net.minecraft.world.level.block.BushBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+            () -> new cn.mcmod.sakura.block.crops.WildCropBlock(BlockBehaviour.Properties.copy(Blocks.CARROTS)
+                    .strength(0.2F), ItemRegistry.PEPPER_SEEDS));
 
     public static final RegistryObject<Block> WILD_VANILLA = BLOCKS.register("wild_vanilla",
-            () -> new net.minecraft.world.level.block.BushBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+            () -> new cn.mcmod.sakura.block.crops.WildCropBlock(BlockBehaviour.Properties.copy(Blocks.CARROTS)
+                    .strength(0.2F), ItemRegistry.VANILLA_SEEDS));
 
     // ===== MISSING BLOCKS FROM 1.12.2 =====
 

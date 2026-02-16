@@ -724,11 +724,17 @@
     "container.sakura.cooking_pot": "料理鍋",
     "container.sakura.distiller": "木樽蒸留器",
     "container.sakura.fermenter": "発酵樽",
+    "container.sakura.barrel_output": "貯蔵樽",
+    "container.sakura.campfire_pot": "焚き火鍋",
+    "container.sakura.maple_cauldron": "カエデの大釜",
 
     "barrel.contains.fluid": "この樽には %1$s の液体が入っています。",
     "barrel.contains.nonfluid": "この樽は空です。",
 
     "sakura.block.nabe.not_cooked": "まだ調理されていません。",
+    "sakura.block.chopping_board.has_chopped": "すでに切り終わっています。",
+    "sakura.block.chopping_board.invalid_item": "このアイテムは切れません。",
+    "sakura.block.chopping_board.invalid_tool": "この道具では切れません。",
 
     "sakura.jei.cooking": "焚き火鍋",
     "sakura.jei.stone_mortar": "石臼",
@@ -736,6 +742,7 @@
     "sakura.jei.distillation": "木樽蒸留器",
     "sakura.jei.chopping": "まな板",
     "sakura.jei.liquid_item": "液体からバケツ",
+    "sakura.jei.liquid_to_item": "液体からアイテム",
     "sakura.jei.straw_web": "天日干し",
 
     "sakura.jei.chopping.count": "%s 回切る必要があります",

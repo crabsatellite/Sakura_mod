@@ -64,12 +64,12 @@ public class SakuraFeatureProvider extends DatapackBuiltinEntriesProvider {
                     bootstrap.register(WorldGenerationRegistry.FEATURE_PATCH_WILD_PEPPER_KEY,
                             new ConfiguredFeature<>(Feature.RANDOM_PATCH, new RandomPatchConfiguration(
                                     32, 6, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
-                                    new SimpleBlockConfiguration(BlockStateProvider.simple(BlockRegistry.WILD_PEPPER.get()))))));
+                                    new SimpleBlockConfiguration(BlockStateProvider.simple(BlockRegistry.WILD_PEPPER.get().defaultBlockState()))))));
 
                     bootstrap.register(WorldGenerationRegistry.FEATURE_PATCH_WILD_VANILLA_KEY,
                             new ConfiguredFeature<>(Feature.RANDOM_PATCH, new RandomPatchConfiguration(
                                     32, 6, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
-                                    new SimpleBlockConfiguration(BlockStateProvider.simple(BlockRegistry.WILD_VANILLA.get()))))));
+                                    new SimpleBlockConfiguration(BlockStateProvider.simple(BlockRegistry.WILD_VANILLA.get().defaultBlockState()))))));
 
                     bootstrap.register(WorldGenerationRegistry.FEATURE_ORE_IRON_SAND_KEY,
                             new ConfiguredFeature<>(Feature.ORE,

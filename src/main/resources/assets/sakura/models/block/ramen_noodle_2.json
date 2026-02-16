@@ -1,0 +1,7 @@
+{
+  "parent": "sakura:block/noodle_2",
+  "textures": {
+    "0": "sakura:block/ramen",
+    "particle": "sakura:block/ramen"
+  }
+}

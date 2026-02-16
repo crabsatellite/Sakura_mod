@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "sakura:block/udon",
-		"particle": "sakura:block/udon"
+		"0": "sakura:block/dough_buckwheat",
+		"particle": "sakura:block/dough_buckwheat"
 	},
 	"elements": [
 		{
