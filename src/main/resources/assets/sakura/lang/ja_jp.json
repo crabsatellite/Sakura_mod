@@ -739,6 +739,7 @@
     "sakura.block.chopping_board.has_chopped": "すでに切り終わっています。",
     "sakura.block.chopping_board.invalid_item": "このアイテムは切れません。",
     "sakura.block.chopping_board.invalid_tool": "この道具では切れません。",
+    "sakura.block.rice.invalid_placement": "稲は水の近くの耕地にしか植えられません。",
 
     "sakura.jei.cooking": "焚き火鍋",
     "sakura.jei.stone_mortar": "石臼",
