@@ -739,6 +739,7 @@
     "sakura.block.chopping_board.has_chopped": "The item has already been chopped.",
     "sakura.block.chopping_board.invalid_item": "This item cannot be chopped.",
     "sakura.block.chopping_board.invalid_tool": "This tool cannot be used for chopping.",
+    "sakura.block.rice.invalid_placement": "Rice can only be planted on farmland with water nearby.",
 
     "sakura.jei.cooking": "Cooking Pot",
     "sakura.jei.stone_mortar": "Stone Mortar",

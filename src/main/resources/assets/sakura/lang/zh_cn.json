@@ -735,6 +735,7 @@
 	"sakura.block.chopping_board.has_chopped": "物品已经切好了。",
 	"sakura.block.chopping_board.invalid_item": "此物品无法在砧板上切割。",
 	"sakura.block.chopping_board.invalid_tool": "此工具无法用于切割。",
+	"sakura.block.rice.invalid_placement": "水稻只能种植在临近水源的耕地上。",
 
 	"barrel.contains.fluid": "这个桶含有%1$s液体",
 	"barrel.contains.nonfluid": "这个桶是空的",
