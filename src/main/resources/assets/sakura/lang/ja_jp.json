@@ -48,6 +48,9 @@
     "block.sakura.umeleaves": "梅の葉",
     "block.sakura.ume_sapling": "梅の苗木",
     "block.sakura.ume_log": "梅の原木",
+    "block.sakura.stripped_ume_log": "樹皮を剥いだ梅の原木",
+    "block.sakura.ume_wood": "梅の木",
+    "block.sakura.stripped_ume_wood": "樹皮を剥いだ梅の木",
     "block.sakura.cooking_pot": "料理鍋",
     "block.sakura.chopping_board": "まな板",
     "block.sakura.campfire_idle": "焚き火",
@@ -724,11 +727,17 @@
     "container.sakura.cooking_pot": "料理鍋",
     "container.sakura.distiller": "木樽蒸留器",
     "container.sakura.fermenter": "発酵樽",
+    "container.sakura.barrel_output": "貯蔵樽",
+    "container.sakura.campfire_pot": "焚き火鍋",
+    "container.sakura.maple_cauldron": "カエデの大釜",
 
     "barrel.contains.fluid": "この樽には %1$s の液体が入っています。",
     "barrel.contains.nonfluid": "この樽は空です。",
 
     "sakura.block.nabe.not_cooked": "まだ調理されていません。",
+    "sakura.block.chopping_board.has_chopped": "すでに切り終わっています。",
+    "sakura.block.chopping_board.invalid_item": "このアイテムは切れません。",
+    "sakura.block.chopping_board.invalid_tool": "この道具では切れません。",
 
     "sakura.jei.cooking": "焚き火鍋",
     "sakura.jei.stone_mortar": "石臼",
@@ -736,6 +745,7 @@
     "sakura.jei.distillation": "木樽蒸留器",
     "sakura.jei.chopping": "まな板",
     "sakura.jei.liquid_item": "液体からバケツ",
+    "sakura.jei.liquid_to_item": "液体からアイテム",
     "sakura.jei.straw_web": "天日干し",
 
     "sakura.jei.chopping.count": "%s 回切る必要があります",
@@ -744,6 +754,9 @@
     "entity.sakura.samurai_illager": "邪悪な侍",
     "entity.sakura.Deer": "シカ",
     "entity.sakura.SamuraiIllager": "邪悪な侍",
+
+    "item.sakura.deer_spawn_egg": "シカのスポーンエッグ",
+    "item.sakura.samurai_illager_spawn_egg": "邪悪な侍のスポーンエッグ",
 
     "entity.minecraft.villager.sakura.wa_farmer": "農家",
     "entity.minecraft.villager.sakura.wa_silk": "絹商人",

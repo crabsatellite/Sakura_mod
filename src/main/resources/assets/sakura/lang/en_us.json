@@ -48,6 +48,9 @@
     "block.sakura.umeleaves": "Plum Leaves",
     "block.sakura.ume_sapling": "Plum Sapling",
     "block.sakura.ume_log": "Plum Log",
+    "block.sakura.stripped_ume_log": "Stripped Plum Log",
+    "block.sakura.ume_wood": "Plum Wood",
+    "block.sakura.stripped_ume_wood": "Stripped Plum Wood",
     "block.sakura.cooking_pot": "Cooking Pot",
     "block.sakura.chopping_board": "Chopping Board",
     "block.sakura.campfire_idle": "Campfire",
@@ -724,11 +727,17 @@
     "container.sakura.cooking_pot": "Cooking Pot",
     "container.sakura.distiller": "Distillation Barrel",
     "container.sakura.fermenter": "Fermenting Barrel",
+    "container.sakura.barrel_output": "Storage Barrel",
+    "container.sakura.campfire_pot": "Campfire Pot",
+    "container.sakura.maple_cauldron": "Maple Cauldron",
 
     "barrel.contains.fluid": "This barrel contains %1$s liquid",
     "barrel.contains.nonfluid": "This barrel is empty",
 
     "sakura.block.nabe.not_cooked": "Not cooked yet.",
+    "sakura.block.chopping_board.has_chopped": "The item has already been chopped.",
+    "sakura.block.chopping_board.invalid_item": "This item cannot be chopped.",
+    "sakura.block.chopping_board.invalid_tool": "This tool cannot be used for chopping.",
 
     "sakura.jei.cooking": "Cooking Pot",
     "sakura.jei.stone_mortar": "Stone Mortar",
@@ -736,6 +745,7 @@
     "sakura.jei.distillation": "Distillation Barrel",
     "sakura.jei.chopping": "Chopping",
     "sakura.jei.liquid_item": "Liquid to Bucket",
+    "sakura.jei.liquid_to_item": "Liquid to Item",
     "sakura.jei.straw_web": "Open-air Drying",
 
     "sakura.jei.chopping.count": "Need %s Cuts",
@@ -744,6 +754,9 @@
     "entity.sakura.samurai_illager": "Samurai Illager",
     "entity.sakura.Deer": "Deer",
     "entity.sakura.SamuraiIllager": "Samurai Illager",
+
+    "item.sakura.deer_spawn_egg": "Deer Spawn Egg",
+    "item.sakura.samurai_illager_spawn_egg": "Samurai Illager Spawn Egg",
 
     "entity.minecraft.villager.sakura.wa_farmer": "Japanese Farmer",
     "entity.minecraft.villager.sakura.wa_silk": "Silk Trader",

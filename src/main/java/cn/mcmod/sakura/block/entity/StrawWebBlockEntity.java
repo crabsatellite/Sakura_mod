@@ -140,7 +140,19 @@ public class StrawWebBlockEntity extends SyncedBlockEntity {
         }
 
         float rate = isDaytime ? 2.0F : 1.0F;
-        // Simplified rate without humidity factor
+
+        // Biome temperature factor (ported from 1.12.2)
+        float temperature = biome.getBaseTemperature();
+        if (temperature < 0.0F) {
+            rate *= 1.0F;
+        } else if (temperature < 0.6F) {
+            rate *= 1.5F;
+        } else if (temperature < 1.0F) {
+            rate *= 2.0F;
+        } else {
+            rate *= 4.0F;
+        }
+
         return rate;
     }
 

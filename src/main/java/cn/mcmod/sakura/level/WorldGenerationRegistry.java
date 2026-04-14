@@ -158,20 +158,20 @@ public class WorldGenerationRegistry {
                         PlacementUtils.HEIGHTMAP_OCEAN_FLOOR,
                         BiomeFilter.biome()));
 
-        // Wild Pepper Patch
+        // Wild Pepper Patch (placed at age=0, grows naturally like 1.12.2)
         FEATURE_PATCH_WILD_PEPPER = new ConfiguredFeature<>(Feature.RANDOM_PATCH, new RandomPatchConfiguration(
                 32, 6, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
-                BlockStateProvider.simple(BlockRegistry.WILD_PEPPER.get())))));
+                BlockStateProvider.simple(BlockRegistry.WILD_PEPPER.get().defaultBlockState())))));
         PATCH_WILD_PEPPER = new PlacedFeature(Holder.direct(FEATURE_PATCH_WILD_PEPPER),
                 List.of(PlacementUtils.HEIGHTMAP,
                         InSquarePlacement.spread(),
                         BiomeFilter.biome(),
                         RarityFilter.onAverageOnceEvery(64)));
 
-        // Wild Vanilla Patch
+        // Wild Vanilla Patch (placed at age=0, grows naturally like 1.12.2)
         FEATURE_PATCH_WILD_VANILLA = new ConfiguredFeature<>(Feature.RANDOM_PATCH, new RandomPatchConfiguration(
                 32, 6, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
-                BlockStateProvider.simple(BlockRegistry.WILD_VANILLA.get())))));
+                BlockStateProvider.simple(BlockRegistry.WILD_VANILLA.get().defaultBlockState())))));
         PATCH_WILD_VANILLA = new PlacedFeature(Holder.direct(FEATURE_PATCH_WILD_VANILLA),
                 List.of(PlacementUtils.HEIGHTMAP,
                         InSquarePlacement.spread(),

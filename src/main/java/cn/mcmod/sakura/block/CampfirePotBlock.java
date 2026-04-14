@@ -16,8 +16,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
@@ -106,6 +108,32 @@ public class CampfirePotBlock extends BaseEntityBlock {
         if (!(blockentity instanceof CampfirePotBlockEntity campfirePot)) {
             return InteractionResult.FAIL;
         }
+        // Add fuel
+        int burnValue = ForgeHooks.getBurnTime(stack, null);
+        if (burnValue > 0) {
+            campfirePot.setBurnTime(campfirePot.getBurnTime() + burnValue);
+            setLitState(true, level, pos, state);
+            if (stack.hasCraftingRemainingItem()) {
+                ItemStack container = stack.getCraftingRemainingItem();
+                stack.shrink(1);
+                if (!player.getInventory().add(container)) {
+                    player.drop(container, false);
+                }
+            } else {
+                stack.shrink(1);
+            }
+            return InteractionResult.CONSUME;
+        }
+
+        // Ignite with flint and steel
+        if (stack.is(Items.FLINT_AND_STEEL)) {
+            campfirePot.setBurnTime(campfirePot.getBurnTime() + 10000);
+            setLitState(true, level, pos, state);
+            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(handIn));
+            return InteractionResult.CONSUME;
+        }
+
+        // Handle fluid containers (buckets)
         IFluidHandlerItem handler = FluidUtil.getFluidHandler(ItemHandlerHelper.copyStackWithSize(stack, 1))
                 .orElse(null);
         if (handler != null && handler instanceof FluidBucketWrapper) {
@@ -129,6 +157,16 @@ public class CampfirePotBlock extends BaseEntityBlock {
                 level.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, level, pos, newState, isMoving);
+        }
+    }
+
+    /**
+     * Update the LIT blockstate property. Preserves the block entity.
+     */
+    public static void setLitState(boolean lit, Level level, BlockPos pos, BlockState currentState) {
+        BlockState newState = currentState.setValue(LIT, lit);
+        if (level.getBlockState(pos).getValue(LIT) != lit) {
+            level.setBlock(pos, newState, 3);
         }
     }
 

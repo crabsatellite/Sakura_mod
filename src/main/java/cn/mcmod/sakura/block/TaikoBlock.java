@@ -18,7 +18,7 @@ import net.minecraft.world.phys.BlockHitResult;
 public class TaikoBlock extends Block {
 
     public TaikoBlock() {
-        super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.0F).sound(SoundType.WOOD));
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(1.0F).sound(SoundType.WOOD).noOcclusion());
     }
 
     @Override

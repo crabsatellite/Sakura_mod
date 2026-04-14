@@ -22,6 +22,9 @@ public class TreeEvent {
 
             stripLog(event, BlockRegistry.SAKURA_WOOD.get(), BlockRegistry.STRIPPED_SAKURA_WOOD.get());
             stripLog(event, BlockRegistry.MAPLE_WOOD.get(), BlockRegistry.STRIPPED_MAPLE_WOOD.get());
+
+            stripLog(event, BlockRegistry.UME_LOG.get(), BlockRegistry.STRIPPED_UME_LOG.get());
+            stripLog(event, BlockRegistry.UME_WOOD.get(), BlockRegistry.STRIPPED_UME_WOOD.get());
         }
     }
 

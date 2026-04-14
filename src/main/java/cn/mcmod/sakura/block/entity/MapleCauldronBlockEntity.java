@@ -49,6 +49,7 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
 
     private int cookTime;
     private int mapleTime;
+    private int burningState;
 
     public MapleCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.MAPLE_CAULDRON.get(), pos, state);
@@ -71,6 +72,9 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
 
         // Cooking - when heated and has enough fluid, produces maple sugar items
         changed |= blockEntity.tickCooking(level);
+
+        // Update burning state for client sync
+        blockEntity.burningState = blockEntity.isBurning(level) ? 1 : 0;
 
         if (changed) {
             blockEntity.inventoryChanged();
@@ -261,6 +265,8 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
                     return MapleCauldronBlockEntity.this.mapleTime;
                 case 1:
                     return MapleCauldronBlockEntity.this.cookTime;
+                case 2:
+                    return MapleCauldronBlockEntity.this.burningState;
                 default:
                     return 0;
                 }
@@ -275,12 +281,13 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
                 case 1:
                     MapleCauldronBlockEntity.this.cookTime = value;
                     break;
+                // index 2 is computed server-side, client stores it in SimpleContainerData
                 }
             }
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
     }

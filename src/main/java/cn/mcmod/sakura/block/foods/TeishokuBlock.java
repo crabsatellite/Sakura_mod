@@ -30,7 +30,7 @@ public class TeishokuBlock extends Block {
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
     private final FoodInfo info;
     public TeishokuBlock(FoodInfo info) {
-        super(Properties.copy(Blocks.OAK_SLAB));
+        super(Properties.copy(Blocks.OAK_SLAB).noOcclusion());
         this.info = info;
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }

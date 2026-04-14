@@ -89,8 +89,9 @@ public class ChoppingBoardBlock extends BaseEntityBlock {
                 return InteractionResult.SUCCESS;
             } else if (handIn.equals(InteractionHand.MAIN_HAND)) {
                 if (!player.isCreative()) {
-                    if (!player.getInventory().add(board.removeItem())) {
-                        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), board.removeItem());
+                    ItemStack removed = board.removeItem();
+                    if (!player.getInventory().add(removed)) {
+                        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), removed);
                     }
                 } else {
                     board.removeItem();

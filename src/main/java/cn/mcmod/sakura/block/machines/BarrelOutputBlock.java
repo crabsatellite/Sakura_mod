@@ -39,7 +39,7 @@ public class BarrelOutputBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public BarrelOutputBlock() {
-        super(Properties.copy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F));
+        super(Properties.copy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

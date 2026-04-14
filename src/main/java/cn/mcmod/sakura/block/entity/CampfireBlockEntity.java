@@ -15,6 +15,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -113,6 +114,18 @@ public class CampfireBlockEntity extends SyncedBlockEntity {
         return this.inventory;
     }
 
+    /** Returns true if the item's smelting result is food (matches 1.12.2 behavior). */
+    public boolean isCookableFood(ItemStack stack) {
+        if (!this.hasLevel()) return false;
+        Level world = this.getLevel();
+        SimpleContainer container = new SimpleContainer(stack);
+        Optional<SmeltingRecipe> recipe = world.getRecipeManager()
+                .getRecipeFor(RecipeType.SMELTING, container, world);
+        if (recipe.isEmpty()) return false;
+        ItemStack result = recipe.get().getResultItem(world.registryAccess());
+        return result.getFoodProperties(null) != null;
+    }
+
     public NonNullList<ItemStack> getDroppableInventory() {
         NonNullList<ItemStack> drops = NonNullList.create();
         drops.add(inventory.getStackInSlot(0));
@@ -164,6 +177,11 @@ public class CampfireBlockEntity extends SyncedBlockEntity {
 
     private ItemStackHandler createHandler() {
         return new ItemStackHandler(1) {
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                return CampfireBlockEntity.this.isCookableFood(stack);
+            }
+
             @Override
             public int getSlotLimit(int slot) {
                 return 16;

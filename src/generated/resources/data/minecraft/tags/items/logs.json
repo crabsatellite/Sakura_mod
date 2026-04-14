@@ -9,6 +9,9 @@
     "sakura:sakura_log",
     "sakura:maple_log",
     "sakura:maple_sap_log",
-    "sakura:ume_log"
+    "sakura:ume_log",
+    "sakura:stripped_ume_log",
+    "sakura:ume_wood",
+    "sakura:stripped_ume_wood"
   ]
 }

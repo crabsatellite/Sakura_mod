@@ -74,6 +74,7 @@ public class ClientEvents {
             ItemBlockRenderTypes.setRenderLayer(BlockRegistry.CAMPFIRE_LIT.get(), RenderType.cutoutMipped());
             ItemBlockRenderTypes.setRenderLayer(BlockRegistry.CAMPFIRE_POT_IDLE.get(), RenderType.cutoutMipped());
             ItemBlockRenderTypes.setRenderLayer(BlockRegistry.CAMPFIRE_POT_LIT.get(), RenderType.cutoutMipped());
+            ItemBlockRenderTypes.setRenderLayer(BlockRegistry.KITUNEBI.get(), RenderType.cutoutMipped());
 
             BlockRegistry.BLOCKS.getEntries().forEach(block -> {
                 if (block.get() instanceof BushBlock) {
@@ -119,34 +120,17 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onRegisterItemColors(RegisterColorHandlersEvent.Item event) {
-        // Register bucket colors - apply fluid tint color to layer0 (fluid mask) only
+        // All sakura buckets share the bucket_fluid + bucket_cover model; tint layer 0 with the
+        // fluid's registered color so there is exactly one source of truth (FluidTypeRegistry).
         ItemColor bucketColor = (stack, tintIndex) -> {
-            if (tintIndex == 0) {
-                net.minecraft.world.item.BucketItem bucketItem = (net.minecraft.world.item.BucketItem) stack.getItem();
-                var fluid = bucketItem.getFluid();
-                if (fluid != null) {
-                    IClientFluidTypeExtensions fluidExtensions = IClientFluidTypeExtensions.of(fluid);
-                    FluidStack fluidStack = new FluidStack(fluid, 1000);
-                    return fluidExtensions.getTintColor(fluidStack);
-                }
+            if (tintIndex != 0 || !(stack.getItem() instanceof net.minecraft.world.item.BucketItem bucketItem)) {
+                return 0xFFFFFFFF;
             }
-            return 0xFFFFFFFF; // Default white (layer1 = bucket cover, no tint)
+            Fluid fluid = bucketItem.getFluid();
+            if (fluid == null) return 0xFFFFFFFF;
+            return IClientFluidTypeExtensions.of(fluid).getTintColor(new FluidStack(fluid, 1000));
         };
-
-        // Only register color handler for tint-dependent buckets (those using bucket_fluid + bucket_cover model)
-        // Pre-colored buckets (beer, brandy, etc.) already have correct colors baked into their textures
-        event.register(bucketColor,
-                BucketItemRegistry.HOT_SPRING_WATER_BUCKET.get(),
-                BucketItemRegistry.COCOA_LIQUEUR_BUCKET.get(),
-                BucketItemRegistry.GIN_BUCKET.get(),
-                BucketItemRegistry.GRAPE_FLUID_BUCKET.get(),
-                BucketItemRegistry.GREEN_GRAPE_FLUID_BUCKET.get(),
-                BucketItemRegistry.LIQUEUR_BUCKET.get(),
-                BucketItemRegistry.MAPLE_SYRUP_BUCKET.get(),
-                BucketItemRegistry.TEQUILA_BUCKET.get(),
-                BucketItemRegistry.VODKA_BUCKET.get(),
-                BucketItemRegistry.YEAST_LIQUID_BUCKET.get()
-        );
+        BucketItemRegistry.ITEMS.getEntries().forEach(entry -> event.register(bucketColor, entry.get()));
     }
 
 }

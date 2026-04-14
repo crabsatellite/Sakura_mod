@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cn.mcmod.sakura.block.CampfirePotBlock;
 import cn.mcmod.sakura.container.CampfirePotContainer;
 import cn.mcmod.sakura.recipes.CookingPotRecipe;
 import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
@@ -106,6 +107,7 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
 
         if (wasBurning != blockEntity.isBurning()) {
             changed = true;
+            CampfirePotBlock.setLitState(blockEntity.isBurning(), level, pos, state);
         }
 
         if (changed) {

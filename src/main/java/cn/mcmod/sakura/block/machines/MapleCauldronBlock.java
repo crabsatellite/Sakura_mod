@@ -47,7 +47,7 @@ public class MapleCauldronBlock extends BaseEntityBlock {
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 14.0D, 15.0D);
 
     public MapleCauldronBlock() {
-        super(Properties.copy(Blocks.CAULDRON));
+        super(Properties.copy(Blocks.CAULDRON).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(LEVEL, 0));

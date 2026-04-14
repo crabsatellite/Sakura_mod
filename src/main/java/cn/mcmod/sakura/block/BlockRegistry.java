@@ -344,12 +344,12 @@ public class BlockRegistry {
             () -> new Block(Block.Properties.copy(Blocks.SAND).mapColor(MapColor.COLOR_GRAY)));
 
     public static final RegistryObject<Block> WILD_PEPPER = BLOCKS.register("wild_pepper",
-            () -> new net.minecraft.world.level.block.BushBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+            () -> new cn.mcmod.sakura.block.crops.WildCropBlock(BlockBehaviour.Properties.copy(Blocks.CARROTS)
+                    .strength(0.2F), ItemRegistry.PEPPER_SEEDS));
 
     public static final RegistryObject<Block> WILD_VANILLA = BLOCKS.register("wild_vanilla",
-            () -> new net.minecraft.world.level.block.BushBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+            () -> new cn.mcmod.sakura.block.crops.WildCropBlock(BlockBehaviour.Properties.copy(Blocks.CARROTS)
+                    .strength(0.2F), ItemRegistry.VANILLA_SEEDS));
 
     // ===== MISSING BLOCKS FROM 1.12.2 =====
 
@@ -390,6 +390,12 @@ public class BlockRegistry {
     // Priority 4 - Wood Variants: Ume (Plum) tree
     public static final RegistryObject<RotatedPillarBlock> UME_LOG = BLOCKS.register("ume_log",
             () -> log(MapColor.WOOD, MapColor.PODZOL));
+    public static final RegistryObject<RotatedPillarBlock> STRIPPED_UME_LOG = BLOCKS.register("stripped_ume_log",
+            () -> log(MapColor.WOOD, MapColor.WOOD));
+    public static final RegistryObject<RotatedPillarBlock> UME_WOOD = BLOCKS.register("ume_wood",
+            () -> log(MapColor.PODZOL, MapColor.PODZOL));
+    public static final RegistryObject<RotatedPillarBlock> STRIPPED_UME_WOOD = BLOCKS.register("stripped_ume_wood",
+            () -> log(MapColor.WOOD, MapColor.WOOD));
     public static final RegistryObject<Block> UME_LEAVES = BLOCKS.register("umeleaves",
             () -> new SakuraLeavesBlock(Block.Properties.copy(Blocks.OAK_LEAVES).strength(0.2F).randomTicks()
                     .sound(SoundType.GRASS).noOcclusion(), ParticleRegistry.SAKURA_LEAF));
@@ -441,7 +447,7 @@ public class BlockRegistry {
 
     private static RotatedPillarBlock simplebambooBlock(MapColor top, MapColor bark) {
         return new RotatedPillarBlock(BlockBehaviour.Properties
-                .copy(Blocks.BAMBOO).mapColor(state -> (state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : bark))
+                .copy(Blocks.BAMBOO_BLOCK).mapColor(state -> (state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : bark))
 
                 .strength(2.0F).sound(SoundType.BAMBOO));
     }

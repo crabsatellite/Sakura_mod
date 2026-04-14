@@ -117,7 +117,7 @@ public class MapleCauldronContainer extends AbstractContainerMenu {
     }
 
     public MapleCauldronContainer(final int windowId, final Inventory playerInventory, final FriendlyByteBuf data) {
-        this(windowId, playerInventory, getTileEntity(playerInventory, data), new SimpleContainerData(2));
+        this(windowId, playerInventory, getTileEntity(playerInventory, data), new SimpleContainerData(3));
     }
 
     @Override
@@ -133,8 +133,6 @@ public class MapleCauldronContainer extends AbstractContainerMenu {
 
     @OnlyIn(Dist.CLIENT)
     public boolean isBurning() {
-        // In the 1.12.2 version, isBurning() checked if there was enough fluid (>=500)
-        // and a heat source. We expose mapleTime (field 0) as an indicator.
-        return this.containerData.get(0) > 0;
+        return this.containerData.get(2) > 0;
     }
 }

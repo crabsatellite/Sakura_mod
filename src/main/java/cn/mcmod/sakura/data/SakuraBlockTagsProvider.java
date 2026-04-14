@@ -24,13 +24,15 @@ public class SakuraBlockTagsProvider extends BlockTagsProvider {
                 BlockRegistry.SAKURA_WOOD.get(), BlockRegistry.MAPLE_WOOD.get(),
                 BlockRegistry.STRIPPED_SAKURA_LOG.get(), BlockRegistry.STRIPPED_MAPLE_LOG.get(),
                 BlockRegistry.SAKURA_LOG.get(), BlockRegistry.MAPLE_LOG.get(), BlockRegistry.MAPLE_SAP_LOG.get(),
-                BlockRegistry.UME_LOG.get());
+                BlockRegistry.UME_LOG.get(),
+                BlockRegistry.STRIPPED_UME_LOG.get(), BlockRegistry.UME_WOOD.get(), BlockRegistry.STRIPPED_UME_WOOD.get());
         this.tag(BlockTags.LOGS_THAT_BURN).add(BlockRegistry.STRIPPED_SAKURA_WOOD.get(),
                 BlockRegistry.STRIPPED_MAPLE_WOOD.get(), BlockRegistry.SAKURA_WOOD.get(),
                 BlockRegistry.MAPLE_WOOD.get(), BlockRegistry.STRIPPED_SAKURA_LOG.get(),
                 BlockRegistry.STRIPPED_MAPLE_LOG.get(), BlockRegistry.SAKURA_LOG.get(), BlockRegistry.MAPLE_LOG.get(),
                 BlockRegistry.MAPLE_SAP_LOG.get(),
-                BlockRegistry.UME_LOG.get());
+                BlockRegistry.UME_LOG.get(),
+                BlockRegistry.STRIPPED_UME_LOG.get(), BlockRegistry.UME_WOOD.get(), BlockRegistry.STRIPPED_UME_WOOD.get());
 
         // Leaves
         this.tag(BlockTags.LEAVES).add(BlockRegistry.SAKURA_LEAVES.get(), BlockRegistry.MAPLE_LEAVES_RED.get(),
@@ -116,6 +118,9 @@ public class SakuraBlockTagsProvider extends BlockTagsProvider {
                 BlockRegistry.MAPLE_WOOD.get(),
                 BlockRegistry.STRIPPED_MAPLE_WOOD.get(),
                 BlockRegistry.UME_LOG.get(),
+                BlockRegistry.STRIPPED_UME_LOG.get(),
+                BlockRegistry.UME_WOOD.get(),
+                BlockRegistry.STRIPPED_UME_WOOD.get(),
                 // Planks
                 BlockRegistry.SAKURA_PLANK.get(),
                 BlockRegistry.MAPLE_PLANK.get(),

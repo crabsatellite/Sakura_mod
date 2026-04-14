@@ -299,6 +299,12 @@ public class BlockItemRegistry {
     // Priority 4 - Wood Variants: Ume (Plum) tree
     public static final RegistryObject<Item> UME_LOG = ITEMS.register("ume_log",
             () -> new BlockItem(BlockRegistry.UME_LOG.get(), SakuraMod.defaultItemProperties()));
+    public static final RegistryObject<Item> STRIPPED_UME_LOG = ITEMS.register("stripped_ume_log",
+            () -> new BlockItem(BlockRegistry.STRIPPED_UME_LOG.get(), SakuraMod.defaultItemProperties()));
+    public static final RegistryObject<Item> UME_WOOD = ITEMS.register("ume_wood",
+            () -> new BlockItem(BlockRegistry.UME_WOOD.get(), SakuraMod.defaultItemProperties()));
+    public static final RegistryObject<Item> STRIPPED_UME_WOOD = ITEMS.register("stripped_ume_wood",
+            () -> new BlockItem(BlockRegistry.STRIPPED_UME_WOOD.get(), SakuraMod.defaultItemProperties()));
     public static final RegistryObject<Item> UME_LEAVES = ITEMS.register("umeleaves",
             () -> new BlockItem(BlockRegistry.UME_LEAVES.get(), SakuraMod.defaultItemProperties()));
     public static final RegistryObject<Item> UME_SAPLING = ITEMS.register("ume_sapling",

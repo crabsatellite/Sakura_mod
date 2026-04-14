@@ -1,0 +1,8 @@
+{
+  "required": [
+    "net.minecraft.gametest.framework.GameTest"
+  ],
+  "values": [
+    "sakura_mod_test"
+  ]
+}

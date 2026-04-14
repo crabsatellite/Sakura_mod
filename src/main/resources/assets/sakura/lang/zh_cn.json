@@ -49,6 +49,9 @@
 	"block.sakura.umeleaves": "梅树树叶",
 	"block.sakura.ume_sapling": "梅树树苗",
 	"block.sakura.ume_log": "梅树原木",
+	"block.sakura.stripped_ume_log": "去皮梅树原木",
+	"block.sakura.ume_wood": "梅树木头",
+	"block.sakura.stripped_ume_wood": "去皮梅树木头",
 	"block.sakura.cooking_pot": "烹饪锅",
 	"block.sakura.chopping_board": "砧板",
 	"block.sakura.campfire_idle": "篝火",
@@ -723,8 +726,14 @@
 	"container.sakura.cooking_pot": "烹饪锅",
 	"container.sakura.distiller": "蒸馏桶",
 	"container.sakura.fermenter": "酿造桶",
+	"container.sakura.barrel_output": "储藏桶",
+	"container.sakura.campfire_pot": "篝火锅",
+	"container.sakura.maple_cauldron": "枫糖大锅",
 
 	"sakura.block.nabe.not_cooked": "还没煮熟。",
+	"sakura.block.chopping_board.has_chopped": "物品已经切好了。",
+	"sakura.block.chopping_board.invalid_item": "此物品无法在砧板上切割。",
+	"sakura.block.chopping_board.invalid_tool": "此工具无法用于切割。",
 
 	"barrel.contains.fluid": "这个桶含有%1$s液体",
 	"barrel.contains.nonfluid": "这个桶是空的",
@@ -735,6 +744,7 @@
 	"sakura.jei.distillation": "蒸馏桶",
 	"sakura.jei.chopping": "砧板",
 	"sakura.jei.liquid_item": "液体装桶",
+	"sakura.jei.liquid_to_item": "液体转物品",
 	"sakura.jei.straw_web": "风干",
 
 	"sakura.jei.chopping.count": "需要切%s刀",
@@ -743,6 +753,9 @@
 	"entity.sakura.samurai_illager": "灾厄武士",
 	"entity.sakura.Deer": "鹿",
 	"entity.sakura.SamuraiIllager": "灾厄武士",
+
+	"item.sakura.deer_spawn_egg": "鹿刷怪蛋",
+	"item.sakura.samurai_illager_spawn_egg": "灾厄武士刷怪蛋",
 
 	"entity.minecraft.villager.sakura.wa_farmer": "日本农民",
 	"entity.minecraft.villager.sakura.wa_silk": "丝绸商人",

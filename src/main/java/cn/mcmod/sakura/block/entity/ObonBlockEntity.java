@@ -17,7 +17,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class ObonBlockEntity extends SyncedBlockEntity {
     private final ItemStackHandler inventory;
-    private final LazyOptional<IItemHandler> inputHandler;
+    private LazyOptional<IItemHandler> inputHandler;
 
     public ObonBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.OBON.get(), pos, state);
@@ -71,7 +71,7 @@ public class ObonBlockEntity extends SyncedBlockEntity {
     @Override
     @Nonnull
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
+        if (!this.isRemoved() && cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
             return inputHandler.cast();
         }
         return super.getCapability(cap, side);
@@ -81,6 +81,18 @@ public class ObonBlockEntity extends SyncedBlockEntity {
     public void setRemoved() {
         super.setRemoved();
         inputHandler.invalidate();
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        inputHandler.invalidate();
+    }
+
+    @Override
+    public void reviveCaps() {
+        super.reviveCaps();
+        inputHandler = LazyOptional.of(() -> inventory);
     }
 
     private ItemStackHandler createHandler() {
