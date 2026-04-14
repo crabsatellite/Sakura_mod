@@ -1,15 +1,12 @@
 package cn.mcmod.sakura.block;
 
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
-import cn.mcmod.sakura.block.entity.StrawWebBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -27,6 +24,11 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
+import cn.mcmod.sakura.block.entity.StrawWebBlockEntity;
+import com.mojang.serialization.MapCodec;
+
+import javax.annotation.Nullable;
 
 /**
  * Straw Web block (drying rack).
@@ -35,6 +37,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * Items dry over time based on biome/weather conditions.
  */
 public class StrawWebBlock extends BaseEntityBlock {
+    public static final MapCodec<StrawWebBlock> CODEC = simpleCodec(p -> new StrawWebBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
 
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
 
@@ -65,25 +75,27 @@ public class StrawWebBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-            InteractionHand hand, BlockHitResult hit) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof StrawWebBlockEntity web) {
-            ItemStack heldStack = player.getItemInHand(hand);
-
             if (web.isEmpty()) {
-                if (heldStack.isEmpty()) {
-                    return InteractionResult.PASS;
-                }
-                if (StrawWebBlockEntity.isValidRecipe(heldStack)) {
-                    if (web.addItem(player.getAbilities().instabuild ? heldStack.copy() : heldStack)) {
+                if (StrawWebBlockEntity.isValidRecipe(stack)) {
+                    if (web.addItem(player.getAbilities().instabuild ? stack.copy() : stack)) {
                         level.playSound(null, pos.getX(), pos.getY(), pos.getZ(),
                                 SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1.0F, 0.8F);
-                        return InteractionResult.SUCCESS;
+                        return ItemInteractionResult.SUCCESS;
                     }
                 }
-                return InteractionResult.PASS;
-            } else if (hand.equals(InteractionHand.MAIN_HAND)) {
+            }
+        }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof StrawWebBlockEntity web) {
+            if (!web.isEmpty()) {
                 ItemStack removed = web.removeItem();
                 if (!removed.isEmpty()) {
                     if (!player.isCreative()) {

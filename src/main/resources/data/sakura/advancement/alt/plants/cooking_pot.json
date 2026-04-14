@@ -1,0 +1,28 @@
+{
+  "parent": "sakura:alt/root",
+  "display": {
+    "icon": {
+      "id": "sakura:cooking_pot"
+    },
+    "title": {
+      "translate": "advancements.sakura.cooking_pot.title"
+    },
+    "description": {
+      "translate": "advancements.sakura.cooking_pot.description"
+    }
+  },
+  "criteria": {
+    "cooking_pot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sakura:cooking_pot"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

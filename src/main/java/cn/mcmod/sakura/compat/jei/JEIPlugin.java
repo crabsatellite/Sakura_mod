@@ -1,6 +1,11 @@
 package cn.mcmod.sakura.compat.jei;
 
-import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import cn.mcmod.sakura.SakuraMod;
 import cn.mcmod.sakura.block.BlockRegistry;
 import cn.mcmod.sakura.client.gui.CookingPotScreen;
@@ -13,7 +18,6 @@ import cn.mcmod.sakura.compat.jei.category.DistillerCategory;
 import cn.mcmod.sakura.compat.jei.category.FermenterCategory;
 import cn.mcmod.sakura.compat.jei.category.L2ISCategory;
 import cn.mcmod.sakura.compat.jei.category.StoneMortarCategory;
-import cn.mcmod.sakura.recipes.LiquidToItemRecipe;
 import cn.mcmod.sakura.container.CookingPotContainer;
 import cn.mcmod.sakura.container.DistillerContainer;
 import cn.mcmod.sakura.container.FermenterContainer;
@@ -22,6 +26,7 @@ import cn.mcmod.sakura.recipes.ChoppingRecipe;
 import cn.mcmod.sakura.recipes.CookingPotRecipe;
 import cn.mcmod.sakura.recipes.DistillerRecipe;
 import cn.mcmod.sakura.recipes.FermenterRecipe;
+import cn.mcmod.sakura.recipes.LiquidToItemRecipe;
 import cn.mcmod.sakura.recipes.LiquidToItemRegistry;
 import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
 import cn.mcmod.sakura.recipes.StoneMortarRecipe;
@@ -32,21 +37,19 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
-import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
+
+import java.util.List;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-    public static final ResourceLocation PLUGIN_ID = new ResourceLocation(SakuraMod.MODID, "jei_plugin");
+    public static final ResourceLocation PLUGIN_ID = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "jei_plugin");
 
     private static final Minecraft MC = Minecraft.getInstance();
 
-    private static <C extends Container, T extends Recipe<C>> List<T> findRecipesByType(RecipeType<T> type) {
-        return MC.level.getRecipeManager().getAllRecipesFor(type);
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static <T extends Recipe<?>> List<T> findRecipesByType(RecipeType<T> type) {
+        return (List<T>) MC.level.getRecipeManager().getAllRecipesFor((RecipeType) type).stream()
+                .map(holder -> ((RecipeHolder<?>) holder).value()).collect(java.util.stream.Collectors.toList());
     }
     
     public static final mezz.jei.api.recipe.RecipeType<CookingPotRecipe> COOKING_POT_JEI_TYPE = 

@@ -1,13 +1,10 @@
 package cn.mcmod.sakura.data;
 
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.level.WorldGenerationRegistry;
-import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
-import cn.mcmod.sakura.level.tree.SakuraTreeFeatures;
 import net.minecraft.core.*;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -21,11 +18,15 @@ import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseThresholdProvider;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.level.WorldGenerationRegistry;
+import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
+import cn.mcmod.sakura.level.tree.SakuraTreeFeatures;
 
 import java.util.List;
 import java.util.Set;

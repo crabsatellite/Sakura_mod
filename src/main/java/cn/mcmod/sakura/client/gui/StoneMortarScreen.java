@@ -1,17 +1,16 @@
 package cn.mcmod.sakura.client.gui;
 
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.container.StoneMortarContainer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.container.StoneMortarContainer;
 
 public class StoneMortarScreen extends AbstractContainerScreen<StoneMortarContainer> {
 
-    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(SakuraMod.MODID,
-            "textures/gui/stonemortar.png");
+    private static final ResourceLocation BACKGROUND_TEXTURE = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/gui/stonemortar.png");
 
     public StoneMortarScreen(StoneMortarContainer screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
@@ -23,7 +22,6 @@ public class StoneMortarScreen extends AbstractContainerScreen<StoneMortarContai
 
     @Override
     public void render(GuiGraphics ms, final int mouseX, final int mouseY, float partialTicks) {
-        this.renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         this.renderTooltip(ms, mouseX, mouseY);
     }

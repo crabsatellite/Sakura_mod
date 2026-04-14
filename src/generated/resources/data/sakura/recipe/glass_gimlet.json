@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:glass_gin"
+    },
+    {
+      "item": "sakura:lemon_juice"
+    }
+  ],
+  "result": {
+    "id": "sakura:glass_gimlet"
+  }
+}

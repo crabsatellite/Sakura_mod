@@ -1,0 +1,16 @@
+{
+  "type": "sakura:chopping",
+  "byproducts": [],
+  "experience": 1.0,
+  "ingredient": {
+    "item": "sakura:udon_unfinished_block"
+  },
+  "recipeTime": 1,
+  "result": {
+    "count": 4,
+    "id": "sakura:udon_raw"
+  },
+  "tool": {
+    "tag": "sakura:tools/knives/noodle"
+  }
+}

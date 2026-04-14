@@ -1,11 +1,11 @@
 package cn.mcmod.sakura.inventory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class StoneMortarItemHandler implements IItemHandler {
     private static final int SLOTS_INPUT = 4;

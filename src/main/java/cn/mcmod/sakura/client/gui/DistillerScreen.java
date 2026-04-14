@@ -1,18 +1,17 @@
 package cn.mcmod.sakura.client.gui;
 
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.container.DistillerContainer;
-import cn.mcmod_mmf.mmlib.client.RenderUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.container.DistillerContainer;
+import cn.mcmod.sakura.client.gui.FluidRenderHelper;
 
 public class DistillerScreen extends AbstractContainerScreen<DistillerContainer> {
 
-    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(SakuraMod.MODID,
-            "textures/gui/distiller.png");
+    private static final ResourceLocation BACKGROUND_TEXTURE = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/gui/distiller.png");
 
     public DistillerScreen(DistillerContainer screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
@@ -24,7 +23,6 @@ public class DistillerScreen extends AbstractContainerScreen<DistillerContainer>
 
     @Override
     public void render(GuiGraphics ms, final int mouseX, final int mouseY, float partialTicks) {
-        this.renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         this.renderTooltip(ms, mouseX, mouseY);
     }
@@ -55,19 +53,19 @@ public class DistillerScreen extends AbstractContainerScreen<DistillerContainer>
             ms.blit(BACKGROUND_TEXTURE, this.leftPos + 78, this.topPos + 52, 176, 17, 18, 18);
         }
         
-        this.menu.tileEntity.getInputFluidTank().ifPresent(fluidTank -> {
+        {
+            var fluidTank = this.menu.tileEntity.getInputFluidTank();
             int heightInd = (int) (52.0F * ((float)fluidTank.getFluidAmount() / (float)fluidTank.getCapacity()));
             if (heightInd > 0) {
-                RenderUtils.renderFluidStack(this.leftPos + 33, this.topPos + 69 - heightInd, 16, heightInd, 0.0F,
-                        fluidTank.getFluid());
+                FluidRenderHelper.renderFluidStack(ms, this.leftPos + 33, this.topPos + 69 - heightInd, 16, heightInd, fluidTank.getFluid());
             }
-        });
-        this.menu.tileEntity.getOutputFluidTank().ifPresent(fluidTank -> {
+        }
+        {
+            var fluidTank = this.menu.tileEntity.getOutputFluidTank();
             int heightInd = (int) (52.0F * ((float)fluidTank.getFluidAmount() / (float)fluidTank.getCapacity()));
             if (heightInd > 0) {
-                RenderUtils.renderFluidStack(this.leftPos + 125, this.topPos + 69 - heightInd, 16, heightInd, 0.0F,
-                        fluidTank.getFluid());
+                FluidRenderHelper.renderFluidStack(ms, this.leftPos + 125, this.topPos + 69 - heightInd, 16, heightInd, fluidTank.getFluid());
             }
-        });
+        }
     }
 }

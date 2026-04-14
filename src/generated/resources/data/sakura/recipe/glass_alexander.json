@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:glass_brandy"
+    },
+    {
+      "item": "sakura:glass_cocoa_liqueur"
+    },
+    {
+      "tag": "c:milk"
+    }
+  ],
+  "result": {
+    "id": "sakura:glass_alexander"
+  }
+}

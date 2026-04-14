@@ -1,7 +1,17 @@
 package cn.mcmod.sakura.data.loot;
 
-import java.util.Set;
-
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import cn.mcmod.sakura.block.BambooPlant;
 import cn.mcmod.sakura.block.BlockItemRegistry;
 import cn.mcmod.sakura.block.BlockRegistry;
@@ -15,28 +25,14 @@ import cn.mcmod.sakura.item.ItemRegistry;
 import cn.mcmod.sakura.item.enums.SakuraFoodSet;
 import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
 import cn.mcmod_mmf.mmlib.data.loot.AbstartctBlockLoot;
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+
+import java.util.Set;
 
 public class SakuraBlockLoot extends AbstartctBlockLoot {
 
-    public SakuraBlockLoot(Set<Item> pExplosionResistant) {
-		super(pExplosionResistant);
+    public SakuraBlockLoot(net.minecraft.core.HolderLookup.Provider provider) {
+		super(provider);
 	}
-
-    public SakuraBlockLoot() {
-        super(Set.of());
-    }
 
     @Override
     public void addTables() {

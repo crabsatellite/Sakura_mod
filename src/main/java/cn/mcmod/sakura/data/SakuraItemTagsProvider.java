@@ -1,10 +1,5 @@
 package cn.mcmod.sakura.data;
 
-import cn.mcmod.sakura.item.FoodRegistry;
-import cn.mcmod.sakura.item.ItemRegistry;
-import cn.mcmod.sakura.item.enums.SakuraFoodSet;
-import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
-import cn.mcmod.sakura.tags.SakuraItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -12,9 +7,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import cn.mcmod.sakura.item.FoodRegistry;
+import cn.mcmod.sakura.item.ItemRegistry;
+import cn.mcmod.sakura.item.enums.SakuraFoodSet;
+import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
+import cn.mcmod.sakura.tags.SakuraItemTags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -40,7 +40,7 @@ public class SakuraItemTagsProvider extends ItemTagsProvider {
         copy(BlockTags.LEAVES, ItemTags.LEAVES);
         copy(Tags.Blocks.ORES, Tags.Items.ORES);
         copy(Tags.Blocks.ORES_DIAMOND, Tags.Items.ORES_DIAMOND);
-        copy(Tags.Blocks.SAND, Tags.Items.SAND);
+        copy(Tags.Blocks.SANDS, Tags.Items.SANDS);
 
         tag(ItemTags.COALS).add(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.BAMBOO_CHARCOAL).get());
 
@@ -75,8 +75,8 @@ public class SakuraItemTagsProvider extends ItemTagsProvider {
 
         tag(SakuraItemTags.SLICES).addTag(SakuraItemTags.SLICES_CABBAGE).addTag(SakuraItemTags.SLICES_RAW_FISHES);
         tag(SakuraItemTags.SLICES_RAW_FISHES).add(FoodRegistry.FOODSET.get(SakuraFoodSet.MACHINED_FISH).get()).addTag(SakuraItemTags.SLICES_RAW_FISHES_COD).addTag(SakuraItemTags.SLICES_RAW_FISHES_SALMON);
-        tag(SakuraItemTags.SLICES_RAW_FISHES_COD).addOptional(new ResourceLocation("farmersdelight:cod_slice"));
-        tag(SakuraItemTags.SLICES_RAW_FISHES_SALMON).addOptional(new ResourceLocation("farmersdelight:salmon_slice"));
+        tag(SakuraItemTags.SLICES_RAW_FISHES_COD).addOptional(ResourceLocation.parse("farmersdelight:cod_slice"));
+        tag(SakuraItemTags.SLICES_RAW_FISHES_SALMON).addOptional(ResourceLocation.parse("farmersdelight:salmon_slice"));
         tag(SakuraItemTags.SLICES_CABBAGE).add(FoodRegistry.FOODSET.get(SakuraFoodSet.SLICED_CABBAGE).get());
 
         tag(SakuraItemTags.DUST_CHARCOAL).add(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.CHARCOAL_POWDER).get());
@@ -137,7 +137,7 @@ public class SakuraItemTagsProvider extends ItemTagsProvider {
 
         tag(SakuraItemTags.RICE_BROWN).addTag(SakuraItemTags.GRAIN_RICE);
         tag(SakuraItemTags.RICE_RICE).add(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RICE).get());
-        tag(SakuraItemTags.STRAW).add(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.STRAW).get()).addOptional(new ResourceLocation("farmersdelight:straw"));
+        tag(SakuraItemTags.STRAW).add(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.STRAW).get()).addOptional(ResourceLocation.parse("farmersdelight:straw"));
         tag(SakuraItemTags.RICE).addTag(SakuraItemTags.RICE_BROWN).addTag(SakuraItemTags.RICE_RICE);
 
         tag(SakuraItemTags.LUMBER).addTag(SakuraItemTags.LUMBER_BAMBOO).addTag(SakuraItemTags.LUMBER_MAPLE)

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "tag": "c:stone"
+    },
+    "T": {
+      "item": "minecraft:torch"
+    }
+  },
+  "pattern": [
+    " S ",
+    "STS",
+    " S "
+  ],
+  "result": {
+    "id": "sakura:stone_lantern"
+  },
+  "show_notification": true
+}

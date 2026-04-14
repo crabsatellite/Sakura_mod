@@ -16,8 +16,17 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import com.mojang.serialization.MapCodec;
 
 public class BlockNoren extends Block {
+    public static final MapCodec<BlockNoren> CODEC = simpleCodec(p -> new BlockNoren(null));
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     protected static final VoxelShape NORTH_SHAPE = Block.box(1.0D, 2.0D, 7.0D, 15.0D, 16.0D, 9.0D);

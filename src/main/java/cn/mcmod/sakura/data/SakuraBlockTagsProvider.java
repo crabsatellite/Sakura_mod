@@ -1,13 +1,13 @@
 package cn.mcmod.sakura.data;
 
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.tags.SakuraBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.tags.SakuraBlockTags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -24,13 +24,15 @@ public class SakuraBlockTagsProvider extends BlockTagsProvider {
                 BlockRegistry.SAKURA_WOOD.get(), BlockRegistry.MAPLE_WOOD.get(),
                 BlockRegistry.STRIPPED_SAKURA_LOG.get(), BlockRegistry.STRIPPED_MAPLE_LOG.get(),
                 BlockRegistry.SAKURA_LOG.get(), BlockRegistry.MAPLE_LOG.get(), BlockRegistry.MAPLE_SAP_LOG.get(),
-                BlockRegistry.UME_LOG.get());
+                BlockRegistry.UME_LOG.get(),
+                BlockRegistry.STRIPPED_UME_LOG.get(), BlockRegistry.UME_WOOD.get(), BlockRegistry.STRIPPED_UME_WOOD.get());
         this.tag(BlockTags.LOGS_THAT_BURN).add(BlockRegistry.STRIPPED_SAKURA_WOOD.get(),
                 BlockRegistry.STRIPPED_MAPLE_WOOD.get(), BlockRegistry.SAKURA_WOOD.get(),
                 BlockRegistry.MAPLE_WOOD.get(), BlockRegistry.STRIPPED_SAKURA_LOG.get(),
                 BlockRegistry.STRIPPED_MAPLE_LOG.get(), BlockRegistry.SAKURA_LOG.get(), BlockRegistry.MAPLE_LOG.get(),
                 BlockRegistry.MAPLE_SAP_LOG.get(),
-                BlockRegistry.UME_LOG.get());
+                BlockRegistry.UME_LOG.get(),
+                BlockRegistry.STRIPPED_UME_LOG.get(), BlockRegistry.UME_WOOD.get(), BlockRegistry.STRIPPED_UME_WOOD.get());
 
         // Leaves
         this.tag(BlockTags.LEAVES).add(BlockRegistry.SAKURA_LEAVES.get(), BlockRegistry.MAPLE_LEAVES_RED.get(),
@@ -116,6 +118,9 @@ public class SakuraBlockTagsProvider extends BlockTagsProvider {
                 BlockRegistry.MAPLE_WOOD.get(),
                 BlockRegistry.STRIPPED_MAPLE_WOOD.get(),
                 BlockRegistry.UME_LOG.get(),
+                BlockRegistry.STRIPPED_UME_LOG.get(),
+                BlockRegistry.UME_WOOD.get(),
+                BlockRegistry.STRIPPED_UME_WOOD.get(),
                 // Planks
                 BlockRegistry.SAKURA_PLANK.get(),
                 BlockRegistry.MAPLE_PLANK.get(),
@@ -223,7 +228,7 @@ public class SakuraBlockTagsProvider extends BlockTagsProvider {
                 BlockRegistry.SAKURA_DIAMOND_ORE.get());
 
         // Forge sand tag
-        this.tag(Tags.Blocks.SAND).add(
+        this.tag(Tags.Blocks.SANDS).add(
                 BlockRegistry.IRON_SAND.get());
 
         // Mineable with custom tools

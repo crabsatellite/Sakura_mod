@@ -1,15 +1,12 @@
 package cn.mcmod.sakura.block.machines;
 
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
-import cn.mcmod.sakura.block.entity.BarrelOutputBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -26,9 +23,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import cn.mcmod.sakura.block.entity.BarrelOutputBlockEntity;
+import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
+import com.mojang.serialization.MapCodec;
+
+import javax.annotation.Nullable;
 
 /**
  * Barrel Output block from the Sakura mod.
@@ -36,10 +37,18 @@ import net.minecraftforge.network.NetworkHooks;
  * draining into container items (e.g. bottles, buckets).
  */
 public class BarrelOutputBlock extends BaseEntityBlock {
+    public static final MapCodec<BarrelOutputBlock> CODEC = simpleCodec(p -> new BarrelOutputBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public BarrelOutputBlock() {
-        super(Properties.copy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F));
+        super(Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
@@ -63,24 +72,27 @@ public class BarrelOutputBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn,
-            BlockHitResult result) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (!(blockEntity instanceof BarrelOutputBlockEntity barrelOut)) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        // Allow bucket/fluid container interaction
+        FluidTank tank = barrelOut.getFluidTank();
+        if (FluidUtil.interactWithFluidHandler(player, hand, tank)) {
+            return ItemInteractionResult.SUCCESS;
+        }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (!(be instanceof BarrelOutputBlockEntity menuProvider)) {
             return InteractionResult.FAIL;
         }
-
-        ItemStack stack = player.getItemInHand(handIn);
-        // Allow bucket/fluid container interaction
-        if (barrelOut.getFluidTank().isPresent()) {
-            FluidTank tank = barrelOut.getFluidTank().orElse(null);
-            if (tank != null && FluidUtil.interactWithFluidHandler(player, handIn, tank)) {
-                return InteractionResult.SUCCESS;
-            }
-        }
-
         if (!level.isClientSide()) {
-            NetworkHooks.openScreen((ServerPlayer) player, barrelOut, pos);
+            player.openMenu(menuProvider, pos);
         }
         return InteractionResult.SUCCESS;
     }

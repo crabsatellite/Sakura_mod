@@ -1,7 +1,5 @@
 package cn.mcmod.sakura.level.feature;
 
-import cn.mcmod.sakura.block.BlockRegistry;
-import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -9,6 +7,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import cn.mcmod.sakura.block.BlockRegistry;
+import com.mojang.serialization.Codec;
 
 
 /**

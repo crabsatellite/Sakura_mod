@@ -1,7 +1,6 @@
 package cn.mcmod.sakura.item;
 
-import java.util.List;
-
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,6 +15,8 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import java.util.List;
+
 /**
  * Shinai weapon item for Sakura mod.
  * <p>
@@ -27,7 +28,7 @@ import net.minecraft.world.phys.AABB;
 public class ShinaiItem extends SwordItem {
 
     public ShinaiItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
-        super(tier, attackDamageModifier, attackSpeedModifier, properties);
+        super(tier, properties.attributes(SwordItem.createAttributes(tier, attackDamageModifier, attackSpeedModifier)));
     }
 
     public ShinaiItem(Properties properties) {
@@ -49,7 +50,7 @@ public class ShinaiItem extends SwordItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 
@@ -60,7 +61,7 @@ public class ShinaiItem extends SwordItem {
         if (!(entityLiving instanceof Player player)) return;
         if (level.isClientSide()) return;
 
-        int ticksUsed = getUseDuration(stack) - timeLeft;
+        int ticksUsed = getUseDuration(stack, entityLiving) - timeLeft;
         if (ticksUsed < 3) return;
 
         // Calculate charge-based damage: (charge/15)^2 + (charge/15)*2, capped at 8.0
@@ -88,14 +89,14 @@ public class ShinaiItem extends SwordItem {
             player.sweepAttack();
         }
 
-        stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
     }
 
     // --- Enemy hurt: durability cost ---
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(1, attacker, (user) -> user.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
         return true;
     }
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "tag": "c:straw"
+    },
+    "S": {
+      "tag": "c:lumber"
+    }
+  },
+  "pattern": [
+    "HHH",
+    "S S"
+  ],
+  "result": {
+    "id": "sakura:straw_web"
+  },
+  "show_notification": true
+}

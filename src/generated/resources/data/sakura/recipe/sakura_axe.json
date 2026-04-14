@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "item": "sakura:sakura_diamond"
+    },
+    "L": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "DD",
+    "DL",
+    " L"
+  ],
+  "result": {
+    "id": "sakura:sakura_axe"
+  },
+  "show_notification": true
+}

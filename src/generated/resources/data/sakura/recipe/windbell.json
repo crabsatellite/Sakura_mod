@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "c:glass"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "S": {
+      "tag": "c:string"
+    }
+  },
+  "pattern": [
+    " I ",
+    "IGI",
+    " S "
+  ],
+  "result": {
+    "id": "sakura:windbell"
+  },
+  "show_notification": true
+}

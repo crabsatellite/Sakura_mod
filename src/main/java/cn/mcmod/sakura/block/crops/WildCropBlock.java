@@ -1,6 +1,5 @@
 package cn.mcmod.sakura.block.crops;
 
-import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
@@ -8,6 +7,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import com.mojang.serialization.MapCodec;
+
+import java.util.function.Supplier;
 
 /**
  * A crop block that can survive on natural ground (dirt, grass, etc.)
@@ -16,6 +18,14 @@ import net.minecraft.world.level.block.state.BlockState;
  * were placed directly on dirt by world generation.
  */
 public class WildCropBlock extends CropBlock {
+    public static final MapCodec<WildCropBlock> CODEC = simpleCodec(p -> new WildCropBlock(p, null));
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     private final Supplier<? extends ItemLike> seedItem;
 
     public WildCropBlock(Properties properties, Supplier<? extends ItemLike> seed) {

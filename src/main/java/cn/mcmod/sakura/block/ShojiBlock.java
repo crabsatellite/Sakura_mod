@@ -1,12 +1,7 @@
 package cn.mcmod.sakura.block;
 
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
-import cn.mcmod.sakura.block.entity.ShojiBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -30,6 +25,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
+import cn.mcmod.sakura.block.entity.ShojiBlockEntity;
+import com.mojang.serialization.MapCodec;
+
+import javax.annotation.Nullable;
 
 /**
  * Shoji (Japanese sliding door/screen) from the Sakura mod.
@@ -38,6 +38,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * texture type variant and animation state are in the BlockEntity.
  */
 public class ShojiBlock extends BaseEntityBlock {
+    public static final MapCodec<ShojiBlock> CODEC = simpleCodec(p -> new ShojiBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
@@ -92,8 +100,7 @@ public class ShojiBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
-            BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         state = state.cycle(OPEN);
         level.setBlock(pos, state, 3);
 
@@ -103,7 +110,7 @@ public class ShojiBlock extends BaseEntityBlock {
             shoji.setAnimation(10);
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

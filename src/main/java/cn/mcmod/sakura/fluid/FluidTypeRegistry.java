@@ -1,96 +1,73 @@
 package cn.mcmod.sakura.fluid;
 
-import cn.mcmod.sakura.SakuraMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.common.SoundActions;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import cn.mcmod.sakura.SakuraMod;
 
-import java.util.function.Consumer;
+import java.util.Map;
 
 public class FluidTypeRegistry {
-    public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, SakuraMod.MODID);
+    public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, SakuraMod.MODID);
 
-    // Cooking oils - dense, viscous
-    public static final RegistryObject<FluidType> FOOD_OIL = register("food_oil", 0xFFFFF050, 920, 1500, 300);
+    // Alcohol colors are web-authoritative references (Encycolorpedia / product photography) tuned
+    // for legibility at 16px: real-world hue but dominant enough that each drink reads distinct from
+    // its neighbors. The matching _still/_flow PNGs are painted with the same value, so buckets,
+    // in-world fluid blocks, and glass-drink items all render the same hue.
+    public static final DeferredHolder<FluidType, FluidType> FOOD_OIL = register("food_oil", 0xFFFFEF45, 920, 1500, 300);
+    public static final DeferredHolder<FluidType, FluidType> DOBUROKU = register("doburoku", 0xFFF0EDE0, 1020, 1200, 300);
+    public static final DeferredHolder<FluidType, FluidType> SAKE = register("sake", 0xFFF5F2D8, 990, 1100, 300);
+    public static final DeferredHolder<FluidType, FluidType> SHOUCHU = register("shouchu", 0xFFEAF4F5, 960, 900, 300);
+    public static final DeferredHolder<FluidType, FluidType> BEER = register("beer", 0xFFE89611, 1010, 1050, 280);
+    public static final DeferredHolder<FluidType, FluidType> WHISKEY = register("whiskey", 0xFFA04A0C, 940, 850, 300);
+    public static final DeferredHolder<FluidType, FluidType> RUM = register("rum", 0xFFB8661C, 940, 850, 300);
+    public static final DeferredHolder<FluidType, FluidType> RED_WINE = register("red_wine", 0xFF6B1A24, 990, 1100, 300);
+    public static final DeferredHolder<FluidType, FluidType> WHITE_WINE = register("white_wine", 0xFFE8D76A, 985, 1050, 300);
+    public static final DeferredHolder<FluidType, FluidType> CHAMPAGNE = register("champagne", 0xFFF8E79B, 985, 1000, 280);
+    public static final DeferredHolder<FluidType, FluidType> BRANDY = register("brandy", 0xFFC76A1E, 940, 850, 300);
+    public static final DeferredHolder<FluidType, FluidType> VODKA = register("vodka", 0xFFF2FBFF, 935, 800, 300);
+    public static final DeferredHolder<FluidType, FluidType> LIQUEUR = register("liqueur", 0xFFD4E020, 1050, 1400, 300);
+    public static final DeferredHolder<FluidType, FluidType> COCOA_LIQUEUR = register("cocoa_liqueur", 0xFF3A1E0F, 1080, 1600, 300);
+    public static final DeferredHolder<FluidType, FluidType> GIN = register("gin", 0xFFE4F6E8, 940, 850, 300);
+    public static final DeferredHolder<FluidType, FluidType> TEQUILA = register("tequila", 0xFFD4A34A, 940, 850, 300);
+    public static final DeferredHolder<FluidType, FluidType> GRAPE_FLUID = register("grape_fluid", 0xFF682961, 1050, 1300, 300);
+    public static final DeferredHolder<FluidType, FluidType> GREEN_GRAPE_FLUID = register("green_grape_fluid", 0xFFD4E09C, 1050, 1300, 300);
+    public static final DeferredHolder<FluidType, FluidType> YEAST_LIQUID = register("yeast_liquid", 0xFFE0C57F, 1030, 1200, 305);
+    public static final DeferredHolder<FluidType, FluidType> MAPLE_SYRUP = register("maple_syrup", 0xFFBB9351, 1370, 3000, 300);
+    public static final DeferredHolder<FluidType, FluidType> HOT_SPRING_WATER = register("hot_spring_water", 0xFFA7D0EA, 1000, 400, 340);
 
-    // Unfiltered rice wine - slightly viscous, cloudy
-    public static final RegistryObject<FluidType> DOBUROKU = register("doburoku", 0xFFCCC299, 1020, 1200, 300);
-
-    // Sake - light, clear rice wine (~15% ABV)
-    public static final RegistryObject<FluidType> SAKE = register("sake", 0xDDFFF8CC, 990, 1100, 300);
-
-    // Shouchu - distilled spirit (~25% ABV), lighter than water
-    public static final RegistryObject<FluidType> SHOUCHU = register("shouchu", 0xBBFFFCF2, 960, 900, 300);
-
-    // Beer - carbonated, near water density (~5% ABV)
-    public static final RegistryObject<FluidType> BEER = register("beer", 0xFFF2A918, 1010, 1050, 280);
-
-    // Whiskey - distilled spirit (~40% ABV)
-    public static final RegistryObject<FluidType> WHISKEY = register("whiskey", 0xFFA52121, 940, 850, 300);
-
-    // Rum - distilled spirit (~40% ABV)
-    public static final RegistryObject<FluidType> RUM = register("rum", 0xFFFFAA32, 940, 850, 300);
-
-    // Red wine (~14% ABV)
-    public static final RegistryObject<FluidType> RED_WINE = register("red_wine", 0xFFA71844, 990, 1100, 300);
-
-    // White wine (~12% ABV)
-    public static final RegistryObject<FluidType> WHITE_WINE = register("white_wine", 0xFFFFF8B2, 985, 1050, 300);
-
-    // Champagne - sparkling wine, carbonated
-    public static final RegistryObject<FluidType> CHAMPAGNE = register("champagne", 0xFFFFE772, 985, 1000, 280);
-
-    // Brandy - distilled wine (~40% ABV)
-    public static final RegistryObject<FluidType> BRANDY = register("brandy", 0xFFBF2F00, 940, 850, 300);
-
-    // Vodka - high-proof spirit (~40% ABV), very clean
-    public static final RegistryObject<FluidType> VODKA = register("vodka", 0xBBF0F0FF, 935, 800, 300);
-
-    // Liqueur - sweetened spirit, moderately viscous
-    public static final RegistryObject<FluidType> LIQUEUR = register("liqueur", 0xFFE8C040, 1050, 1400, 300);
-
-    // Cocoa liqueur - thick, sweet
-    public static final RegistryObject<FluidType> COCOA_LIQUEUR = register("cocoa_liqueur", 0xFF5A3520, 1080, 1600, 300);
-
-    // Gin - distilled spirit with botanicals (~40% ABV)
-    public static final RegistryObject<FluidType> GIN = register("gin", 0xBBE8F0E0, 940, 850, 300);
-
-    // Tequila - distilled agave spirit (~40% ABV)
-    public static final RegistryObject<FluidType> TEQUILA = register("tequila", 0xFFDDB840, 940, 850, 300);
-
-    // Grape juice - thick fruit juice
-    public static final RegistryObject<FluidType> GRAPE_FLUID = register("grape_fluid", 0xFF8B2252, 1050, 1300, 300);
-
-    // Green grape juice
-    public static final RegistryObject<FluidType> GREEN_GRAPE_FLUID = register("green_grape_fluid", 0xFFAACC55, 1050, 1300, 300);
-
-    // Yeast liquid - active culture, slightly thick
-    public static final RegistryObject<FluidType> YEAST_LIQUID = register("yeast_liquid", 0xFFEEDD99, 1030, 1200, 305);
-
-    // Maple syrup - very dense, very viscous
-    public static final RegistryObject<FluidType> MAPLE_SYRUP = register("maple_syrup", 0xFFCC8833, 1370, 3000, 300);
-
-    // Hot spring water - warm, near water density
-    public static final RegistryObject<FluidType> HOT_SPRING_WATER = register("hot_spring_water", 0xFF88CCEE, 1000, 400, 340);
-
-    private static RegistryObject<FluidType> register(String name, int color, int density, int viscosity, int temperature) {
+    private static DeferredHolder<FluidType, FluidType> register(String name, int color, int density, int viscosity, int temperature) {
         return FLUID_TYPES.register(name, () -> create(color, density, viscosity, temperature));
     }
 
+    private static final Map<FluidType, Integer> FLUID_COLORS = new java.util.HashMap<>();
+
     private static FluidType create(int color, int density, int viscosity, int temperature) {
-        return new FluidType(FluidType.Properties.create()
+        FluidType type = new FluidType(FluidType.Properties.create()
                 .temperature(temperature)
                 .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
                 .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
-                .density(density).viscosity(viscosity)) {
-            @Override
-            public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
-                consumer.accept(new IClientFluidTypeExtensions() {
+                .density(density).viscosity(viscosity));
+        FLUID_COLORS.put(type, color);
+        return type;
+    }
+
+    @EventBusSubscriber(modid = SakuraMod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientExtensions {
+        @SubscribeEvent
+        public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
+            for (var entry : FLUID_COLORS.entrySet()) {
+                final int color = entry.getValue();
+                event.registerFluidType(new IClientFluidTypeExtensions() {
                     @Override
                     public int getTintColor() {
                         return color;
@@ -98,15 +75,15 @@ public class FluidTypeRegistry {
 
                     @Override
                     public ResourceLocation getStillTexture() {
-                        return new ResourceLocation("block/water_still");
+                        return ResourceLocation.withDefaultNamespace("block/water_still");
                     }
 
                     @Override
                     public ResourceLocation getFlowingTexture() {
-                        return new ResourceLocation("block/water_flow");
+                        return ResourceLocation.withDefaultNamespace("block/water_flow");
                     }
-                });
+                }, entry.getKey());
             }
-        };
+        }
     }
 }

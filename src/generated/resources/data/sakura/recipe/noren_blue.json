@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "tag": "c:lumber"
+    },
+    "W": {
+      "item": "minecraft:blue_wool"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "W W",
+    "W W"
+  ],
+  "result": {
+    "id": "sakura:noren_blue"
+  },
+  "show_notification": true
+}

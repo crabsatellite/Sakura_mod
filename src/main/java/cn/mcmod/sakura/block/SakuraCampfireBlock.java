@@ -1,9 +1,5 @@
 package cn.mcmod.sakura.block;
 
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
-import cn.mcmod.sakura.block.entity.CampfireBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -36,7 +33,11 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeHooks;
+import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
+import cn.mcmod.sakura.block.entity.CampfireBlockEntity;
+import com.mojang.serialization.MapCodec;
+
+import javax.annotation.Nullable;
 
 /**
  * Campfire block from the Sakura mod.
@@ -51,6 +52,14 @@ import net.minecraftforge.common.ForgeHooks;
  * - Empty hand: remove item from campfire
  */
 public class SakuraCampfireBlock extends BaseEntityBlock {
+    public static final MapCodec<SakuraCampfireBlock> CODEC = simpleCodec(p -> new SakuraCampfireBlock(false));
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D);
@@ -101,42 +110,38 @@ public class SakuraCampfireBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-                                 InteractionHand hand, BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
 
-        ItemStack stack = player.getItemInHand(hand);
-        BlockEntity tile = level.getBlockEntity(pos);
-        if (hand == InteractionHand.MAIN_HAND && tile instanceof CampfireBlockEntity campfire) {
+        Object tile = level.getBlockEntity(pos);
+        if (tile instanceof CampfireBlockEntity campfire) {
 
             // 1. Place food on the campfire (if inventory accepts it and has room)
-            if (!stack.isEmpty() && campfire.getInventory().isItemValid(0, stack)
+            if (campfire.getInventory().isItemValid(0, stack)
                     && campfire.getInventory().getStackInSlot(0).getCount() < 16) {
                 ItemStack toInsert = stack.copyWithCount(1);
                 stack.shrink(1);
                 campfire.getInventory().insertItem(0, toInsert, false);
-                return InteractionResult.CONSUME;
+                return ItemInteractionResult.CONSUME;
             }
 
             // 2. Place cooking pot on the campfire -> convert to campfire_pot block
             if (stack.is(BlockRegistry.CAMPFIRE_POT_IDLE.get().asItem())) {
-                // Preserve LIT state
                 boolean wasLit = state.getValue(LIT);
                 Direction facing = state.getValue(FACING);
-                // Drop any items in the campfire first
                 Containers.dropContents(level, pos, campfire.getDroppableInventory());
                 level.removeBlockEntity(pos);
                 level.setBlock(pos, BlockRegistry.CAMPFIRE_POT_IDLE.get().defaultBlockState()
                         .setValue(CampfirePotBlock.FACING, facing)
                         .setValue(CampfirePotBlock.LIT, wasLit), 3);
                 stack.shrink(1);
-                return InteractionResult.CONSUME;
+                return ItemInteractionResult.CONSUME;
             }
 
             // 3. Add fuel
-            int burnValue = ForgeHooks.getBurnTime(stack, null);
+            int burnValue = stack.getBurnTime(null);
             if (burnValue > 0) {
                 campfire.setBurnTime(campfire.getBurnTime() + burnValue);
                 setLitState(true, level, pos, state);
@@ -149,29 +154,38 @@ public class SakuraCampfireBlock extends BaseEntityBlock {
                 } else {
                     stack.shrink(1);
                 }
-                return InteractionResult.CONSUME;
+                return ItemInteractionResult.CONSUME;
             }
 
             // 4. Ignite with flint and steel
             if (stack.is(Items.FLINT_AND_STEEL)) {
                 campfire.setBurnTime(campfire.getBurnTime() + 10000);
                 setLitState(true, level, pos, state);
-                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-                return InteractionResult.CONSUME;
-            }
-
-            // 5. Empty hand: remove item
-            if (stack.isEmpty()) {
-                ItemStack removed = campfire.getInventory().getStackInSlot(0);
-                if (!removed.isEmpty()) {
-                    Block.popResource(level, pos, removed);
-                    campfire.getInventory().setStackInSlot(0, ItemStack.EMPTY);
-                    return InteractionResult.CONSUME;
-                }
+                stack.hurtAndBreak(1, player, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+                return ItemInteractionResult.CONSUME;
             }
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        Object tile = level.getBlockEntity(pos);
+        if (tile instanceof CampfireBlockEntity campfire) {
+            ItemStack removed = campfire.getInventory().getStackInSlot(0);
+            if (!removed.isEmpty()) {
+                Block.popResource(level, pos, removed);
+                campfire.getInventory().setStackInSlot(0, ItemStack.EMPTY);
+                return InteractionResult.CONSUME;
+            }
+        }
+
+        return InteractionResult.PASS;
     }
 
     /**
@@ -188,7 +202,7 @@ public class SakuraCampfireBlock extends BaseEntityBlock {
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
+            Object blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof CampfireBlockEntity campfire) {
                 Containers.dropContents(level, pos, campfire.getDroppableInventory());
                 level.updateNeighbourForOutputSignal(pos, this);

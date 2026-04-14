@@ -1,24 +1,15 @@
 package cn.mcmod.sakura.block.machines;
 
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
-import cn.mcmod.sakura.block.entity.MapleCauldronBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -33,8 +24,18 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+
+import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
+import cn.mcmod.sakura.block.entity.MapleCauldronBlockEntity;
+import com.mojang.serialization.MapCodec;
+
+import javax.annotation.Nullable;
 
 /**
  * Maple Syrup Cauldron from the Sakura mod.
@@ -42,12 +43,20 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * and processes it into maple syrup when heated.
  */
 public class MapleCauldronBlock extends BaseEntityBlock {
+    public static final MapCodec<MapleCauldronBlock> CODEC = simpleCodec(p -> new MapleCauldronBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 0, 3);
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 14.0D, 15.0D);
 
     public MapleCauldronBlock() {
-        super(Properties.copy(Blocks.CAULDRON));
+        super(Properties.ofFullCopy(Blocks.CAULDRON).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(LEVEL, 0));
@@ -89,22 +98,28 @@ public class MapleCauldronBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn,
-            BlockHitResult result) {
-        ItemStack stack = player.getItemInHand(handIn);
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockentity = level.getBlockEntity(pos);
         if (!(blockentity instanceof MapleCauldronBlockEntity cauldron)) {
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
-        IFluidHandlerItem handler = FluidUtil.getFluidHandler(ItemHandlerHelper.copyStackWithSize(stack, 1))
+        IFluidHandlerItem handler = FluidUtil.getFluidHandler(stack.copyWithCount(1))
                 .orElse(null);
         if (handler != null && handler instanceof FluidBucketWrapper) {
-            FluidUtil.interactWithFluidHandler(player, handIn, cauldron.getFluidTank().orElse(null));
-            return InteractionResult.SUCCESS;
+            FluidUtil.interactWithFluidHandler(player, hand, cauldron.getFluidTank());
+            return ItemInteractionResult.SUCCESS;
         }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
 
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (!(be instanceof MapleCauldronBlockEntity menuProvider)) {
+            return InteractionResult.FAIL;
+        }
         if (!level.isClientSide()) {
-            NetworkHooks.openScreen((ServerPlayer) player, cauldron, pos);
+            player.openMenu(menuProvider, pos);
         }
         return InteractionResult.SUCCESS;
     }

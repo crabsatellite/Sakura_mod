@@ -1,41 +1,39 @@
 package cn.mcmod.sakura.network;
 
-import cn.mcmod.sakura.item.ItemRegistry;
-import cn.mcmod.sakura.item.KatanaItem;
-import cn.mcmod.sakura.item.SheathItem;
-import net.minecraft.network.FriendlyByteBuf;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.item.ItemRegistry;
+import cn.mcmod.sakura.item.KatanaItem;
+import cn.mcmod.sakura.item.SheathItem;
 
 /**
  * Packet sent from client to server when the player presses the sheath keybinding.
- * This triggers the "sheath in" action: if the player is holding a sheath in one hand
- * and a katana in the other, they are combined into a SheathKatanaItem.
  */
-public class SheathKeyPacket {
+public record SheathKeyPacket() implements CustomPacketPayload {
 
-    public SheathKeyPacket() {
+    public static final CustomPacketPayload.Type<SheathKeyPacket> TYPE =
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "sheath_key"));
+
+    public static final StreamCodec<ByteBuf, SheathKeyPacket> STREAM_CODEC =
+            StreamCodec.unit(new SheathKeyPacket());
+
+    @Override
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public static void encode(SheathKeyPacket msg, FriendlyByteBuf buf) {
-        // No data needed - server reads player inventory directly
-    }
-
-    public static SheathKeyPacket decode(FriendlyByteBuf buf) {
-        return new SheathKeyPacket();
-    }
-
-    public static void handle(SheathKeyPacket msg, Supplier<NetworkEvent.Context> ctxSupplier) {
-        NetworkEvent.Context ctx = ctxSupplier.get();
+    public static void handle(SheathKeyPacket msg, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
-            ServerPlayer player = ctx.getSender();
-            if (player == null) return;
+            if (!(ctx.player() instanceof ServerPlayer player)) return;
 
             // Look for a sheath in either hand
             InteractionHand sheathHand = findSheathHand(player);
@@ -48,8 +46,6 @@ public class SheathKeyPacket {
             // The other hand must contain a katana
             if (!(otherStack.getItem() instanceof KatanaItem)) return;
 
-            ItemStack sheathStack = player.getItemInHand(sheathHand);
-
             // Pick the correct sheathed variant based on katana type
             Item sheathKatanaType;
             if (otherStack.is(ItemRegistry.SAKURA_KATANA.get())) {
@@ -59,8 +55,9 @@ public class SheathKeyPacket {
             }
 
             ItemStack sheathKatana = new ItemStack(sheathKatanaType);
-            net.minecraft.nbt.CompoundTag tag = sheathKatana.getOrCreateTag();
-            tag.put("SheathBlade", otherStack.copy().save(new net.minecraft.nbt.CompoundTag()));
+            net.minecraft.nbt.CompoundTag customTag = new net.minecraft.nbt.CompoundTag();
+            customTag.put("SheathBlade", (net.minecraft.nbt.CompoundTag) otherStack.copy().save(player.registryAccess(), new net.minecraft.nbt.CompoundTag()));
+            sheathKatana.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(customTag));
 
             // Consume the katana from the other hand
             otherStack.shrink(1);
@@ -71,7 +68,6 @@ public class SheathKeyPacket {
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.ARMOR_EQUIP_IRON, player.getSoundSource(), 1.0F, 1.2F);
         });
-        ctx.setPacketHandled(true);
     }
 
     private static InteractionHand findSheathHand(ServerPlayer player) {

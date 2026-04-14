@@ -1,21 +1,19 @@
 package cn.mcmod.sakura.loot_modifier;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import com.google.common.collect.Lists;
-import cn.mcmod.sakura.item.ItemRegistry;
-import com.mojang.serialization.*;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.loot.LootModifier;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.common.loot.LootModifier;
+import cn.mcmod.sakura.item.ItemRegistry;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+
+import java.util.List;
+import javax.annotation.Nonnull;
 
 public class SeedsDrop {
 	public static class SeedDropModifier extends LootModifier {
@@ -23,8 +21,8 @@ public class SeedsDrop {
 			super(conditionsIn);
 		}
 
-		public static final Codec<SeedDropModifier> CODEC = RecordCodecBuilder
-				.create(inst -> codecStart(inst).apply(inst, SeedDropModifier::new));
+		public static final MapCodec<SeedDropModifier> CODEC = RecordCodecBuilder
+				.mapCodec(inst -> codecStart(inst).apply(inst, SeedDropModifier::new));
 
 		@Nonnull
 		@Override
@@ -38,7 +36,7 @@ public class SeedsDrop {
 		}
 
 		@Override
-		public Codec<? extends IGlobalLootModifier> codec() {
+		public MapCodec<? extends IGlobalLootModifier> codec() {
 			return CODEC;
 		}
 	}

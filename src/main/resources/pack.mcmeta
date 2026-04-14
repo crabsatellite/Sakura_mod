@@ -1,7 +1,11 @@
 {
-    "pack": {
-        "description": "Sakura Mod resources",
-        "pack_format": 15,
-        "_comment": "A pack_format of 15 for Minecraft 1.20.1."
+  "pack": {
+    "description": "Sakura Mod resources",
+    "pack_format": 34,
+    "_comment": "A pack_format of 15 for Minecraft 1.20.1.",
+    "supported_formats": {
+      "min_inclusive": 34,
+      "max_inclusive": 34
     }
+  }
 }

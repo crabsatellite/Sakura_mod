@@ -1,0 +1,20 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 250,
+    "fluidTag": "c:water/water"
+  },
+  "ingredients": [
+    {
+      "item": "sakura:pasta_raw"
+    },
+    {
+      "item": "sakura:white_sauce"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "id": "sakura:pasta_whitesauce"
+  }
+}

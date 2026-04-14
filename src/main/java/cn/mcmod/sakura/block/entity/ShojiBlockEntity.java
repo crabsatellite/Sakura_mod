@@ -1,11 +1,12 @@
 package cn.mcmod.sakura.block.entity;
 
-import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
 
 /**
  * BlockEntity for the Shoji (Japanese sliding door) block.
@@ -47,8 +48,8 @@ public class ShojiBlockEntity extends SyncedBlockEntity {
     }
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
         if (compound.contains("type")) {
             type = compound.getInt("type");
         }
@@ -58,8 +59,8 @@ public class ShojiBlockEntity extends SyncedBlockEntity {
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
         compound.putInt("type", type);
         compound.putInt("animation", animation);
     }

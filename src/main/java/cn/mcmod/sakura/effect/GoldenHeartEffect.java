@@ -15,16 +15,17 @@ public class GoldenHeartEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         entity.getActiveEffects().stream()
-                .filter(e -> !e.getEffect().isBeneficial())
+                .filter(e -> !e.getEffect().value().isBeneficial())
                 .map(MobEffectInstance::getEffect)
                 .toList()
                 .forEach(entity::removeEffect);
+        return true;
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return (duration & 1) == 0; // every 2 ticks, matching 1.12.2
     }
 }

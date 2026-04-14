@@ -48,6 +48,9 @@
     "block.sakura.umeleaves": "梅の葉",
     "block.sakura.ume_sapling": "梅の苗木",
     "block.sakura.ume_log": "梅の原木",
+    "block.sakura.stripped_ume_log": "樹皮を剥いだ梅の原木",
+    "block.sakura.ume_wood": "梅の木",
+    "block.sakura.stripped_ume_wood": "樹皮を剥いだ梅の木",
     "block.sakura.cooking_pot": "料理鍋",
     "block.sakura.chopping_board": "まな板",
     "block.sakura.campfire_idle": "焚き火",
@@ -752,6 +755,9 @@
     "entity.sakura.Deer": "シカ",
     "entity.sakura.SamuraiIllager": "邪悪な侍",
 
+    "item.sakura.deer_spawn_egg": "シカのスポーンエッグ",
+    "item.sakura.samurai_illager_spawn_egg": "邪悪な侍のスポーンエッグ",
+
     "entity.minecraft.villager.sakura.wa_farmer": "農家",
     "entity.minecraft.villager.sakura.wa_silk": "絹商人",
 
@@ -793,6 +799,8 @@
     "sakura.effect.exp_up": "経験値増加",
     "sakura.effect.fire_blade": "火の剣",
     "sakura.effect.golden_heart": "黄金の心",
-    "sakura.effect.poisom": "毒付与"
+    "sakura.effect.poisom": "毒付与",
+
+    "sakura.sound.taiko": "太鼓"
 
 }

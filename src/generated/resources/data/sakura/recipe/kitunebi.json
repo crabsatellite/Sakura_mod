@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "tag": "c:gems/lapis"
+    },
+    "T": {
+      "item": "minecraft:jack_o_lantern"
+    },
+    "W": {
+      "tag": "c:lumber"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "WTW",
+    "LLL"
+  ],
+  "result": {
+    "count": 16,
+    "id": "sakura:kitunebi"
+  },
+  "show_notification": true
+}

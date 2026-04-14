@@ -1,7 +1,5 @@
 package cn.mcmod.sakura.block.machines;
 
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.block.MapleTreeSapLogBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,6 +20,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.block.MapleTreeSapLogBlock;
+import com.mojang.serialization.MapCodec;
 
 /**
  * Maple Spile (tap) from 1.12.2.
@@ -30,6 +31,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * Dripping particles appear when sap is being collected.
  */
 public class MapleSpileBlock extends Block {
+    public static final MapCodec<MapleSpileBlock> CODEC = simpleCodec(p -> new MapleSpileBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     protected static final VoxelShape SHAPE_NORTH = Block.box(4.0D, 2.0D, 0.0D, 12.0D, 10.0D, 8.0D);
     protected static final VoxelShape SHAPE_SOUTH = Block.box(4.0D, 2.0D, 8.0D, 12.0D, 10.0D, 16.0D);

@@ -1,15 +1,5 @@
 package cn.mcmod.sakura.item;
 
-import java.util.function.Consumer;
-
-import javax.annotation.Nonnull;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
-import cn.mcmod.sakura.block.entity.StoneMortarBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,7 +7,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
+import cn.mcmod.sakura.block.entity.StoneMortarBlockEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import java.util.function.Consumer;
+import javax.annotation.Nonnull;
 
 public class StoneMortarItem extends BlockItem {
 

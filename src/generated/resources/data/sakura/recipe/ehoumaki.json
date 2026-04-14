@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:crops/seaweed"
+    },
+    {
+      "tag": "c:vegetables"
+    },
+    {
+      "tag": "c:raw_fishes"
+    },
+    {
+      "item": "sakura:tamagoyaki"
+    },
+    {
+      "item": "sakura:rice_cooked"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "id": "sakura:ehoumaki"
+  }
+}

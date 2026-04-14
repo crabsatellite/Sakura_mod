@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import com.mojang.serialization.MapCodec;
 
 /**
  * Grape Splint - A horizontal trellis bar for grape vine growing.
@@ -16,6 +17,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * Grape vines will spread to adjacent grape splints and convert them to grape leaves.
  */
 public class GrapeSplintBlock extends Block {
+    public static final MapCodec<GrapeSplintBlock> CODEC = simpleCodec(p -> new GrapeSplintBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
 
     private static final VoxelShape SHAPE = Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 

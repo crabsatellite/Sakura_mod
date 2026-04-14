@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:flour"
+    },
+    {
+      "tag": "c:flour"
+    },
+    {
+      "tag": "c:sugar"
+    },
+    {
+      "tag": "c:eggs"
+    },
+    {
+      "tag": "c:eggs"
+    },
+    {
+      "item": "sakura:red_bean_paste"
+    },
+    {
+      "item": "sakura:red_bean_paste"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "id": "sakura:dorayaki"
+  }
+}

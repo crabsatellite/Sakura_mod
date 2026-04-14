@@ -1,8 +1,5 @@
 package cn.mcmod.sakura.block.crops;
 
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -10,6 +7,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -29,8 +27,20 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import cn.mcmod.sakura.block.BlockRegistry;
+import com.mojang.serialization.MapCodec;
+
+import javax.annotation.Nullable;
 
 public class RiceCropRoot extends BushBlock implements BonemealableBlock, LiquidBlockContainer {
+    public static final MapCodec<RiceCropRoot> CODEC = simpleCodec(RiceCropRoot::new);
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
     public static final BooleanProperty SUPPORTING = BooleanProperty.create("supporting");
     private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[] { Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
@@ -76,18 +86,18 @@ public class RiceCropRoot extends BushBlock implements BonemealableBlock, Liquid
             int age = this.getAge(state);
             if (age <= this.getMaxAge()) {
                 float chance = 10;
-                if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state,
+                if (net.neoforged.neoforge.common.CommonHooks.canCropGrow(worldIn, pos, state,
                         rand.nextInt((int) (25.0F / chance) + 1) == 0)) {
                     if (age == this.getMaxAge()) {
                         RiceCrop riceUpper = (RiceCrop) BlockRegistry.RICE_CROP.get();
                         if (riceUpper.defaultBlockState().canSurvive(worldIn, pos.above())
                                 && worldIn.isEmptyBlock(pos.above())) {
                             worldIn.setBlockAndUpdate(pos.above(), riceUpper.defaultBlockState());
-                            net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state);
+                            net.neoforged.neoforge.common.CommonHooks.fireCropGrowPost(worldIn, pos, state);
                         }
                     } else {
                         worldIn.setBlock(pos, this.withAge(age + 1), 2);
-                        net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state);
+                        net.neoforged.neoforge.common.CommonHooks.fireCropGrowPost(worldIn, pos, state);
                     }
                 }
             }
@@ -102,7 +112,7 @@ public class RiceCropRoot extends BushBlock implements BonemealableBlock, Liquid
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(LevelReader worldIn, BlockPos pos, BlockState state) {
         BlockState upperState = worldIn.getBlockState(pos.above());
         if (upperState.is(BlockRegistry.RICE_CROP.get())) {
             return !((RiceCrop) upperState.getBlock()).isMaxAge(upperState);
@@ -124,7 +134,7 @@ public class RiceCropRoot extends BushBlock implements BonemealableBlock, Liquid
             BlockState top = worldIn.getBlockState(pos.above());
             if (top.is(BlockRegistry.RICE_CROP.get())) {
                 BonemealableBlock growable = (BonemealableBlock) worldIn.getBlockState(pos.above()).getBlock();
-                if (growable.isValidBonemealTarget(worldIn, pos.above(), top, false)) {
+                if (growable.isValidBonemealTarget(worldIn, pos.above(), top)) {
                     growable.performBonemeal(worldIn, worldIn.random, pos.above(), top);
                 }
             } else {
@@ -170,7 +180,7 @@ public class RiceCropRoot extends BushBlock implements BonemealableBlock, Liquid
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
         return false;
     }
 

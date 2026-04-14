@@ -1,12 +1,12 @@
 package cn.mcmod.sakura.client.renderer;
 
-import cn.mcmod.sakura.client.model.KimonoModel;
-import cn.mcmod.sakura.item.KimonoItem;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import cn.mcmod.sakura.client.model.KimonoModel;
+import cn.mcmod.sakura.item.KimonoItem;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

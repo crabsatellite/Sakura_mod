@@ -1,18 +1,16 @@
 package cn.mcmod.sakura.level.tree;
 
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.block.grower.TreeGrower;
 
-public class UmeTreeGrower extends AbstractTreeGrower {
+import java.util.Optional;
 
-    @Override
-    protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean pHasFlowers) {
-        if (random.nextInt(10) == 0) {
-            return SakuraTreeFeatures.FANCY_UME_KEY;
-        } else {
-            return SakuraTreeFeatures.UME_KEY;
-        }
-    }
+public class UmeTreeGrower {
+    public static final TreeGrower GROWER = new TreeGrower(
+        "ume",
+        Optional.of(SakuraTreeFeatures.FANCY_UME_KEY),
+        Optional.empty(),
+        Optional.empty()
+    );
+
+    private UmeTreeGrower() {}
 }

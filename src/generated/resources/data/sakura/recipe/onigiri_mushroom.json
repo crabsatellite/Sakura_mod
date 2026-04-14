@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:rice_cooked"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    },
+    {
+      "tag": "c:mushrooms"
+    }
+  ],
+  "result": {
+    "id": "sakura:onigiri_mushroom"
+  }
+}

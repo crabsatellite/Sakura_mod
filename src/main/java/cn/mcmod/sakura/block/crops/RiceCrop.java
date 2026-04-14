@@ -1,7 +1,5 @@
 package cn.mcmod.sakura.block.crops;
 
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.item.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
@@ -14,8 +12,19 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.item.ItemRegistry;
+import com.mojang.serialization.MapCodec;
 
 public class RiceCrop extends CropBlock {
+    public static final MapCodec<RiceCrop> CODEC = simpleCodec(RiceCrop::new);
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final IntegerProperty RICE_AGE = BlockStateProperties.AGE_7;
     private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[] { Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),

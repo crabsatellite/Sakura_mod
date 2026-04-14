@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 600,
+  "experience": 0.5,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:taro"
+  },
+  "result": {
+    "id": "sakura:taro_baked"
+  }
+}

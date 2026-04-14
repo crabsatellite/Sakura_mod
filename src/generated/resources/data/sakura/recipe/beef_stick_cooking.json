@@ -1,0 +1,20 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "null_fluid": true
+  },
+  "ingredients": [
+    {
+      "tag": "c:raw_beef"
+    },
+    {
+      "tag": "c:bamboo"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "count": 2,
+    "id": "sakura:beef_stick"
+  }
+}

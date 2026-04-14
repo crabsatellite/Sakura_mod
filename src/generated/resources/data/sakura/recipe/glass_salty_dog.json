@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:glass_vodka"
+    },
+    {
+      "item": "sakura:lemon_juice"
+    },
+    {
+      "tag": "c:salt"
+    }
+  ],
+  "result": {
+    "id": "sakura:glass_salty_dog"
+  }
+}

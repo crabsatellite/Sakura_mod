@@ -9,9 +9,18 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import com.mojang.serialization.MapCodec;
 
 @SuppressWarnings("deprecation")
 public class BambooBlock extends RotatedPillarBlock {
+    public static final MapCodec<BambooBlock> CODEC = simpleCodec(p -> new BambooBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
 
     public BambooBlock() {
         super(Properties.of().mapColor((p_152624_) -> {

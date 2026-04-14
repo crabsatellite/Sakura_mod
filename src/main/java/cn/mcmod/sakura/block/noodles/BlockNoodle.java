@@ -1,10 +1,10 @@
 package cn.mcmod.sakura.block.noodles;
 
-import cn.mcmod.sakura.tags.SakuraItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import cn.mcmod.sakura.tags.SakuraItemTags;
 
 public abstract class BlockNoodle extends Block {
     public static final IntegerProperty CUTTING = IntegerProperty.create("cutting", 0, 7);
@@ -73,38 +74,37 @@ public abstract class BlockNoodle extends Block {
     public abstract ItemStack getUnfinishedItem();
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
 
-        ItemStack heldStack = player.getItemInHand(hand);
         int cutting = state.getValue(CUTTING);
 
         if (!isReady(state)) {
-            if (heldStack.is(SakuraItemTags.TOOLS_KNIVES_NOODLE)) {
+            if (stack.is(SakuraItemTags.TOOLS_KNIVES_NOODLE)) {
                 if (!player.getAbilities().instabuild && level.random.nextInt(10) == 0) {
-                    heldStack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(hand));
+                    stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                 }
                 if (level.random.nextInt(10) == 0) {
                     level.setBlock(pos, state.setValue(CUTTING, Math.min(cutting + 1, 7)), 3);
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
             }
         } else {
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-            if (!level.isClientSide && !player.isCreative()) {
+            if (!player.isCreative()) {
                 ItemStack dropStack = getNoodle().copy();
                 Block.popResource(level, pos, dropStack);
             }
-            return InteractionResult.CONSUME;
+            return ItemInteractionResult.CONSUME;
         }
 
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
         return getUnfinishedItem().copy();
     }
 }

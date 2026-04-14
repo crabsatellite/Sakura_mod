@@ -1,7 +1,6 @@
 package cn.mcmod.sakura.item;
 
-import java.util.List;
-
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -13,9 +12,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+// EnchantmentHelper sweeping methods removed in 1.21
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+
+import java.util.List;
 
 /**
  * Kodachi weapon item for Sakura mod.
@@ -29,7 +30,7 @@ public class KodachiItem extends SwordItem {
     private final int reducedMaxDamage;
 
     public KodachiItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
-        super(tier, attackDamageModifier, attackSpeedModifier, properties);
+        super(tier, properties.attributes(SwordItem.createAttributes(tier, attackDamageModifier, attackSpeedModifier)));
         this.reducedMaxDamage = (int) (tier.getUses() * 0.75F);
     }
 
@@ -68,7 +69,7 @@ public class KodachiItem extends SwordItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 
@@ -79,11 +80,11 @@ public class KodachiItem extends SwordItem {
         if (!(entityLiving instanceof Player player)) return;
         if (level.isClientSide()) return;
 
-        int ticksUsed = getUseDuration(stack) - timeLeft;
+        int ticksUsed = getUseDuration(stack, entityLiving) - timeLeft;
         if (ticksUsed < 3) return; // Shorter minimum hold time for the faster weapon
 
-        float sweepRatio = EnchantmentHelper.getSweepingDamageRatio(player);
-        if (sweepRatio <= 0.0F) return;
+        // In 1.21, getSweepingDamageRatio was removed (sweeping is now data-driven).
+        float sweepRatio = 0.5F;
 
         float baseDamage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         // Weaker sweep: 50% of normal sweep damage
@@ -104,7 +105,7 @@ public class KodachiItem extends SwordItem {
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
             player.sweepAttack();
-            stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+            stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
         }
     }
 
@@ -112,7 +113,7 @@ public class KodachiItem extends SwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(1, attacker, (user) -> user.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
         return true;
     }
 }

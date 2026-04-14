@@ -1,14 +1,13 @@
 package cn.mcmod.sakura;
 
-import cn.mcmod.sakura.fluid.FluidTypeRegistry;
-import cn.mcmod.sakura.item.CreativeModeTabRegistry;
-import cn.mcmod.sakura.level.biome.SakuraBiomeEvents;
-import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
-import cn.mcmod.sakura.level.structure.SakuraStructureRegistry;
-import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
-
+import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import cn.mcmod.sakura.block.BlockItemRegistry;
 import cn.mcmod.sakura.block.BlockRegistry;
 import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
@@ -19,22 +18,22 @@ import cn.mcmod.sakura.entity.EntityRegistry;
 import cn.mcmod.sakura.fluid.BucketItemRegistry;
 import cn.mcmod.sakura.fluid.FluidBlockRegistry;
 import cn.mcmod.sakura.fluid.FluidRegistry;
+import cn.mcmod.sakura.fluid.FluidTypeRegistry;
 import cn.mcmod.sakura.item.ComposterRegistry;
+import cn.mcmod.sakura.item.CreativeModeTabRegistry;
 import cn.mcmod.sakura.item.DrinkRegistry;
 import cn.mcmod.sakura.item.FoodRegistry;
 import cn.mcmod.sakura.item.ItemRegistry;
+import cn.mcmod.sakura.item.SakuraArmorMaterials;
+import cn.mcmod.sakura.level.biome.SakuraBiomeEvents;
+import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
+import cn.mcmod.sakura.level.structure.SakuraStructureRegistry;
 import cn.mcmod.sakura.loot_modifier.LootModifiterRegistry;
 import cn.mcmod.sakura.network.SakuraNetwork;
 import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
 import cn.mcmod.sakura.villager.VillagerRegistry;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 
 @Mod(SakuraMod.MODID)
 public class SakuraMod {
@@ -45,10 +44,10 @@ public class SakuraMod {
         return new Item.Properties();
     }
 
-    public SakuraMod() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public SakuraMod(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::setup);
 
+        SakuraArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
         BlockItemRegistry.ITEMS.register(modEventBus);
         BlockEntityRegistry.BLOCK_ENTITIES.register(modEventBus);
@@ -73,16 +72,16 @@ public class SakuraMod {
         SakuraFeatureRegistry.FEATURES.register(modEventBus);
         SakuraFeatureRegistry.TREE_DECORATOR_TYPES.register(modEventBus);
         SakuraStructureRegistry.STRUCTURE_POOL_ELEMENT_TYPES.register(modEventBus);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SakuraConfig.COMMON_CONFIG);
+        modContainer.registerConfig(ModConfig.Type.COMMON, SakuraConfig.COMMON_CONFIG);
 
         // Register Sakura biome injection event handler
-        MinecraftForge.EVENT_BUS.register(SakuraBiomeEvents.class);
+        NeoForge.EVENT_BUS.register(SakuraBiomeEvents.class);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ComposterRegistry.registerCompost();
-            SakuraNetwork.register();
+            // SakuraNetwork.register() is now handled via @SubscribeEvent on RegisterPayloadHandlersEvent
         });
     }
 

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:glass_vodka"
+    },
+    {
+      "item": "sakura:orange_juice"
+    }
+  ],
+  "result": {
+    "id": "sakura:glass_screwdriver"
+  }
+}

@@ -1,10 +1,9 @@
 package cn.mcmod.sakura.item;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import cn.mcmod_mmf.mmlib.item.info.FoodInfo;
+
+import java.util.List;
 
 public final class ItemList {
     public static List<String> MATERIAL_SET = Lists.newArrayList("silk", "hop", "straw", "brown_rice", "rice", "salt",

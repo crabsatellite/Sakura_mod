@@ -8,12 +8,21 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import com.mojang.serialization.MapCodec;
 
 /**
  * Hot spring water block that applies Regeneration I to entities standing inside it.
  * The effect is refreshed every 80 ticks (4 seconds) to provide a gentle healing zone.
  */
 public class HotSpringBlock extends Block {
+    public static final MapCodec<HotSpringBlock> CODEC = simpleCodec(HotSpringBlock::new);
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
 
     public HotSpringBlock(Properties properties) {
         super(properties);

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:glass_rum"
+    },
+    {
+      "item": "sakura:lemon_juice"
+    },
+    {
+      "tag": "c:sugar"
+    },
+    {
+      "tag": "c:sugar"
+    }
+  ],
+  "result": {
+    "id": "sakura:glass_grog"
+  }
+}

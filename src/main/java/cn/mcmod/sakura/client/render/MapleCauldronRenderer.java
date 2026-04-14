@@ -1,9 +1,5 @@
 package cn.mcmod.sakura.client.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-
-import cn.mcmod.sakura.block.entity.MapleCauldronBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -13,9 +9,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import cn.mcmod.sakura.block.entity.MapleCauldronBlockEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Matrix4f;
 
 /**
@@ -40,7 +39,7 @@ public class MapleCauldronRenderer implements BlockEntityRenderer<MapleCauldronB
     @Override
     public void render(MapleCauldronBlockEntity blockEntity, float partialTicks, PoseStack poseStack,
             MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        FluidTank tank = blockEntity.getFluidTank().orElse(null);
+        FluidTank tank = blockEntity.getFluidTank();
         if (tank == null) return;
 
         FluidStack fluidStack = tank.getFluid();
@@ -85,12 +84,11 @@ public class MapleCauldronRenderer implements BlockEntityRenderer<MapleCauldronB
 
     private void addVertex(VertexConsumer builder, Matrix4f matrix, float x, float y, float z,
             float u, float v, float r, float g, float b, float a, int packedLight) {
-        builder.vertex(matrix, x, y, z)
-                .color(r, g, b, a)
-                .uv(u, v)
-                .overlayCoords(0, 10)
-                .uv2(packedLight)
-                .normal(0, 1, 0)
-                .endVertex();
+        builder.addVertex(matrix, x, y, z)
+                .setColor(r, g, b, a)
+                .setUv(u, v)
+                .setUv1(0, 10)
+                .setLight(packedLight)
+                .setNormal(0, 1, 0);
     }
 }

@@ -1,30 +1,26 @@
 package cn.mcmod.sakura.block.entity;
 
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableMap;
-
-import cn.mcmod.sakura.item.FoodRegistry;
-import cn.mcmod.sakura.item.ItemRegistry;
-import cn.mcmod.sakura.item.enums.SakuraFoodSet;
-import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
-import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import cn.mcmod.sakura.item.FoodRegistry;
+import cn.mcmod.sakura.item.ItemRegistry;
+import cn.mcmod.sakura.item.enums.SakuraFoodSet;
+import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
+import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
+
+import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * BlockEntity for the Straw Web (drying rack).
@@ -39,7 +35,6 @@ public class StrawWebBlockEntity extends SyncedBlockEntity {
 
     private int cookTime;
     private final ItemStackHandler inventory;
-    private LazyOptional<IItemHandler> itemHandler;
 
     /**
      * Static map of drying recipes: input item -> output item.
@@ -83,7 +78,6 @@ public class StrawWebBlockEntity extends SyncedBlockEntity {
     public StrawWebBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.STRAW_WEB.get(), pos, state);
         this.inventory = createHandler();
-        this.itemHandler = LazyOptional.of(() -> inventory);
     }
 
     /**
@@ -140,7 +134,19 @@ public class StrawWebBlockEntity extends SyncedBlockEntity {
         }
 
         float rate = isDaytime ? 2.0F : 1.0F;
-        // Simplified rate without humidity factor
+
+        // Biome temperature factor (ported from 1.12.2)
+        float temperature = biome.getBaseTemperature();
+        if (temperature < 0.0F) {
+            rate *= 1.0F;
+        } else if (temperature < 0.6F) {
+            rate *= 1.5F;
+        } else if (temperature < 1.0F) {
+            rate *= 2.0F;
+        } else {
+            rate *= 4.0F;
+        }
+
         return rate;
     }
 
@@ -184,44 +190,22 @@ public class StrawWebBlockEntity extends SyncedBlockEntity {
     }
 
     @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (!this.isRemoved() && cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
-            return itemHandler.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
-        inventory.deserializeNBT(compound.getCompound("Inventory"));
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
+        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
         cookTime = compound.getInt("CookTime");
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        compound.put("Inventory", inventory.serializeNBT());
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
+        compound.put("Inventory", inventory.serializeNBT(registries));
         compound.putInt("CookTime", cookTime);
     }
 
     @Override
     public void setRemoved() {
         super.setRemoved();
-        itemHandler.invalidate();
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        itemHandler.invalidate();
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        itemHandler = LazyOptional.of(() -> inventory);
     }
 
     private ItemStackHandler createHandler() {

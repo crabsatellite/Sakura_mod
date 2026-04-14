@@ -1,0 +1,20 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 125,
+    "fluidTag": "c:water/water"
+  },
+  "ingredients": [
+    {
+      "tag": "sakura:rice/rice"
+    },
+    {
+      "tag": "c:mushrooms"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "id": "sakura:rice_mushroom"
+  }
+}

@@ -1,19 +1,19 @@
 package cn.mcmod.sakura.recipes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.neoforge.fluids.FluidStack;
 import cn.mcmod.sakura.fluid.BucketItemRegistry;
 import cn.mcmod.sakura.fluid.FluidRegistry;
 import cn.mcmod.sakura.item.DrinkRegistry;
 import cn.mcmod.sakura.item.ItemRegistry;
 import cn.mcmod.sakura.item.enums.SakuraAlcoholSet;
 import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Registry for all Liquid-to-Item (L2IS) conversion recipes.

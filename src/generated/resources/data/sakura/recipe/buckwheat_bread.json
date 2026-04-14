@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.5,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:dough_buckwheat"
+  },
+  "result": {
+    "id": "sakura:buckwheat_bread"
+  }
+}

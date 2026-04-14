@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#sakura:has_deer_spawns",
+  "spawners": {
+    "type": "sakura:deer",
+    "weight": 10,
+    "minCount": 2,
+    "maxCount": 4
+  }
+}

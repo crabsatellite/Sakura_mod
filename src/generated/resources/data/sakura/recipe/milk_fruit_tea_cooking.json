@@ -1,0 +1,23 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 125,
+    "fluidTag": "c:water/water"
+  },
+  "ingredients": [
+    {
+      "item": "sakura:fruit_tea_leaves"
+    },
+    {
+      "tag": "c:milk"
+    },
+    {
+      "item": "sakura:cup"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "id": "sakura:milk_fruit_tea"
+  }
+}

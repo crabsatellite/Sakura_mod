@@ -1,0 +1,23 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "sakura:cabbage"
+    }
+  ],
+  "tool": {
+    "tag": "c:tools/knives"
+  },
+  "result": [
+    {
+      "item": "sakura:sliced_cabbage",
+      "count": 2
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "modid": "farmersdelight",
+      "type": "neoforge:mod_loaded"
+    }
+  ]
+}

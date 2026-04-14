@@ -1,5 +1,6 @@
 package cn.mcmod.sakura.item;
 
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,7 +23,7 @@ import net.minecraft.world.level.Level;
 public class SheathItem extends Item {
 
     public SheathItem(Properties properties) {
-        super(properties.defaultDurability(Tiers.WOOD.getUses()));
+        super(properties.durability(Tiers.WOOD.getUses()));
     }
 
     @Override
@@ -45,8 +46,10 @@ public class SheathItem extends Item {
                     sheathKatanaType = ItemRegistry.KATANA_SHEATH.get();
                 }
                 ItemStack sheathKatana = new ItemStack(sheathKatanaType);
-                net.minecraft.nbt.CompoundTag tag = sheathKatana.getOrCreateTag();
-                tag.put("SheathBlade", otherStack.copy().save(new net.minecraft.nbt.CompoundTag()));
+                // Store the katana blade data using DataComponents (1.21 API)
+                net.minecraft.nbt.CompoundTag customTag = new net.minecraft.nbt.CompoundTag();
+                customTag.put("SheathBlade", (net.minecraft.nbt.CompoundTag) otherStack.copy().save(player.registryAccess(), new net.minecraft.nbt.CompoundTag()));
+                sheathKatana.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(customTag));
 
                 // Consume the katana from the other hand
                 otherStack.shrink(1);
@@ -57,7 +60,7 @@ public class SheathItem extends Item {
                 level.playSound(null, player.getX(), player.getY(), player.getZ(),
                         SoundEvents.ARMOR_EQUIP_IRON, player.getSoundSource(), 1.0F, 1.2F);
             }
-            return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+            return InteractionResultHolder.success(player.getItemInHand(hand));
         }
 
         // No katana in other hand: use as a blocking item
@@ -71,13 +74,13 @@ public class SheathItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(2, attacker, (user) -> user.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        stack.hurtAndBreak(2, attacker, EquipmentSlot.MAINHAND);
         return true;
     }
 

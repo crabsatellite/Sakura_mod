@@ -1,8 +1,8 @@
 package cn.mcmod.sakura.item.enums;
 
-import cn.mcmod.sakura.effect.EffectRegistry;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import cn.mcmod.sakura.effect.EffectRegistry;
 
 import java.util.function.Supplier;
 
@@ -11,12 +11,12 @@ public enum SakuraCocktailSet {
     // Index 0: glass_kir -> night_vision 200, exp_up 200
     GLASS_KIR("glass_kir", () -> new MobEffectInstance[]{
             new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0),
-            new MobEffectInstance(EffectRegistry.EXP_UP.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.EXP_UP, 200, 0)
     }),
     // Index 1: glass_royal_kir -> night_vision 400 lv1, exp_up 200
     GLASS_ROYAL_KIR("glass_royal_kir", () -> new MobEffectInstance[]{
             new MobEffectInstance(MobEffects.NIGHT_VISION, 400, 1),
-            new MobEffectInstance(EffectRegistry.EXP_UP.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.EXP_UP, 200, 0)
     }),
     // Index 2: glass_margarita -> fire_resistance 200, speed 200
     GLASS_MARGARITA("glass_margarita", () -> new MobEffectInstance[]{
@@ -32,11 +32,11 @@ public enum SakuraCocktailSet {
     // Index 4: glass_sidecar -> haste 200, golden_heart 2
     GLASS_SIDECAR("glass_sidecar", () -> new MobEffectInstance[]{
             new MobEffectInstance(MobEffects.DIG_SPEED, 200, 0),
-            new MobEffectInstance(EffectRegistry.GOLDEN_HEART.get(), 2, 0)
+            new MobEffectInstance(EffectRegistry.GOLDEN_HEART, 2, 0)
     }),
     // Index 5: glass_french_sevenfive -> cannon 200
     GLASS_FRENCH_SEVENFIVE("glass_french_sevenfive", () -> new MobEffectInstance[]{
-            new MobEffectInstance(EffectRegistry.CANNON.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.CANNON, 200, 0)
     }),
     // Index 6: glass_john_collins -> haste 200, resistance 200
     GLASS_JOHN_COLLINS("glass_john_collins", () -> new MobEffectInstance[]{
@@ -51,22 +51,22 @@ public enum SakuraCocktailSet {
     // Index 8: glass_between_the_sheets -> haste 200, fire_blade 200
     GLASS_BETWEEN_THE_SHEETS("glass_between_the_sheets", () -> new MobEffectInstance[]{
             new MobEffectInstance(MobEffects.DIG_SPEED, 200, 0),
-            new MobEffectInstance(EffectRegistry.FIRE_BLADE.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.FIRE_BLADE, 200, 0)
     }),
     // Index 9: glass_black_russian -> strength 200, fire_blade 200
     GLASS_BLACK_RUSSIAN("glass_black_russian", () -> new MobEffectInstance[]{
             new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 0),
-            new MobEffectInstance(EffectRegistry.FIRE_BLADE.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.FIRE_BLADE, 200, 0)
     }),
     // Index 10: glass_godfather -> haste 200, exp_up 200
     GLASS_GODFATHER("glass_godfather", () -> new MobEffectInstance[]{
             new MobEffectInstance(MobEffects.DIG_SPEED, 200, 0),
-            new MobEffectInstance(EffectRegistry.EXP_UP.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.EXP_UP, 200, 0)
     }),
     // Index 11: glass_godmother -> strength 200, exp_up 200
     GLASS_GODMOTHER("glass_godmother", () -> new MobEffectInstance[]{
             new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 0),
-            new MobEffectInstance(EffectRegistry.EXP_UP.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.EXP_UP, 200, 0)
     }),
     // Index 12: glass_grasshopper -> jump_boost 200, speed 200
     GLASS_GRASSHOPPER("glass_grasshopper", () -> new MobEffectInstance[]{
@@ -157,7 +157,7 @@ public enum SakuraCocktailSet {
     }),
     // Index 29: glass_long_island_iced_tea -> golden_heart 200
     GLASS_LONG_ISLAND_ICED_TEA("glass_long_island_iced_tea", () -> new MobEffectInstance[]{
-            new MobEffectInstance(EffectRegistry.GOLDEN_HEART.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.GOLDEN_HEART, 200, 0)
     }),
     // Index 30: glass_highball -> haste 400
     GLASS_HIGHBALL("glass_highball", () -> new MobEffectInstance[]{
@@ -171,12 +171,12 @@ public enum SakuraCocktailSet {
     }),
     // Index 32: glass_stinger -> poisom 200
     GLASS_STINGER("glass_stinger", () -> new MobEffectInstance[]{
-            new MobEffectInstance(EffectRegistry.POISOM.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.POISOM, 200, 0)
     }),
     // Index 33: glass_negroni -> resistance 200, golden_heart 100
     GLASS_NEGRONI("glass_negroni", () -> new MobEffectInstance[]{
             new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 0),
-            new MobEffectInstance(EffectRegistry.GOLDEN_HEART.get(), 100, 0)
+            new MobEffectInstance(EffectRegistry.GOLDEN_HEART, 100, 0)
     }),
     // Index 34: glass_old_fashioned -> speed 200, haste 200, night_vision 200
     GLASS_OLD_FASHIONED("glass_old_fashioned", () -> new MobEffectInstance[]{
@@ -206,7 +206,7 @@ public enum SakuraCocktailSet {
     }),
     // Index 39: glass_eggnog -> scorpion 200
     GLASS_EGGNOG("glass_eggnog", () -> new MobEffectInstance[]{
-            new MobEffectInstance(EffectRegistry.SCORPION.get(), 200, 0)
+            new MobEffectInstance(EffectRegistry.SCORPION, 200, 0)
     }),
     // Index 40: glass_scorpion -> strength 200, saturation 200
     GLASS_SCORPION("glass_scorpion", () -> new MobEffectInstance[]{

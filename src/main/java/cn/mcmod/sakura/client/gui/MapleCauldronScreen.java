@@ -1,18 +1,17 @@
 package cn.mcmod.sakura.client.gui;
 
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.container.MapleCauldronContainer;
-import cn.mcmod_mmf.mmlib.client.RenderUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.container.MapleCauldronContainer;
+import cn.mcmod.sakura.client.gui.FluidRenderHelper;
 
 public class MapleCauldronScreen extends AbstractContainerScreen<MapleCauldronContainer> {
 
-    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(SakuraMod.MODID,
-            "textures/gui/maple_pot.png");
+    private static final ResourceLocation BACKGROUND_TEXTURE = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/gui/maple_pot.png");
 
     public MapleCauldronScreen(MapleCauldronContainer screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
@@ -24,7 +23,6 @@ public class MapleCauldronScreen extends AbstractContainerScreen<MapleCauldronCo
 
     @Override
     public void render(GuiGraphics ms, final int mouseX, final int mouseY, float partialTicks) {
-        this.renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         this.renderTooltip(ms, mouseX, mouseY);
     }
@@ -51,13 +49,12 @@ public class MapleCauldronScreen extends AbstractContainerScreen<MapleCauldronCo
         int l = this.menu.getProgressScaled(44);
         ms.blit(BACKGROUND_TEXTURE, this.leftPos + 59, this.topPos + 36, 176, 0, l + 1, 17);
 
-        // Render fluid tank
-        this.menu.tileEntity.getFluidTank().ifPresent(fluidTank -> {
+        {
+            var fluidTank = this.menu.tileEntity.getFluidTank();
             int heightInd = (int) (68.0F * ((float) fluidTank.getFluidAmount() / (float) fluidTank.getCapacity()));
             if (heightInd > 0) {
-                RenderUtils.renderFluidStack(this.leftPos + 35, this.topPos + 78 - heightInd, 16, heightInd, 0.0F,
-                        fluidTank.getFluid());
+                FluidRenderHelper.renderFluidStack(ms, this.leftPos + 35, this.topPos + 78 - heightInd, 16, heightInd, fluidTank.getFluid());
             }
-        });
+        }
     }
 }

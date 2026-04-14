@@ -1,26 +1,24 @@
 package cn.mcmod.sakura.loot_modifier;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import cn.mcmod.sakura.item.FoodRegistry;
-import cn.mcmod.sakura.item.enums.SakuraFoodSet;
-
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.loot.LootModifier;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.common.loot.LootModifier;
+import cn.mcmod.sakura.item.FoodRegistry;
+import cn.mcmod.sakura.item.enums.SakuraFoodSet;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+
+import java.util.List;
 
 public class FishingModifiter extends LootModifier {
 
-    public static final Codec<FishingModifiter> CODEC = RecordCodecBuilder
-            .create(inst -> codecStart(inst).apply(inst, FishingModifiter::new));
+    public static final MapCodec<FishingModifiter> CODEC = RecordCodecBuilder
+            .mapCodec(inst -> codecStart(inst).apply(inst, FishingModifiter::new));
 
     protected FishingModifiter(LootItemCondition[] conditionsIn) {
         super(conditionsIn);
@@ -50,7 +48,7 @@ public class FishingModifiter extends LootModifier {
     }
 
     @Override
-    public Codec<? extends IGlobalLootModifier> codec() {
+    public MapCodec<? extends IGlobalLootModifier> codec() {
         return CODEC;
     }
 }

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:glass_whiskey"
+    },
+    {
+      "item": "sakura:lemon_juice"
+    },
+    {
+      "tag": "c:sugar"
+    }
+  ],
+  "result": {
+    "id": "sakura:glass_hot_toddy"
+  }
+}

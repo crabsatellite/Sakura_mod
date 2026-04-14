@@ -1,0 +1,24 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 50,
+    "fluidTag": "c:water/water"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "tag": "c:sugar"
+    },
+    {
+      "item": "sakura:lemon"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "count": 2,
+    "id": "sakura:fruitsalad"
+  }
+}

@@ -1,10 +1,7 @@
 package cn.mcmod.sakura.block.foods;
 
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod_mmf.mmlib.item.info.FoodInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,14 +20,25 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod_mmf.mmlib.item.info.FoodInfo;
+import com.mojang.serialization.MapCodec;
 
 public class TeishokuBlock extends Block {
+    public static final MapCodec<TeishokuBlock> CODEC = simpleCodec(p -> new TeishokuBlock(null));
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final IntegerProperty BITES = IntegerProperty.create("bites", 0, 3);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
     private final FoodInfo info;
     public TeishokuBlock(FoodInfo info) {
-        super(Properties.copy(Blocks.OAK_SLAB));
+        super(Properties.ofFullCopy(Blocks.OAK_SLAB).noOcclusion());
         this.info = info;
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
@@ -50,9 +58,8 @@ public class TeishokuBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
-            BlockHitResult hitResult) {
-        ItemStack itemstack = player.getItemInHand(hand);
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        ItemStack itemstack = player.getMainHandItem();
         if (level.isClientSide) {
             if (eat(level, pos, state, player).consumesAction()) {
                 return InteractionResult.SUCCESS;

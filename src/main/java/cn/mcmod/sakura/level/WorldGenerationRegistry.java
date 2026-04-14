@@ -1,10 +1,5 @@
 package cn.mcmod.sakura.level;
 
-import java.util.List;
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
-import cn.mcmod.sakura.level.tree.SakuraTreeFeatures;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -12,13 +7,13 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.valueproviders.BiasedToBottomInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
-import net.minecraft.util.valueproviders.BiasedToBottomInt;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
@@ -30,6 +25,12 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseThresholdP
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
+import cn.mcmod.sakura.level.tree.SakuraTreeFeatures;
+
+import java.util.List;
 
 public class WorldGenerationRegistry {
 
@@ -314,10 +315,10 @@ public class WorldGenerationRegistry {
 
     // ===== Helper methods =====
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(SakuraMod.MODID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, name));
     }
 
     private static ResourceKey<PlacedFeature> pkey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(SakuraMod.MODID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, name));
     }
 }

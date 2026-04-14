@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:dough"
+    },
+    {
+      "tag": "c:salt"
+    },
+    [
+      {
+        "tag": "c:raw_beef"
+      },
+      {
+        "tag": "c:raw_chicken"
+      },
+      {
+        "tag": "c:raw_pork"
+      },
+      {
+        "tag": "c:raw_mutton"
+      }
+    ],
+    {
+      "tag": "c:vegetables"
+    },
+    {
+      "tag": "c:eggs"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "id": "sakura:dough_okinoyaki"
+  }
+}

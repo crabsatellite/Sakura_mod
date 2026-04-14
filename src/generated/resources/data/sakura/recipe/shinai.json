@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "tag": "c:bamboo"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    " B",
+    " B",
+    " S"
+  ],
+  "result": {
+    "id": "sakura:shinai"
+  },
+  "show_notification": true
+}

@@ -1,5 +1,17 @@
 package cn.mcmod.sakura.villager;
 
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.ItemCost;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.ItemLike;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import cn.mcmod.sakura.SakuraMod;
 import cn.mcmod.sakura.item.DrinkRegistry;
 import cn.mcmod.sakura.item.FoodRegistry;
@@ -8,19 +20,9 @@ import cn.mcmod.sakura.item.enums.SakuraAlcoholSet;
 import cn.mcmod.sakura.item.enums.SakuraFoodSet;
 import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.event.village.VillagerTradesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.Nullable;
 import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * Villager trade tables for WA_FARMER and WA_SILK professions.
@@ -45,7 +47,7 @@ import java.util.List;
  *   Level 4 - Expert: Samurai and soldier armor sets
  *   Level 5 - Master: Sakura tier weapons
  */
-@Mod.EventBusSubscriber(modid = SakuraMod.MODID)
+@EventBusSubscriber(modid = SakuraMod.MODID)
 public class SakuraVillagerTrades {
 
     @SubscribeEvent
@@ -358,10 +360,10 @@ public class SakuraVillagerTrades {
             if (playerSells) {
                 // Player gives items, receives coins
                 // MerchantOffer(costA, costB, result, maxUses, xp, priceMultiplier)
-                return new MerchantOffer(itemStack, ItemStack.EMPTY, coinStack, maxTrades, xp, 0.05F);
+                return new MerchantOffer(new net.minecraft.world.item.trading.ItemCost(item, count), java.util.Optional.empty(), coinStack, maxTrades, xp, 0.05F);
             } else {
                 // Player gives coins, receives items
-                return new MerchantOffer(coinStack, ItemStack.EMPTY, itemStack, maxTrades, xp, 0.05F);
+                return new MerchantOffer(new net.minecraft.world.item.trading.ItemCost(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.COIN).get(), coinAmount), java.util.Optional.empty(), itemStack, maxTrades, xp, 0.05F);
             }
         }
     }

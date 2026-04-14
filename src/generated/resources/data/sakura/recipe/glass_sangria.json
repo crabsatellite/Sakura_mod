@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:glass_red_wine"
+    },
+    {
+      "item": "sakura:orange_juice"
+    },
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "result": {
+    "id": "sakura:glass_sangria"
+  }
+}

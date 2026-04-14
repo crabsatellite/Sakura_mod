@@ -1,7 +1,5 @@
 package cn.mcmod.sakura.item;
 
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.client.renderer.KimonoArmorRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -10,12 +8,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import javax.annotation.Nullable;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.client.renderer.KimonoArmorRenderer;
+
 import java.util.function.Consumer;
+import javax.annotation.Nullable;
 
 /**
  * Kimono armor item with support for pattern-specific armor textures.
@@ -38,7 +40,7 @@ public class KimonoItem extends ArmorItem {
     /**
      * Creates a plain kimono/haori with default texture (uses armor material name).
      */
-    public KimonoItem(ArmorMaterial material, Type type, Properties properties) {
+    public KimonoItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         this(material, type, properties, null);
     }
 
@@ -48,21 +50,15 @@ public class KimonoItem extends ArmorItem {
      * @param patternName the pattern texture name (e.g. "kimono_1", "haori_2", "yukata_0", "kimono_miko").
      *                    Must correspond to a texture file at textures/models/armor/{patternName}.png
      */
-    public KimonoItem(ArmorMaterial material, Type type, Properties properties, @Nullable String patternName) {
+    public KimonoItem(Holder<ArmorMaterial> material, Type type, Properties properties, @Nullable String patternName) {
         super(material, type, properties);
         this.patternName = patternName;
     }
 
     @Override
-    public @Nullable String getArmorTexture(ItemStack stack, Entity entity, net.minecraft.world.entity.EquipmentSlot slot, String type) {
-        if (this.patternName != null) {
-            // Pattern-specific armor texture (correct path matching 1.12.2)
-            // ResourceLocation path is relative to assets/{namespace}/, so include "textures/models/armor/"
-            return SakuraMod.MODID + ":textures/models/armor/" + this.patternName + ".png";
-        }
-        // Default: use the base kimono armor material texture path
-        // This falls through to vanilla resolution: sakura:textures/models/armor/kimono_layer_1.png / _layer_2.png
-        return null;
+    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+        String texName = this.patternName != null ? this.patternName : "kimono_base";
+        return ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/models/armor/" + texName + ".png");
     }
 
     /**

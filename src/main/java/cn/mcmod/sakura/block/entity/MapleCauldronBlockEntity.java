@@ -1,17 +1,8 @@
 package cn.mcmod.sakura.block.entity;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.machines.MapleSpileBlock;
-import cn.mcmod.sakura.container.MapleCauldronContainer;
-import cn.mcmod.sakura.fluid.FluidRegistry;
-import cn.mcmod.sakura.item.ItemRegistry;
-import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
-import cn.mcmod_mmf.mmlib.block.entity.HeatableBlockEntity;
-import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -23,14 +14,21 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import cn.mcmod.sakura.block.machines.MapleSpileBlock;
+import cn.mcmod.sakura.container.MapleCauldronContainer;
+import cn.mcmod.sakura.fluid.FluidRegistry;
+import cn.mcmod.sakura.item.ItemRegistry;
+import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
+import cn.mcmod_mmf.mmlib.block.entity.HeatableBlockEntity;
+import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * BlockEntity for the Maple Cauldron block.
@@ -43,18 +41,17 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
     public static final int TANK_CAPACITY = 5000;
 
     private final ItemStackHandler inventory;
-    private LazyOptional<IItemHandler> itemHandler;
-    private LazyOptional<FluidTank> fluidTank;
+    private final FluidTank tank;
     protected final ContainerData tileData;
 
     private int cookTime;
     private int mapleTime;
+    private int burningState;
 
     public MapleCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.MAPLE_CAULDRON.get(), pos, state);
         this.inventory = createHandler();
-        this.itemHandler = LazyOptional.of(() -> inventory);
-        this.fluidTank = LazyOptional.of(this::createFluidHandler);
+        this.tank = createFluidHandler();
         this.tileData = createIntArray();
     }
 
@@ -71,6 +68,9 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
 
         // Cooking - when heated and has enough fluid, produces maple sugar items
         changed |= blockEntity.tickCooking(level);
+
+        // Update burning state for client sync
+        blockEntity.burningState = blockEntity.isBurning(level) ? 1 : 0;
 
         if (changed) {
             blockEntity.inventoryChanged();
@@ -95,8 +95,7 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
 
         if (mapleTime >= 20) {
             mapleTime = 0;
-            FluidTank tank = fluidTank.orElse(null);
-            if (tank != null && tank.getSpace() > 0) {
+            if (tank.getSpace() > 0) {
                 tank.fill(new FluidStack(FluidRegistry.MAPLE_SYRUP.get(), 10), IFluidHandler.FluidAction.EXECUTE);
             }
             changed = true;
@@ -106,8 +105,6 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
     }
 
     private boolean isBurning(Level level) {
-        FluidTank tank = fluidTank.orElse(null);
-        if (tank == null) return false;
         FluidStack fluid = tank.getFluid();
         return !fluid.isEmpty()
                 && fluid.getFluid() == FluidRegistry.MAPLE_SYRUP.get()
@@ -117,8 +114,6 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
 
     private boolean tickCooking(Level level) {
         boolean changed = false;
-        FluidTank tank = fluidTank.orElse(null);
-        if (tank == null) return false;
 
         boolean wasBurning = isBurning(level);
 
@@ -159,8 +154,8 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
         return this.inventory;
     }
 
-    public LazyOptional<FluidTank> getFluidTank() {
-        return fluidTank;
+    public FluidTank getFluidTank() {
+        return tank;
     }
 
     public NonNullList<ItemStack> getDroppableInventory() {
@@ -170,57 +165,28 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
     }
 
     @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (!this.isRemoved()) {
-            if (cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
-                return itemHandler.cast();
-            }
-            if (cap.equals(ForgeCapabilities.FLUID_HANDLER)) {
-                return this.fluidTank.cast();
-            }
-        }
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
-        inventory.deserializeNBT(compound.getCompound("Inventory"));
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
+        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
         mapleTime = compound.getInt("MapleTime");
         cookTime = compound.getInt("CookTime");
-        fluidTank.ifPresent(fluid -> fluid.readFromNBT(compound.getCompound("Tank")));
+        tank.readFromNBT(registries, compound.getCompound("Tank"));
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        compound.put("Inventory", inventory.serializeNBT());
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
+        compound.put("Inventory", inventory.serializeNBT(registries));
         compound.putInt("MapleTime", mapleTime);
         compound.putInt("CookTime", cookTime);
         CompoundTag tankTag = new CompoundTag();
-        fluidTank.ifPresent(fluid -> compound.put("Tank", fluid.writeToNBT(tankTag)));
+        tank.writeToNBT(registries, tankTag);
+        compound.put("Tank", tankTag);
     }
 
     @Override
     public void setRemoved() {
         super.setRemoved();
-        itemHandler.invalidate();
-        fluidTank.invalidate();
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        itemHandler.invalidate();
-        fluidTank.invalidate();
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        itemHandler = LazyOptional.of(() -> inventory);
-        fluidTank = LazyOptional.of(this::createFluidHandler);
     }
 
     private ItemStackHandler createHandler() {
@@ -261,6 +227,8 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
                     return MapleCauldronBlockEntity.this.mapleTime;
                 case 1:
                     return MapleCauldronBlockEntity.this.cookTime;
+                case 2:
+                    return MapleCauldronBlockEntity.this.burningState;
                 default:
                     return 0;
                 }
@@ -275,12 +243,13 @@ public class MapleCauldronBlockEntity extends SyncedBlockEntity implements MenuP
                 case 1:
                     MapleCauldronBlockEntity.this.cookTime = value;
                     break;
+                // index 2 is computed server-side, client stores it in SimpleContainerData
                 }
             }
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
     }

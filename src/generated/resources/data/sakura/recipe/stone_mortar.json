@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:cobblestone"
+    },
+    "L": {
+      "tag": "c:lumber"
+    }
+  },
+  "pattern": [
+    "L  ",
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "sakura:stone_mortar"
+  },
+  "show_notification": true
+}

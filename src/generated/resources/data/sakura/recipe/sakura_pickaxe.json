@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "item": "sakura:sakura_diamond"
+    },
+    "L": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "DDD",
+    " L ",
+    " L "
+  ],
+  "result": {
+    "id": "sakura:sakura_pickaxe"
+  },
+  "show_notification": true
+}

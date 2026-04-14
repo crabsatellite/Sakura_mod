@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#sakura:can_spawn_ume_tree",
-  "features": "sakura:trees_ume",
-  "step": "vegetal_decoration"
-}

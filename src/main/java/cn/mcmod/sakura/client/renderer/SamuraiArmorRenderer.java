@@ -1,11 +1,11 @@
 package cn.mcmod.sakura.client.renderer;
 
-import cn.mcmod.sakura.client.model.SamuraiArmorModel;
-import cn.mcmod.sakura.client.model.SoldierArmorModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import cn.mcmod.sakura.client.model.SamuraiArmorModel;
+import cn.mcmod.sakura.client.model.SoldierArmorModel;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

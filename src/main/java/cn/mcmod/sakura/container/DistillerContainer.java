@@ -1,9 +1,5 @@
 package cn.mcmod.sakura.container;
 
-import java.util.Objects;
-
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.block.entity.DistillerBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,10 +10,14 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.block.entity.DistillerBlockEntity;
+
+import java.util.Objects;
 
 public class DistillerContainer extends AbstractContainerMenu {
 

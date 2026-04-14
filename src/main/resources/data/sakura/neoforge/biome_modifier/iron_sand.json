@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#sakura:has_iron_sand",
+  "features": "sakura:ore_iron_sand",
+  "step": "underground_ores"
+}

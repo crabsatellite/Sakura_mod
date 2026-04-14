@@ -1,0 +1,27 @@
+{
+  "type": "sakura:stone_mortar",
+  "experience": 0.0,
+  "ingredients": [
+    {
+      "tag": "c:seeds/rice"
+    },
+    {
+      "tag": "c:seeds/rice"
+    },
+    {
+      "tag": "c:seeds/rice"
+    },
+    {
+      "tag": "c:seeds/rice"
+    }
+  ],
+  "recipeTime": 200,
+  "results": [
+    {
+      "item": "sakura:brown_rice"
+    },
+    {
+      "item": "sakura:brown_rice"
+    }
+  ]
+}

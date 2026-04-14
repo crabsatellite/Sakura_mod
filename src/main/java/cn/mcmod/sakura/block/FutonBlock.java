@@ -1,16 +1,10 @@
 package cn.mcmod.sakura.block;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -33,9 +27,14 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import com.mojang.serialization.MapCodec;
+
+import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * Futon bed block from the Sakura mod (1.12.2 BlockFuton).
@@ -44,6 +43,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * Unlike vanilla BedBlock, it has a very low profile (4.5 pixels tall).
  */
 public class FutonBlock extends Block {
+    public static final MapCodec<FutonBlock> CODEC = simpleCodec(p -> new FutonBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<BedPart> PART = EnumProperty.create("part", BedPart.class);
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
@@ -78,8 +85,7 @@ public class FutonBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-                                 InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.isClientSide()) {
             return InteractionResult.CONSUME;
         }
@@ -133,7 +139,7 @@ public class FutonBlock extends Block {
     }
 
     @Override
-    public boolean isBed(BlockState state, BlockGetter level, BlockPos pos, @Nullable Entity player) {
+    public boolean isBed(BlockState state, BlockGetter level, BlockPos pos, @Nullable LivingEntity sleeper) {
         return true;
     }
 
@@ -186,7 +192,7 @@ public class FutonBlock extends Block {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide() && player.isCreative()) {
             BedPart part = state.getValue(PART);
             if (part == BedPart.HEAD) {
@@ -198,7 +204,7 @@ public class FutonBlock extends Block {
                 }
             }
         }
-        super.playerWillDestroy(level, pos, state, player);
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override

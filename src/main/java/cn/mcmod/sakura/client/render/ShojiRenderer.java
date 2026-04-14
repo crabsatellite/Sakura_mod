@@ -1,12 +1,5 @@
 package cn.mcmod.sakura.client.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.block.ShojiBlock;
-import cn.mcmod.sakura.block.entity.ShojiBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -14,6 +7,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.block.ShojiBlock;
+import cn.mcmod.sakura.block.entity.ShojiBlockEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -34,7 +33,7 @@ public class ShojiRenderer implements BlockEntityRenderer<ShojiBlockEntity> {
 
     static {
         for (int i = 0; i < MAX_TYPES; i++) {
-            TEXTURES[i] = new ResourceLocation(SakuraMod.MODID, "textures/entity/block/shoji_type_" + i + ".png");
+            TEXTURES[i] = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/entity/block/shoji_type_" + i + ".png");
         }
     }
 
@@ -181,12 +180,12 @@ public class ShojiRenderer implements BlockEntityRenderer<ShojiBlockEntity> {
             float x, float y, float z, float u, float v,
             float nx, float ny, float nz,
             int packedLight, int packedOverlay) {
-        builder.vertex(pose, x, y, z)
-                .color(255, 255, 255, 255)
-                .uv(u, v)
-                .overlayCoords(packedOverlay)
-                .uv2(packedLight)
-                .normal(normal, nx, ny, nz)
-                .endVertex();
+        org.joml.Vector3f transformedNormal = normal.transform(nx, ny, nz, new org.joml.Vector3f());
+        builder.addVertex(pose, x, y, z)
+                .setColor(255, 255, 255, 255)
+                .setUv(u, v)
+                .setOverlay(packedOverlay)
+                .setLight(packedLight)
+                .setNormal(transformedNormal.x(), transformedNormal.y(), transformedNormal.z());
     }
 }

@@ -1,8 +1,8 @@
 package cn.mcmod.sakura.level.biome;
 
-import cn.mcmod.sakura.SakuraConfig;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import cn.mcmod.sakura.SakuraConfig;
 
 import java.util.LinkedHashMap;
 

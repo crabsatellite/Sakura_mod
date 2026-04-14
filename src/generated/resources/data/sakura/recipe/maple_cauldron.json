@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:ingots/iron"
+    },
+    "P": {
+      "tag": "c:lumber"
+    }
+  },
+  "pattern": [
+    "#P#",
+    "#P#",
+    "# #"
+  ],
+  "result": {
+    "id": "sakura:maple_cauldron"
+  },
+  "show_notification": true
+}

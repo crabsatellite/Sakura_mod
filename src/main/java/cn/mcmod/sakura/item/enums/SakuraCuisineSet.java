@@ -1,10 +1,10 @@
 package cn.mcmod.sakura.item.enums;
 
-import java.util.function.Supplier;
-
+import net.minecraft.world.item.Item;
 import cn.mcmod.sakura.item.ItemRegistry;
 import cn.mcmod_mmf.mmlib.item.info.FoodInfo;
-import net.minecraft.world.item.Item;
+
+import java.util.function.Supplier;
 
 public enum SakuraCuisineSet {
     BEEF_STICK(FoodInfo.builder().name("beef_stick").amountAndCalories(8, 0.8F).water(2F).nutrients(0F, 0F, 0F, 4F, 0F)

@@ -1,14 +1,8 @@
 package cn.mcmod.sakura.block.entity;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.container.BarrelOutputContainer;
-import cn.mcmod.sakura.recipes.LiquidToItemRecipe;
-import cn.mcmod.sakura.recipes.LiquidToItemRegistry;
-import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,14 +13,18 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import cn.mcmod.sakura.container.BarrelOutputContainer;
+import cn.mcmod.sakura.recipes.LiquidToItemRecipe;
+import cn.mcmod.sakura.recipes.LiquidToItemRegistry;
+import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * BlockEntity for the Barrel Output block.
@@ -42,14 +40,12 @@ public class BarrelOutputBlockEntity extends SyncedBlockEntity implements MenuPr
     public static final int OUTPUT_SLOT = 1;
 
     private final ItemStackHandler inventory;
-    private LazyOptional<IItemHandler> itemHandler;
-    private LazyOptional<FluidTank> fluidTank;
+    private final FluidTank tank;
 
     public BarrelOutputBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.BARREL_OUTPUT.get(), pos, state);
         this.inventory = createHandler();
-        this.itemHandler = LazyOptional.of(() -> inventory);
-        this.fluidTank = LazyOptional.of(this::createFluidHandler);
+        this.tank = createFluidHandler();
     }
 
     public static void workingTick(Level level, BlockPos pos, BlockState state, BarrelOutputBlockEntity blockEntity) {
@@ -70,60 +66,59 @@ public class BarrelOutputBlockEntity extends SyncedBlockEntity implements MenuPr
             return;
         }
 
-        fluidTank.ifPresent(tank -> {
-            FluidStack fluidInTank = tank.getFluid();
-            if (fluidInTank.isEmpty()) {
+        FluidStack fluidInTank = tank.getFluid();
+        if (fluidInTank.isEmpty()) {
+            return;
+        }
+
+        LiquidToItemRecipe recipe = LiquidToItemRegistry.findRecipe(fluidInTank, containerStack);
+        if (recipe == null) {
+            return;
+        }
+
+        // Check if output slot can accept the result
+        ItemStack result = recipe.getResultItem();
+        ItemStack outputStack = inventory.getStackInSlot(OUTPUT_SLOT);
+        if (!outputStack.isEmpty()) {
+            if (!ItemStack.isSameItem(outputStack, result)) {
                 return;
             }
-
-            LiquidToItemRecipe recipe = LiquidToItemRegistry.findRecipe(fluidInTank, containerStack);
-            if (recipe == null) {
+            if (outputStack.getCount() + result.getCount() > outputStack.getMaxStackSize()) {
                 return;
             }
+        }
 
-            // Check if output slot can accept the result
-            ItemStack result = recipe.getResultItem();
-            ItemStack outputStack = inventory.getStackInSlot(OUTPUT_SLOT);
-            if (!outputStack.isEmpty()) {
-                if (!ItemStack.isSameItem(outputStack, result)) {
-                    return;
-                }
-                if (outputStack.getCount() + result.getCount() > outputStack.getMaxStackSize()) {
-                    return;
-                }
+        // Drain the required fluid amount
+        FluidStack drained = tank.drain(recipe.getRequiredFluid().getAmount(), FluidAction.EXECUTE);
+        if (drained.isEmpty() || drained.getAmount() < recipe.getRequiredFluid().getAmount()) {
+            // Not enough fluid; refund what we drained
+            if (!drained.isEmpty()) {
+                tank.fill(drained, FluidAction.EXECUTE);
             }
+            return;
+        }
 
-            // Drain the required fluid amount
-            FluidStack drained = tank.drain(recipe.getRequiredFluid().getAmount(), FluidAction.EXECUTE);
-            if (drained.isEmpty() || drained.getAmount() < recipe.getRequiredFluid().getAmount()) {
-                // Not enough fluid; refund what we drained
-                if (!drained.isEmpty()) {
-                    tank.fill(drained, FluidAction.EXECUTE);
-                }
-                return;
-            }
+        // Consume one container item from input slot
+        containerStack.shrink(1);
 
-            // Consume one container item from input slot
-            containerStack.shrink(1);
+        // Place or stack result in output slot
+        if (outputStack.isEmpty()) {
+            inventory.setStackInSlot(OUTPUT_SLOT, result.copy());
+        } else {
+            outputStack.grow(result.getCount());
+        }
 
-            // Place or stack result in output slot
-            if (outputStack.isEmpty()) {
-                inventory.setStackInSlot(OUTPUT_SLOT, result.copy());
-            } else {
-                outputStack.grow(result.getCount());
-            }
-
-            inventoryChanged();
-        });
+        inventoryChanged();
     }
 
     public ItemStackHandler getInventory() {
         return this.inventory;
     }
 
-    public LazyOptional<FluidTank> getFluidTank() {
-        return fluidTank;
+    public FluidTank getFluidTank() {
+        return tank;
     }
+
 
     public NonNullList<ItemStack> getDroppableInventory() {
         NonNullList<ItemStack> drops = NonNullList.create();
@@ -134,53 +129,23 @@ public class BarrelOutputBlockEntity extends SyncedBlockEntity implements MenuPr
     }
 
     @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (!this.isRemoved()) {
-            if (cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
-                return itemHandler.cast();
-            }
-            if (cap.equals(ForgeCapabilities.FLUID_HANDLER)) {
-                return this.fluidTank.cast();
-            }
-        }
-        return super.getCapability(cap, side);
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
+        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
+        tank.readFromNBT(registries, compound.getCompound("Tank"));
     }
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
-        inventory.deserializeNBT(compound.getCompound("Inventory"));
-        fluidTank.ifPresent(fluid -> fluid.readFromNBT(compound.getCompound("Tank")));
-    }
-
-    @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        compound.put("Inventory", inventory.serializeNBT());
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
+        compound.put("Inventory", inventory.serializeNBT(registries));
         CompoundTag tankTag = new CompoundTag();
-        fluidTank.ifPresent(fluid -> compound.put("Tank", fluid.writeToNBT(tankTag)));
+        compound.put("Tank", tank.writeToNBT(registries, tankTag));
     }
 
     @Override
     public void setRemoved() {
         super.setRemoved();
-        itemHandler.invalidate();
-        fluidTank.invalidate();
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        itemHandler.invalidate();
-        fluidTank.invalidate();
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        itemHandler = LazyOptional.of(() -> inventory);
-        fluidTank = LazyOptional.of(this::createFluidHandler);
     }
 
     private ItemStackHandler createHandler() {

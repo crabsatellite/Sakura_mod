@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "tag": "c:lumber"
+    }
+  },
+  "pattern": [
+    "L L",
+    "LLL"
+  ],
+  "result": {
+    "id": "sakura:bento_box"
+  },
+  "show_notification": true
+}

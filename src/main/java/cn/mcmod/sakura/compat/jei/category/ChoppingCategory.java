@@ -1,12 +1,20 @@
 package cn.mcmod.sakura.compat.jei.category;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import cn.mcmod.sakura.SakuraMod;
 import cn.mcmod.sakura.block.BlockRegistry;
 import cn.mcmod.sakura.compat.jei.JEIPlugin;
 import cn.mcmod.sakura.recipes.ChoppingRecipe;
-import cn.mcmod_mmf.mmlib.recipe.ChanceResult;
+import cn.mcmod.sakura.recipes.base.ChanceResult;
 import cn.mcmod_mmf.mmlib.utils.I18nUtils;
+import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -16,18 +24,10 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 public class ChoppingCategory implements IRecipeCategory<ChoppingRecipe> {
 
-    public static final ResourceLocation UID = new ResourceLocation(SakuraMod.MODID, "chopping");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "chopping");
     private final Component title;
     private final IDrawable background;
     private final IDrawable icon;
@@ -35,7 +35,7 @@ public class ChoppingCategory implements IRecipeCategory<ChoppingRecipe> {
     private final IDrawable chancedSlot;
     public ChoppingCategory(IGuiHelper helper) {
         title = Component.translatable("sakura.jei.chopping");
-        ResourceLocation backgroundImage = new ResourceLocation(SakuraMod.MODID, "textures/gui/jei_chopping.png");
+        ResourceLocation backgroundImage = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/gui/jei_chopping.png");
         background = helper.createDrawable(backgroundImage, 4, 4, 92, 74);
         chancedSlot = helper.createDrawable(backgroundImage, 100, 0, 18, 18);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,

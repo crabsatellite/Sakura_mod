@@ -1,21 +1,18 @@
 package cn.mcmod.sakura.entity;
 
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.item.ItemRegistry;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -27,11 +24,16 @@ import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.providers.VanillaEnchantmentProviders;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import cn.mcmod.sakura.item.ItemRegistry;
+
+import javax.annotation.Nullable;
 
 public class SamuraiIllagerEntity extends AbstractIllager {
     public SamuraiIllagerEntity(EntityType<? extends SamuraiIllagerEntity> type, Level level) {
@@ -74,15 +76,16 @@ public class SamuraiIllagerEntity extends AbstractIllager {
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-            MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag) {
-        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, tag);
-        populateDefaultEquipmentSlots(this.random, difficulty);
-        populateDefaultEquipmentEnchantments(this.random, difficulty);
+            MobSpawnType spawnType, @Nullable SpawnGroupData spawnData) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+        RandomSource randomsource = level.getRandom();
+        populateDefaultEquipmentSlots(randomsource, difficulty);
+        populateDefaultEquipmentEnchantments(level, randomsource, difficulty);
         return spawnData;
     }
 
     @Override
-    protected void populateDefaultEquipmentSlots(net.minecraft.util.RandomSource random, DifficultyInstance difficulty) {
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
         if (this.getCurrentRaid() == null) {
             // 20% chance for tachi (scaled by difficulty), otherwise katana
             float additionalDifficulty = difficulty.getSpecialMultiplier();
@@ -95,28 +98,34 @@ public class SamuraiIllagerEntity extends AbstractIllager {
     }
 
     @Override
-    protected void populateDefaultEquipmentEnchantments(net.minecraft.util.RandomSource random, DifficultyInstance difficulty) {
-        super.populateDefaultEquipmentEnchantments(random, difficulty);
+    protected void populateDefaultEquipmentEnchantments(ServerLevelAccessor level, RandomSource random, DifficultyInstance difficulty) {
+        super.populateDefaultEquipmentEnchantments(level, random, difficulty);
         // Additional enchantment chance based on difficulty (matching vanilla vindicator logic)
-        if (this.random.nextInt(3 + difficulty.getDifficulty().getId()) > 3) {
+        if (random.nextInt(3 + difficulty.getDifficulty().getId()) > 3) {
             ItemStack mainhand = this.getMainHandItem();
-            EnchantmentHelper.enchantItem(this.random, mainhand, 5 + difficulty.getDifficulty().getId() * this.random.nextInt(6), false);
+            // In 1.21, enchantItem requires RegistryAccess; use MOB_SPAWN_EQUIPMENT provider as a reasonable default
+            EnchantmentHelper.enchantItemFromProvider(
+                mainhand, level.registryAccess(), VanillaEnchantmentProviders.MOB_SPAWN_EQUIPMENT, difficulty, random
+            );
         }
     }
 
     @Override
-    public void applyRaidBuffs(int wave, boolean hasBonus) {
+    public void applyRaidBuffs(ServerLevel level, int wave, boolean unused) {
         // During raids, always equip tachi with enchantment scaling by wave
         ItemStack weapon = new ItemStack(ItemRegistry.TACHI.get());
-        net.minecraft.world.entity.raid.Raid raid = this.getCurrentRaid();
+        Raid raid = this.getCurrentRaid();
         if (raid != null) {
-            int enchLevel = 1;
-            if (wave > raid.getNumGroups(Difficulty.NORMAL)) {
-                enchLevel = 2;
-            }
             boolean shouldEnchant = this.random.nextFloat() <= raid.getEnchantOdds();
             if (shouldEnchant) {
-                EnchantmentHelper.enchantItem(this.random, weapon, 5 + enchLevel * 3, false);
+                // Use vindicator enchantment providers which scale by wave (matching vanilla behavior)
+                net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.providers.EnchantmentProvider> resourcekey =
+                    wave > raid.getNumGroups(Difficulty.NORMAL)
+                        ? VanillaEnchantmentProviders.RAID_VINDICATOR_POST_WAVE_5
+                        : VanillaEnchantmentProviders.RAID_VINDICATOR;
+                EnchantmentHelper.enchantItemFromProvider(
+                    weapon, level.registryAccess(), resourcekey, level.getCurrentDifficultyAt(this.blockPosition()), this.random
+                );
             }
         }
         this.setItemSlot(EquipmentSlot.MAINHAND, weapon);
@@ -131,13 +140,15 @@ public class SamuraiIllagerEntity extends AbstractIllager {
 
     /**
      * Treat other illager-type mobs as allies so this entity doesn't attack them.
+     * Note: AbstractIllager already handles this via EntityTypeTags.ILLAGER_FRIENDS in 1.21.
+     * This override is kept for clarity but delegates to super which uses the tag-based system.
      */
     @Override
     public boolean isAlliedTo(Entity other) {
         if (super.isAlliedTo(other)) {
             return true;
         }
-        if (other instanceof LivingEntity livingEntity && livingEntity.getMobType() == MobType.ILLAGER) {
+        if (other.getType().is(EntityTypeTags.ILLAGER_FRIENDS)) {
             return this.getTeam() == null && other.getTeam() == null;
         }
         return false;

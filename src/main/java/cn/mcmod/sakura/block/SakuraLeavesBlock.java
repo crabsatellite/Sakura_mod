@@ -1,17 +1,26 @@
 package cn.mcmod.sakura.block;
 
-import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import com.mojang.serialization.MapCodec;
+
+import java.util.function.Supplier;
 
 public class SakuraLeavesBlock extends LeavesBlock {
+    public static final MapCodec<SakuraLeavesBlock> CODEC = simpleCodec(p -> new SakuraLeavesBlock(p, null));
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     private final Supplier<SimpleParticleType> leaf_particle;
 
     public SakuraLeavesBlock(Properties builder, Supplier<SimpleParticleType> particle) {

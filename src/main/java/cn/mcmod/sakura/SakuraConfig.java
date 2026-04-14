@@ -1,41 +1,41 @@
 package cn.mcmod.sakura;
 
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class SakuraConfig {
-    public static final ForgeConfigSpec COMMON_CONFIG;
+    public static final ModConfigSpec COMMON_CONFIG;
     public static final CommonConfig COMMON;
 
     static {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         COMMON = new CommonConfig(builder);
         COMMON_CONFIG = builder.build();
     }
 
     public static class CommonConfig {
         // World generation weights
-        public final ForgeConfigSpec.IntValue vanillaWeight;
-        public final ForgeConfigSpec.IntValue pepperWeight;
-        public final ForgeConfigSpec.IntValue bambooshotWeight;
-        public final ForgeConfigSpec.IntValue umeWeight;
-        public final ForgeConfigSpec.IntValue ironSandAmount;
-        public final ForgeConfigSpec.IntValue hotspringWeight;
+        public final ModConfigSpec.IntValue vanillaWeight;
+        public final ModConfigSpec.IntValue pepperWeight;
+        public final ModConfigSpec.IntValue bambooshotWeight;
+        public final ModConfigSpec.IntValue umeWeight;
+        public final ModConfigSpec.IntValue ironSandAmount;
+        public final ModConfigSpec.IntValue hotspringWeight;
 
         // Biome generation
-        public final ForgeConfigSpec.BooleanValue enableBambooForestBiome;
-        public final ForgeConfigSpec.BooleanValue enableMapleForestBiome;
+        public final ModConfigSpec.BooleanValue enableBambooForestBiome;
+        public final ModConfigSpec.BooleanValue enableMapleForestBiome;
 
         // Gameplay
-        public final ForgeConfigSpec.BooleanValue harderIronRecipe;
-        public final ForgeConfigSpec.IntValue harderIronDifficult;
-        public final ForgeConfigSpec.BooleanValue everyWhereSakuraDiamond;
+        public final ModConfigSpec.BooleanValue harderIronRecipe;
+        public final ModConfigSpec.IntValue harderIronDifficult;
+        public final ModConfigSpec.BooleanValue everyWhereSakuraDiamond;
 
         // Display
-        public final ForgeConfigSpec.BooleanValue showBambooInCreative;
-        public final ForgeConfigSpec.BooleanValue showSakuraInCreative;
+        public final ModConfigSpec.BooleanValue showBambooInCreative;
+        public final ModConfigSpec.BooleanValue showSakuraInCreative;
 
-        public CommonConfig(ForgeConfigSpec.Builder builder) {
+        public CommonConfig(ModConfigSpec.Builder builder) {
             builder.comment("World Generation Settings").push("worldgen");
 
             vanillaWeight = builder

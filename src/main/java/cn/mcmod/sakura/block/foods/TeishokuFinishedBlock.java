@@ -18,18 +18,27 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import com.mojang.serialization.MapCodec;
 
 public class TeishokuFinishedBlock extends Block {
+    public static final MapCodec<TeishokuFinishedBlock> CODEC = simpleCodec(p -> new TeishokuFinishedBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
     public TeishokuFinishedBlock() {
-        super(Properties.copy(Blocks.OAK_SLAB));
+        super(Properties.ofFullCopy(Blocks.OAK_SLAB).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-            BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
+        InteractionHand handIn = InteractionHand.MAIN_HAND;
         if (worldIn.isClientSide) {
             if (this.takePlates(worldIn, pos, state, player, handIn).consumesAction()) {
                 return InteractionResult.SUCCESS;

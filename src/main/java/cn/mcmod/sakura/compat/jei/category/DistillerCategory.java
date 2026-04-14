@@ -1,13 +1,19 @@
 package cn.mcmod.sakura.compat.jei.category;
 
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import cn.mcmod.sakura.SakuraMod;
 import cn.mcmod.sakura.block.BlockRegistry;
 import cn.mcmod.sakura.block.entity.DistillerBlockEntity;
 import cn.mcmod.sakura.compat.jei.JEIPlugin;
 import cn.mcmod.sakura.recipes.DistillerRecipe;
-import cn.mcmod_mmf.mmlib.fluid.FluidIngredient;
+import cn.mcmod.sakura.recipes.base.FluidIngredient;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.forge.ForgeTypes;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -17,16 +23,10 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 public class DistillerCategory implements IRecipeCategory<DistillerRecipe> {
 
-    public static final ResourceLocation UID = new ResourceLocation(SakuraMod.MODID, "distillation");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "distillation");
     protected final IDrawable heatIndicator;
     protected final IDrawableAnimated arrow;
     protected final IDrawableAnimated bubbles;
@@ -36,7 +36,7 @@ public class DistillerCategory implements IRecipeCategory<DistillerRecipe> {
 
     public DistillerCategory(IGuiHelper helper) {
         title = Component.translatable("sakura.jei.distillation");
-        ResourceLocation backgroundImage = new ResourceLocation(SakuraMod.MODID, "textures/gui/distiller.png");
+        ResourceLocation backgroundImage = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/gui/distiller.png");
         background = helper.createDrawable(backgroundImage, 32, 16, 110, 54);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlockRegistry.DISTILLER.get()));
         heatIndicator = helper.createDrawable(backgroundImage, 176, 17, 18, 18);
@@ -78,7 +78,7 @@ public class DistillerCategory implements IRecipeCategory<DistillerRecipe> {
         if(recipe.getRequiredFluid() != FluidIngredient.EMPTY)
             builder.addSlot(RecipeIngredientRole.INPUT, 1, 1)
             .setFluidRenderer(DistillerBlockEntity.TANK_CAPACITY, true, 16, 52)
-            .addIngredients(ForgeTypes.FLUID_STACK, recipe.getRequiredFluid().getMatchingFluidStacks());
+            .addIngredients(NeoForgeTypes.FLUID_STACK, recipe.getRequiredFluid().getMatchingFluidStacks());
         
         for (int row = 0; row < 3; ++row) {
             int inputIndex = row;
@@ -90,7 +90,7 @@ public class DistillerCategory implements IRecipeCategory<DistillerRecipe> {
         if(!recipe.getResultFluid().isEmpty())
             builder.addSlot(RecipeIngredientRole.OUTPUT, 93, 1)
             .setFluidRenderer(DistillerBlockEntity.TANK_CAPACITY, true, 16, 52)
-            .addIngredient(ForgeTypes.FLUID_STACK, recipe.getResultFluid());
+            .addIngredient(NeoForgeTypes.FLUID_STACK, recipe.getResultFluid());
     }
 
     @Override

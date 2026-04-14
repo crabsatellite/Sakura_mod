@@ -1,21 +1,9 @@
 package cn.mcmod.sakura.block.entity;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.container.CampfirePotContainer;
-import cn.mcmod.sakura.recipes.CookingPotRecipe;
-import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
-import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
-import cn.mcmod_mmf.mmlib.fluid.FluidIngredient;
-import cn.mcmod_mmf.mmlib.utils.LevelUtils;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -27,18 +15,30 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
+import cn.mcmod.sakura.block.CampfirePotBlock;
+import cn.mcmod.sakura.container.CampfirePotContainer;
+import cn.mcmod.sakura.recipes.CookingPotRecipe;
+import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
+import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
+import cn.mcmod.sakura.recipes.base.FluidIngredient;
+import cn.mcmod_mmf.mmlib.utils.LevelUtils;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
+import java.util.List;
+import java.util.Optional;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * BlockEntity for the Campfire Pot block.
@@ -54,10 +54,7 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
     public static final int TOTAL_SLOTS = 10;
 
     private final ItemStackHandler inventory;
-    private LazyOptional<IItemHandler> inputHandler;
-    private LazyOptional<IItemHandler> outputHandler;
     private final FluidTank tank;
-    private LazyOptional<FluidTank> fluidTank;
     protected final ContainerData tileData;
 
     private final Object2IntOpenHashMap<ResourceLocation> experienceTracker;
@@ -72,10 +69,7 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
     public CampfirePotBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.CAMPFIRE_POT.get(), pos, state);
         this.inventory = createHandler();
-        this.inputHandler = LazyOptional.of(() -> inventory);
-        this.outputHandler = LazyOptional.of(() -> inventory);
         this.tank = createFluidHandler();
-        this.fluidTank = LazyOptional.of(() -> this.tank);
         this.tileData = createIntArray();
         this.experienceTracker = new Object2IntOpenHashMap<>();
         this.checkNewRecipe = true;
@@ -106,6 +100,7 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
 
         if (wasBurning != blockEntity.isBurning()) {
             changed = true;
+            CampfirePotBlock.setLitState(blockEntity.isBurning(), level, pos, state);
         }
 
         if (changed) {
@@ -128,17 +123,13 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
         }
 
         if (lastRecipeID != null) {
-            Optional<? extends Recipe<RecipeWrapper>> recipeOpt = level.getRecipeManager()
+            Optional<RecipeHolder<CookingPotRecipe>> recipeOpt = level.getRecipeManager()
                     .getAllRecipesFor(RecipeTypeRegistry.COOKING_RECIPE_TYPE.get()).stream()
-                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst();
+                    .filter(holder -> holder.id().equals(lastRecipeID)).findFirst();
             if (recipeOpt.isPresent()) {
-                Recipe<RecipeWrapper> recipe = recipeOpt.get();
-                if (recipe instanceof CookingPotRecipe cookingRecipe) {
-                    if (cookingRecipe.matchesWithFluid(
-                            this.tank.getFluid(),
-                            inventoryWrapper, level)) {
-                        return Optional.of(cookingRecipe);
-                    }
+                CookingPotRecipe recipe = recipeOpt.get().value();
+                if (recipe.matchesWithFluid(this.tank.getFluid(), inventoryWrapper, level)) {
+                    return Optional.of(recipe);
                 }
             } else {
                 lastRecipeID = null;
@@ -146,13 +137,12 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
         }
 
         if (checkNewRecipe) {
-            List<CookingPotRecipe> recipes = level.getRecipeManager()
+            List<RecipeHolder<CookingPotRecipe>> recipes = level.getRecipeManager()
                     .getRecipesFor(RecipeTypeRegistry.COOKING_RECIPE_TYPE.get(), inventoryWrapper, level);
-            for (CookingPotRecipe recipe : recipes) {
-                if (recipe.matchesWithFluid(
-                        this.tank.getFluid(),
-                        inventoryWrapper, level)) {
-                    lastRecipeID = recipe.getId();
+            for (RecipeHolder<CookingPotRecipe> holder : recipes) {
+                CookingPotRecipe recipe = holder.value();
+                if (recipe.matchesWithFluid(this.tank.getFluid(), inventoryWrapper, level)) {
+                    lastRecipeID = holder.id();
                     return Optional.of(recipe);
                 }
             }
@@ -211,7 +201,7 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
                     recipe.getRequiredFluid().getRequiredAmount(), FluidAction.EXECUTE);
         }
 
-        trackRecipeExperience(recipe);
+        trackRecipeExperience(lastRecipeID);
 
         for (int i = 0; i < INPUT_SLOTS; ++i) {
             ItemStack slotStack = inventory.getStackInSlot(i);
@@ -229,10 +219,9 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
         return true;
     }
 
-    public void trackRecipeExperience(@Nullable Recipe<?> recipe) {
-        if (recipe != null) {
-            ResourceLocation recipeID = recipe.getId();
-            experienceTracker.addTo(recipeID, 1);
+    public void trackRecipeExperience(@Nullable ResourceLocation recipeId) {
+        if (recipeId != null) {
+            experienceTracker.addTo(recipeId, 1);
         }
     }
 
@@ -245,7 +234,7 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
         for (Object2IntMap.Entry<ResourceLocation> entry : experienceTracker.object2IntEntrySet()) {
             world.getRecipeManager().byKey(entry.getKey()).ifPresent(recipe ->
                     LevelUtils.splitAndSpawnExperience(world, pos, entry.getIntValue(),
-                            ((CookingPotRecipe) recipe).getExperience()));
+                            ((CookingPotRecipe) recipe.value()).getExperience()));
         }
     }
 
@@ -273,9 +262,10 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
         return this.inventory;
     }
 
-    public LazyOptional<FluidTank> getFluidTank() {
-        return fluidTank;
+    public FluidTank getFluidTank() {
+        return tank;
     }
+
 
     public NonNullList<ItemStack> getDroppableInventory() {
         NonNullList<ItemStack> drops = NonNullList.create();
@@ -286,46 +276,28 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
     }
 
     @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (!this.isRemoved()) {
-            if (cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
-                if (side == null || side.equals(Direction.UP)) {
-                    return inputHandler.cast();
-                } else {
-                    return outputHandler.cast();
-                }
-            }
-            if (cap.equals(ForgeCapabilities.FLUID_HANDLER)) {
-                return this.fluidTank.cast();
-            }
-        }
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
-        inventory.deserializeNBT(compound.getCompound("Inventory"));
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
+        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
         burnTime = compound.getInt("BurnTime");
         cookTime = compound.getInt("CookTime");
         maxCookTime = compound.getInt("MaxCookTime");
-        tank.readFromNBT(compound.getCompound("Tank"));
+        tank.readFromNBT(registries, compound.getCompound("Tank"));
         CompoundTag compoundRecipes = compound.getCompound("RecipesUsed");
         for (String key : compoundRecipes.getAllKeys()) {
-            experienceTracker.put(new ResourceLocation(key), compoundRecipes.getInt(key));
+            experienceTracker.put(ResourceLocation.parse(key), compoundRecipes.getInt(key));
         }
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        compound.put("Inventory", inventory.serializeNBT());
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
+        compound.put("Inventory", inventory.serializeNBT(registries));
         compound.putInt("BurnTime", burnTime);
         compound.putInt("CookTime", cookTime);
         compound.putInt("MaxCookTime", maxCookTime);
         CompoundTag tankTag = new CompoundTag();
-        compound.put("Tank", tank.writeToNBT(tankTag));
+        compound.put("Tank", tank.writeToNBT(registries, tankTag));
         CompoundTag compoundRecipes = new CompoundTag();
         experienceTracker.forEach((recipeId, craftedAmount) ->
                 compoundRecipes.putInt(recipeId.toString(), craftedAmount));
@@ -335,25 +307,6 @@ public class CampfirePotBlockEntity extends SyncedBlockEntity implements MenuPro
     @Override
     public void setRemoved() {
         super.setRemoved();
-        inputHandler.invalidate();
-        outputHandler.invalidate();
-        fluidTank.invalidate();
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        inputHandler.invalidate();
-        outputHandler.invalidate();
-        fluidTank.invalidate();
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        inputHandler = LazyOptional.of(() -> inventory);
-        outputHandler = LazyOptional.of(() -> inventory);
-        fluidTank = LazyOptional.of(() -> this.tank);
     }
 
     private ItemStackHandler createHandler() {

@@ -1,7 +1,7 @@
 package cn.mcmod.sakura.item;
 
-import java.util.function.Supplier;
-
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -13,7 +13,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
+
+import java.util.function.Supplier;
 
 /**
  * Sheathed Katana item for Sakura mod.
@@ -50,7 +53,7 @@ public class SheathKatanaItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 20; // Short draw time
     }
 
@@ -59,7 +62,7 @@ public class SheathKatanaItem extends Item {
         if (!(entityLiving instanceof Player player)) return;
         if (level.isClientSide()) return;
 
-        int ticksUsed = getUseDuration(stack) - timeLeft;
+        int ticksUsed = getUseDuration(stack, entityLiving) - timeLeft;
         if (ticksUsed < 4) return; // Minimum hold time
 
         // Perform quick-draw slash
@@ -94,9 +97,9 @@ public class SheathKatanaItem extends Item {
     private void unsheathe(ItemStack sheathKatanaStack, Player player, InteractionHand hand) {
         // Restore the stored blade
         ItemStack blade;
-        CompoundTag tag = sheathKatanaStack.getTag();
+        CompoundTag tag = sheathKatanaStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if (tag != null && tag.contains(TAG_BLADE)) {
-            blade = ItemStack.of(tag.getCompound(TAG_BLADE));
+            blade = ItemStack.parseOptional(player.registryAccess(), tag.getCompound(TAG_BLADE));
         } else {
             // Fallback: create a fresh katana
             blade = new ItemStack(katanaSupplier.get());
@@ -117,7 +120,7 @@ public class SheathKatanaItem extends Item {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(2, attacker, (user) -> user.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        stack.hurtAndBreak(2, attacker, EquipmentSlot.MAINHAND);
         return true;
     }
 }

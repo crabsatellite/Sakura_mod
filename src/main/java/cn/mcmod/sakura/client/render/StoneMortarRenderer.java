@@ -1,14 +1,5 @@
 package cn.mcmod.sakura.client.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.block.entity.StoneMortarBlockEntity;
-import cn.mcmod.sakura.block.machines.StoneMortarBlock;
-import cn.mcmod.sakura.client.layers.LayerRegistry;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -23,10 +14,18 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.block.entity.StoneMortarBlockEntity;
+import cn.mcmod.sakura.block.machines.StoneMortarBlock;
+import cn.mcmod.sakura.client.layers.LayerRegistry;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
 public class StoneMortarRenderer implements BlockEntityRenderer<StoneMortarBlockEntity> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(SakuraMod.MODID, "textures/entity/tileentity/mortar.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/entity/tileentity/mortar.png");
 
     private final ModelPart top;
     private final ModelPart bb_main;

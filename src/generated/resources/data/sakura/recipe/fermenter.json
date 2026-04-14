@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": {
+      "tag": "minecraft:logs"
+    },
+    "S": {
+      "tag": "c:lumber"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "PPP",
+    "SSS"
+  ],
+  "result": {
+    "id": "sakura:fermenter"
+  },
+  "show_notification": true
+}

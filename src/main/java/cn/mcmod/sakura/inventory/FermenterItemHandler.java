@@ -1,11 +1,11 @@
 package cn.mcmod.sakura.inventory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class FermenterItemHandler implements IItemHandler {
     private static final int SLOTS_INPUT = 3;
@@ -51,7 +51,7 @@ public class FermenterItemHandler implements IItemHandler {
         if (side == null || side.equals(Direction.UP)) {
             return slot < SLOTS_INPUT ? itemHandler.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
         } else {
-            return (slot >= SLOT_OUTPUT_BEGIN || slot <= SLOT_OUTPUT_END)  ? itemHandler.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+            return (slot >= SLOT_OUTPUT_BEGIN && slot <= SLOT_OUTPUT_END)  ? itemHandler.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
         }
     }
 

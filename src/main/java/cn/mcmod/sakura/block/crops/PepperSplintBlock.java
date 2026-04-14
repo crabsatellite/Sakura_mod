@@ -1,12 +1,10 @@
 package cn.mcmod.sakura.block.crops;
 
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.item.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -21,6 +19,9 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.item.ItemRegistry;
+import com.mojang.serialization.MapCodec;
 
 /**
  * Pepper Splint - A wooden support post for pepper crops.
@@ -28,6 +29,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * Must be placed on dirt/grass or on top of another pepper splint/pepper crop.
  */
 public class PepperSplintBlock extends Block {
+    public static final MapCodec<PepperSplintBlock> CODEC = simpleCodec(p -> new PepperSplintBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
 
     private static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 
@@ -51,17 +60,15 @@ public class PepperSplintBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-                                 InteractionHand hand, BlockHitResult hit) {
-        ItemStack heldItem = player.getItemInHand(hand);
-        if (level.isClientSide()) return InteractionResult.SUCCESS;
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (level.isClientSide()) return ItemInteractionResult.SUCCESS;
 
-        if (heldItem.is(ItemRegistry.PEPPER_SEEDS.get())) {
+        if (stack.is(ItemRegistry.PEPPER_SEEDS.get())) {
             level.setBlock(pos, BlockRegistry.PEPPER_CROP.get().defaultBlockState(), 3);
-            if (!player.isCreative()) heldItem.shrink(1);
-            return InteractionResult.SUCCESS;
+            if (!player.isCreative()) stack.shrink(1);
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

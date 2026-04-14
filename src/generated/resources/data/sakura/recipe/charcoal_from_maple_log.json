@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.15,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:maple_log"
+  },
+  "result": {
+    "id": "minecraft:charcoal"
+  }
+}

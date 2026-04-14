@@ -1,8 +1,8 @@
 package cn.mcmod.sakura.item;
 
-import cn.mcmod_mmf.mmlib.item.IFoodLike;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.ComposterBlock;
+import cn.mcmod_mmf.mmlib.item.IFoodLike;
 
 public class ComposterRegistry {
 

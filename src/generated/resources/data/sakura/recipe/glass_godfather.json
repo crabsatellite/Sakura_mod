@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:glass_whiskey"
+    },
+    {
+      "item": "sakura:glass_liqueur"
+    },
+    {
+      "item": "sakura:almond"
+    }
+  ],
+  "result": {
+    "id": "sakura:glass_godfather"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 250,
+    "fluidTag": "c:water/water"
+  },
+  "ingredients": [
+    {
+      "tag": "c:grain"
+    },
+    {
+      "tag": "c:grain"
+    },
+    {
+      "tag": "c:salt"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "count": 2,
+    "id": "sakura:vinegar"
+  }
+}

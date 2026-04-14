@@ -1,13 +1,9 @@
 package cn.mcmod.sakura.recipes;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import cn.mcmod_mmf.mmlib.recipe.AbstractRecipe;
-import cn.mcmod_mmf.mmlib.recipe.ChanceResult;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.util.RandomSource;
@@ -16,7 +12,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
+import cn.mcmod.sakura.recipes.base.AbstractRecipe;
+import cn.mcmod.sakura.recipes.base.ChanceResult;
+
+import java.util.List;
 
 public class ChoppingRecipe extends AbstractRecipe {
 
@@ -58,7 +58,7 @@ public class ChoppingRecipe extends AbstractRecipe {
     }
     
     @Override
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider pRegistryAccess) {
         return this.output.copy();
     }
     
@@ -78,7 +78,7 @@ public class ChoppingRecipe extends AbstractRecipe {
     }
 
     @Override
-    public ItemStack assemble(RecipeWrapper pContainer, RegistryAccess pRegistryAccess) {
+    public ItemStack assemble(RecipeWrapper pContainer, HolderLookup.Provider pRegistryAccess) {
         return this.output.copy();
     }
 

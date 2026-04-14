@@ -1,6 +1,5 @@
 package cn.mcmod.sakura.block.crops;
 
-import cn.mcmod.sakura.block.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -20,7 +19,9 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeHooks;
+import net.neoforged.neoforge.common.CommonHooks;
+import cn.mcmod.sakura.block.BlockRegistry;
+import com.mojang.serialization.MapCodec;
 
 /**
  * Grape Vine - The main vine block that grows on grape splint stands.
@@ -30,6 +31,14 @@ import net.minecraftforge.common.ForgeHooks;
  * Implements BonemealableBlock for bonemeal growth.
  */
 public class GrapeVineBlock extends Block implements BonemealableBlock {
+    public static final MapCodec<GrapeVineBlock> CODEC = simpleCodec(p -> new GrapeVineBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
 
     public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
     private static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
@@ -60,7 +69,7 @@ public class GrapeVineBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
         return new ItemStack(BlockRegistry.GRAPE_SPLINT_STAND.get());
     }
 
@@ -72,10 +81,10 @@ public class GrapeVineBlock extends Block implements BonemealableBlock {
             spreadToNeighbors(level, pos, age);
             if (age < 7) {
                 float growthChance = getGrowthChance(level, pos);
-                if (ForgeHooks.onCropsGrowPre(level, pos, state,
+                if (CommonHooks.canCropGrow(level, pos, state,
                         random.nextInt((int) (25.0F / growthChance) + 1) == 0)) {
                     level.setBlock(pos, state.setValue(AGE, age + 1), 2);
-                    ForgeHooks.onCropsGrowPost(level, pos, state);
+                    CommonHooks.fireCropGrowPost(level, pos, state);
                 }
             }
         }
@@ -99,7 +108,7 @@ public class GrapeVineBlock extends Block implements BonemealableBlock {
 
     // BonemealableBlock implementation
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return state.getValue(AGE) < 7;
     }
 

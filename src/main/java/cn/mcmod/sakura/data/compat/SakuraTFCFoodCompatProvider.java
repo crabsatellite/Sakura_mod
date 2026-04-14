@@ -1,11 +1,11 @@
 package cn.mcmod.sakura.data.compat;
 
+import net.minecraft.data.PackOutput;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import cn.mcmod.sakura.SakuraMod;
 import cn.mcmod.sakura.item.FoodRegistry;
 import cn.mcmod.sakura.item.ItemRegistry;
 import cn.mcmod_mmf.mmlib.data.compat.TFCFoodDefinitionProvider;
-import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class SakuraTFCFoodCompatProvider extends TFCFoodDefinitionProvider {
 

@@ -1,11 +1,14 @@
 package cn.mcmod.sakura.data;
 
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.GlobalLootModifierProvider;
+import net.minecraft.core.HolderLookup;
+import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
+
+import java.util.concurrent.CompletableFuture;
 
 public class SakuraLootModifierProvider extends GlobalLootModifierProvider {
-    public SakuraLootModifierProvider(PackOutput output, String modid) {
-        super(output, modid);
+    public SakuraLootModifierProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modid) {
+        super(output, lookupProvider, modid);
     }
 
     @Override

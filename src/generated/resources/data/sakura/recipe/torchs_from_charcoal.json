@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:rods/wooden"
+    },
+    "C": {
+      "item": "sakura:bamboo_charcoal"
+    }
+  },
+  "pattern": [
+    "C",
+    "#"
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:torch"
+  },
+  "show_notification": true
+}

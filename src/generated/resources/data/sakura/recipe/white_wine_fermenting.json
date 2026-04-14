@@ -1,0 +1,28 @@
+{
+  "type": "sakura:fermenting",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 200,
+    "fluidTag": "c:water/water"
+  },
+  "ingredients": [
+    {
+      "item": "sakura:grape_green"
+    },
+    {
+      "item": "sakura:grape_green"
+    },
+    {
+      "tag": "c:sugar"
+    },
+    {
+      "tag": "c:yeast"
+    }
+  ],
+  "recipeTime": 800,
+  "result_fluid": {
+    "amount": 100,
+    "fluid": "sakura:white_wine"
+  },
+  "results": []
+}

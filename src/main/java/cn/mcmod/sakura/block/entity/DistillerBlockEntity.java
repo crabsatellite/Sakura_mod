@@ -1,17 +1,9 @@
 package cn.mcmod.sakura.block.entity;
 
-import cn.mcmod.sakura.container.DistillerContainer;
-import cn.mcmod.sakura.inventory.FermenterItemHandler;
-import cn.mcmod.sakura.recipes.DistillerRecipe;
-import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
-import cn.mcmod_mmf.mmlib.block.entity.HeatableBlockEntity;
-import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
-import cn.mcmod_mmf.mmlib.fluid.FluidIngredient;
-import cn.mcmod_mmf.mmlib.utils.LevelUtils;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -23,36 +15,38 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
+import cn.mcmod.sakura.container.DistillerContainer;
+import cn.mcmod.sakura.inventory.FermenterItemHandler;
+import cn.mcmod.sakura.recipes.DistillerRecipe;
+import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
+import cn.mcmod_mmf.mmlib.block.entity.HeatableBlockEntity;
+import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
+import cn.mcmod.sakura.recipes.base.FluidIngredient;
+import cn.mcmod_mmf.mmlib.utils.LevelUtils;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class DistillerBlockEntity extends SyncedBlockEntity implements MenuProvider, HeatableBlockEntity {
 
     public static final int TANK_CAPACITY = 4000;
     private final ItemStackHandler inventory;
-    private LazyOptional<IItemHandler> inputHandler;
-    private LazyOptional<IItemHandler> outputHandler;
-
     private final FluidTank inputTank;
     private final FluidTank outputTank;
-    private LazyOptional<FluidTank> inputfluidTank;
-    private LazyOptional<FluidTank> outputfluidTank;
     protected final ContainerData tileData;
     private final Object2IntOpenHashMap<ResourceLocation> experienceTracker;
 
@@ -66,13 +60,9 @@ public class DistillerBlockEntity extends SyncedBlockEntity implements MenuProvi
         super(BlockEntityRegistry.DISTILLER.get(), pos, state);
 
         this.inventory = createHandler();
-        this.inputHandler = LazyOptional.of(() -> new FermenterItemHandler(inventory, Direction.UP));
-        this.outputHandler = LazyOptional.of(() -> new FermenterItemHandler(inventory, Direction.DOWN));
         this.tileData = createIntArray();
         this.inputTank = createInputFluidHandler();
         this.outputTank = createFluidHandler();
-        this.inputfluidTank = LazyOptional.of(() -> this.inputTank);
-        this.outputfluidTank = LazyOptional.of(() -> this.outputTank);
         this.experienceTracker = new Object2IntOpenHashMap<>();
         this.checkNewRecipe = true;
     }
@@ -115,16 +105,13 @@ public class DistillerBlockEntity extends SyncedBlockEntity implements MenuProvi
         }
 
         if (lastRecipeID != null) {
-            Optional<? extends Recipe<RecipeWrapper>> recipeOpt = level.getRecipeManager()
+            Optional<RecipeHolder<DistillerRecipe>> recipeOpt = level.getRecipeManager()
                     .getAllRecipesFor(RecipeTypeRegistry.DISTILLER_RECIPE_TYPE.get()).stream()
-                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst();
+                    .filter(holder -> holder.id().equals(lastRecipeID)).findFirst();
             if (recipeOpt.isPresent()) {
-                Recipe<RecipeWrapper> recipe = recipeOpt.get();
-                if (recipe instanceof DistillerRecipe cookingRecipe) {
-                    if (cookingRecipe.matchesWithFluid(this.inputTank.getFluid(),
-                            inventoryWrapper, level)) {
-                        return Optional.of(cookingRecipe);
-                    }
+                DistillerRecipe recipe = recipeOpt.get().value();
+                if (recipe.matchesWithFluid(this.inputTank.getFluid(), inventoryWrapper, level)) {
+                    return Optional.of(recipe);
                 }
             } else {
                 lastRecipeID = null;
@@ -132,11 +119,12 @@ public class DistillerBlockEntity extends SyncedBlockEntity implements MenuProvi
         }
 
         if (checkNewRecipe) {
-            List<DistillerRecipe> recipes = level.getRecipeManager()
+            List<RecipeHolder<DistillerRecipe>> recipes = level.getRecipeManager()
                     .getRecipesFor(RecipeTypeRegistry.DISTILLER_RECIPE_TYPE.get(), inventoryWrapper, level);
-            for(DistillerRecipe recipe : recipes) {
+            for (RecipeHolder<DistillerRecipe> holder : recipes) {
+                DistillerRecipe recipe = holder.value();
                 if (recipe.matchesWithFluid(this.inputTank.getFluid(), inventoryWrapper, level)) {
-                    lastRecipeID = recipe.getId();
+                    lastRecipeID = holder.id();
                     return Optional.of(recipe);
                 }
             }
@@ -201,7 +189,7 @@ public class DistillerBlockEntity extends SyncedBlockEntity implements MenuProvi
         if (!recipe.getResultFluid().isEmpty())
             this.outputTank.fill(recipe.getResultFluid(), FluidAction.EXECUTE);
 
-        trackRecipeExperience(recipe);
+        trackRecipeExperience(lastRecipeID);
 
         for (int i = 0; i < 3; ++i) {
             ItemStack slotStack = inventory.getStackInSlot(i);
@@ -219,10 +207,9 @@ public class DistillerBlockEntity extends SyncedBlockEntity implements MenuProvi
         return true;
     }
 
-    public void trackRecipeExperience(@Nullable Recipe<?> recipe) {
-        if (recipe != null) {
-            ResourceLocation recipeID = recipe.getId();
-            experienceTracker.addTo(recipeID, 1);
+    public void trackRecipeExperience(@Nullable ResourceLocation recipeId) {
+        if (recipeId != null) {
+            experienceTracker.addTo(recipeId, 1);
         }
     }
 
@@ -234,28 +221,8 @@ public class DistillerBlockEntity extends SyncedBlockEntity implements MenuProvi
     public void grantStoredRecipeExperience(Level world, Vec3 pos) {
         for (Object2IntMap.Entry<ResourceLocation> entry : experienceTracker.object2IntEntrySet()) {
             world.getRecipeManager().byKey(entry.getKey()).ifPresent(recipe -> LevelUtils.splitAndSpawnExperience(world,
-                    pos, entry.getIntValue(), ((DistillerRecipe) recipe).getExperience()));
+                    pos, entry.getIntValue(), ((DistillerRecipe) recipe.value()).getExperience()));
         }
-    }
-
-    @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (!this.isRemoved()) {
-            if (cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
-                if (side == null || side.equals(Direction.UP)) {
-                    return inputHandler.cast();
-                } else {
-                    return outputHandler.cast();
-                }
-            }
-            if (cap.equals(ForgeCapabilities.FLUID_HANDLER)) {
-                if(side == null || !(side.equals(Direction.NORTH)||side.equals(Direction.SOUTH)))
-                    return this.inputfluidTank.cast();
-                else return this.outputfluidTank.cast();
-            }
-        }
-        return super.getCapability(cap, side);
     }
 
     public ItemStackHandler getInventory() {
@@ -273,36 +240,32 @@ public class DistillerBlockEntity extends SyncedBlockEntity implements MenuProvi
     @Override
     public void setRemoved() {
         super.setRemoved();
-        inputHandler.invalidate();
-        outputHandler.invalidate();
-        inputfluidTank.invalidate();
-        outputfluidTank.invalidate();
     }
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
-        inventory.deserializeNBT(compound.getCompound("Inventory"));
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
+        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
         recipeTime = compound.getInt("RecipeTime");
         recipeTimeTotal = compound.getInt("RecipeTimeTotal");
-        inputTank.readFromNBT(compound.getCompound("InputFluidTank"));
-        outputTank.readFromNBT(compound.getCompound("OutputFluidTank"));
+        inputTank.readFromNBT(registries, compound.getCompound("InputFluidTank"));
+        outputTank.readFromNBT(registries, compound.getCompound("OutputFluidTank"));
         CompoundTag compoundRecipes = compound.getCompound("RecipesUsed");
         for (String key : compoundRecipes.getAllKeys()) {
-            experienceTracker.put(new ResourceLocation(key), compoundRecipes.getInt(key));
+            experienceTracker.put(ResourceLocation.parse(key), compoundRecipes.getInt(key));
         }
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
         CompoundTag nbt = new CompoundTag();
         compound.putInt("RecipeTime", recipeTime);
         compound.putInt("RecipeTimeTotal", recipeTimeTotal);
-        compound.put("Inventory", inventory.serializeNBT());
-        compound.put("InputFluidTank", inputTank.writeToNBT(nbt));
+        compound.put("Inventory", inventory.serializeNBT(registries));
+        compound.put("InputFluidTank", inputTank.writeToNBT(registries, nbt));
         CompoundTag nbt2 = new CompoundTag();
-        compound.put("OutputFluidTank", outputTank.writeToNBT(nbt2));
+        compound.put("OutputFluidTank", outputTank.writeToNBT(registries, nbt2));
         CompoundTag compoundRecipes = new CompoundTag();
         experienceTracker
                 .forEach((recipeId, craftedAmount) -> compoundRecipes.putInt(recipeId.toString(), craftedAmount));
@@ -402,30 +365,13 @@ public class DistillerBlockEntity extends SyncedBlockEntity implements MenuProvi
         return Component.translatable("container.sakura.distiller");
     }
 
-    public LazyOptional<FluidTank> getInputFluidTank() {
-        return inputfluidTank;
+    public FluidTank getInputFluidTank() {
+        return inputTank;
     }
 
-    public LazyOptional<FluidTank> getOutputFluidTank() {
-        return outputfluidTank;
+    public FluidTank getOutputFluidTank() {
+        return outputTank;
     }
 
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        inputHandler.invalidate();
-        outputHandler.invalidate();
-        inputfluidTank.invalidate();
-        outputfluidTank.invalidate();
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        inputHandler = LazyOptional.of(() -> new FermenterItemHandler(inventory, Direction.UP));
-        outputHandler = LazyOptional.of(() -> new FermenterItemHandler(inventory, Direction.DOWN));
-        inputfluidTank = LazyOptional.of(() -> this.inputTank);
-        outputfluidTank = LazyOptional.of(() -> this.outputTank);
-    }
 
 }

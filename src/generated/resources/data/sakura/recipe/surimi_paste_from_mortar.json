@@ -1,0 +1,25 @@
+{
+  "type": "sakura:stone_mortar",
+  "experience": 0.0,
+  "ingredients": [
+    {
+      "tag": "c:crops/potato"
+    },
+    {
+      "tag": "c:raw_fishes"
+    },
+    {
+      "tag": "c:raw_fishes"
+    },
+    {
+      "tag": "c:eggs"
+    }
+  ],
+  "recipeTime": 200,
+  "results": [
+    {
+      "count": 8,
+      "item": "sakura:surimi"
+    }
+  ]
+}

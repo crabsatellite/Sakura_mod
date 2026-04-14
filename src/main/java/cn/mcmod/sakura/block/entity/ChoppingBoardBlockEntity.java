@@ -1,18 +1,8 @@
 package cn.mcmod.sakura.block.entity;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.machines.ChoppingBoardBlock;
-import cn.mcmod.sakura.recipes.ChoppingRecipe;
-import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
-import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
-import cn.mcmod_mmf.mmlib.utils.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,21 +14,29 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
+import cn.mcmod.sakura.block.machines.ChoppingBoardBlock;
+import cn.mcmod.sakura.recipes.ChoppingRecipe;
+import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
+import cn.mcmod_mmf.mmlib.block.entity.SyncedBlockEntity;
+import cn.mcmod_mmf.mmlib.utils.LevelUtils;
+
+import java.util.List;
+import java.util.Optional;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
     private final ItemStackHandler inventory;
-    private LazyOptional<IItemHandler> inputHandler;
     private ResourceLocation lastRecipeID;
     
     private int recipeTime;
@@ -47,21 +45,20 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
     public ChoppingBoardBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.CHOPPING_BOARD.get(), pos, state);
         inventory = createHandler();
-        inputHandler = LazyOptional.of(() -> inventory);
     }
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
-        inventory.deserializeNBT(compound.getCompound("Inventory"));
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
+        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
         recipeTime = compound.getInt("RecipeTime");
         recipeTimeTotal = compound.getInt("RecipeTimeTotal");
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        compound.put("Inventory", inventory.serializeNBT());
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+        super.saveAdditional(compound, registries);
+        compound.put("Inventory", inventory.serializeNBT(registries));
         compound.putInt("RecipeTime", this.recipeTime);
         compound.putInt("RecipeTimeTotal", this.recipeTimeTotal);
     }
@@ -79,8 +76,11 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
         matchingRecipe.ifPresent(recipe -> {
             this.recipeTimeTotal = recipe.getRecipeTime();
             
-            List<ItemStack> results = recipe.rollByproducts(level.random,
-            		toolStack.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE));
+            int fortuneLevel = level.registryAccess().lookup(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                    .flatMap(reg -> reg.get(Enchantments.FORTUNE))
+                    .map(holder -> EnchantmentHelper.getItemEnchantmentLevel(holder, toolStack))
+                    .orElse(0);
+            List<ItemStack> results = recipe.rollByproducts(level.random, fortuneLevel);
             for (ItemStack resultStack : results) {
                 Direction direction = getBlockState().getValue(ChoppingBoardBlock.FACING).getCounterClockWise();
                 LevelUtils.spawnItemEntity(level, resultStack.copy(),
@@ -89,9 +89,12 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
                         direction.getStepZ() * 0.2F);
             }
             if (player != null) {
-                toolStack.hurtAndBreak(1, player, (user) -> user.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+                toolStack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
             } else {
-                if (toolStack.hurt(1, level.random, null)) {
+                // In 1.21, ItemStack.hurt(int, RandomSource, ServerPlayer) was removed
+                // Use hurtAndBreak with a null-safe approach
+                toolStack.setDamageValue(toolStack.getDamageValue() + 1);
+                if (toolStack.getDamageValue() >= toolStack.getMaxDamage()) {
                     toolStack.setCount(0);
                 }
             }
@@ -113,21 +116,20 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
             return Optional.empty();
 
         if (lastRecipeID != null) {
-            Optional<? extends Recipe<RecipeWrapper>> recipeOpt = level.getRecipeManager()
+            Optional<RecipeHolder<ChoppingRecipe>> recipeOpt = level.getRecipeManager()
                     .getAllRecipesFor(RecipeTypeRegistry.CHOPPING_RECIPE_TYPE.get()).stream()
-                    .filter(now -> now.getId().equals(lastRecipeID)).findFirst();
+                    .filter(holder -> holder.id().equals(lastRecipeID)).findFirst();
             if (recipeOpt.isPresent()) {
-                Recipe<RecipeWrapper> recipe = recipeOpt.get();
-                if (recipe instanceof ChoppingRecipe && recipe.matches(recipeWrapper, level)
-                        && ((ChoppingRecipe) recipe).getTool().test(toolStack)) {
-                    return Optional.of((ChoppingRecipe) recipe);
+                ChoppingRecipe recipe = recipeOpt.get().value();
+                if (recipe.matches(recipeWrapper, level) && recipe.getTool().test(toolStack)) {
+                    return Optional.of(recipe);
                 }
             } else {
                 lastRecipeID = null;
             }
         }
 
-        List<ChoppingRecipe> recipeList = level.getRecipeManager()
+        List<RecipeHolder<ChoppingRecipe>> recipeList = level.getRecipeManager()
                 .getRecipesFor(RecipeTypeRegistry.CHOPPING_RECIPE_TYPE.get(), recipeWrapper, level);
         if (recipeList.isEmpty()) {
             if (player != null)
@@ -135,18 +137,22 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
             return Optional.empty();
         }
         Optional<ChoppingRecipe> recipe = recipeList.stream()
+                .map(RecipeHolder::value)
                 .filter(cuttingRecipe -> cuttingRecipe.getTool().test(toolStack)).findFirst();
         if (!recipe.isPresent()) {
             if (player != null)
                 player.displayClientMessage(Component.translatable("sakura.block.chopping_board.invalid_tool"), true);
             return Optional.empty();
         }
-        lastRecipeID = recipe.get().getId();
+        // Find the holder to get the ID
+        lastRecipeID = recipeList.stream()
+                .filter(h -> h.value() == recipe.get()).findFirst()
+                .map(RecipeHolder::id).orElse(null);
         return recipe;
     }
 
     public void playProcessingSound(ItemStack tool, ItemStack boardItem) {
-        if (tool.is(Tags.Items.SHEARS)) {
+        if (tool.is(net.minecraft.world.item.Items.SHEARS)) {
             playSound(SoundEvents.SHEEP_SHEAR, 1.0F, 1.0F);
         } else if (boardItem.getItem() instanceof BlockItem blockItem) {
             Block block = blockItem.getBlock();
@@ -213,15 +219,6 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
     }
 
     @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (!this.isRemoved() && cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
-            return inputHandler.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-    
-    @Override
     protected void inventoryChanged() {
         this.recipeTime = 0;
         super.inventoryChanged();
@@ -230,19 +227,6 @@ public class ChoppingBoardBlockEntity extends SyncedBlockEntity {
     @Override
     public void setRemoved() {
         super.setRemoved();
-        inputHandler.invalidate();
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        inputHandler.invalidate();
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        inputHandler = LazyOptional.of(() -> inventory);
     }
 
     private ItemStackHandler createHandler() {

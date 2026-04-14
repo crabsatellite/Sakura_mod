@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:blackcurrant_juice"
+    },
+    {
+      "item": "sakura:soda_water"
+    },
+    {
+      "item": "sakura:empty_bottle"
+    }
+  ],
+  "result": {
+    "id": "sakura:glass_cassis_soda"
+  }
+}

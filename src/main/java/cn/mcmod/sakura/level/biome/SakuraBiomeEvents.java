@@ -1,8 +1,5 @@
 package cn.mcmod.sakura.level.biome;
 
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.mixin.BiomeSourceAccessor;
-import cn.mcmod.sakura.mixin.MultiNoiseBiomeSourceAccessor;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -12,9 +9,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
+import cn.mcmod.sakura.SakuraMod;
+// TODO: Mixin accessor imports disabled for 1.21 migration - re-enable when mixins are ported
+// import cn.mcmod.sakura.mixin.BiomeSourceAccessor;
+// import cn.mcmod.sakura.mixin.MultiNoiseBiomeSourceAccessor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,36 +61,8 @@ public class SakuraBiomeEvents {
             holderOptional.ifPresent(biomeHolder -> biomeMap.put(biomeResourceKey, biomeHolder));
         }
 
-        // Process each dimension's BiomeSource
-        for (ResourceKey<LevelStem> levelStemResourceKey : levelStems.registryKeySet()) {
-            Optional<Holder.Reference<LevelStem>> holderOptional = levelStems.getHolder(levelStemResourceKey);
-            if (holderOptional.isPresent()) {
-                BiomeSource biomeSource = holderOptional.get().value().generator().getBiomeSource();
-
-                if (biomeSource instanceof BiomeSourceAccessor expandedBiomeSource) {
-                    // Set the resource key map on all dimensions (needed for biome lookup)
-                    expandedBiomeSource.setResourceKeyMap(biomeMap);
-
-                    // Only expand the overworld with Sakura biomes
-                    if (levelStemResourceKey.equals(LevelStem.OVERWORLD)) {
-                        ImmutableSet.Builder<Holder<Biome>> biomeHolders = ImmutableSet.builder();
-                        for (ResourceKey<Biome> biomeResourceKey : SAKURA_BIOMES) {
-                            allBiomes.getHolder(biomeResourceKey).ifPresent(biomeHolders::add);
-                        }
-                        expandedBiomeSource.expandBiomesWith(biomeHolders.build());
-
-                        SakuraMod.getLogger().info("Sakura biome injection complete. {} biome(s) configured.",
-                                SakuraBiomeConfig.BIOMES.size());
-                    }
-                }
-
-                // Set seed and dimension on MultiNoiseBiomeSource for the mixin
-                if (biomeSource instanceof MultiNoiseBiomeSourceAccessor multiNoiseAccessor) {
-                    multiNoiseAccessor.setLastSampledSeed(server.getWorldData().worldGenOptions().seed());
-                    multiNoiseAccessor.setLastSampledDimension(ResourceKey.create(Registries.DIMENSION,
-                            levelStemResourceKey.location()));
-                }
-            }
-        }
+        // TODO: Biome injection via mixin disabled for 1.21 migration
+        // Re-enable when BiomeSourceMixin and MultiNoiseBiomeSourceMixin are ported
+        SakuraMod.getLogger().info("Sakura biome injection is disabled pending mixin port to 1.21.1");
     }
 }

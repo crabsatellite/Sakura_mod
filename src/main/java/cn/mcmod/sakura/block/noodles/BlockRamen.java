@@ -1,14 +1,22 @@
 package cn.mcmod.sakura.block.noodles;
 
-import cn.mcmod.sakura.item.FoodRegistry;
-import cn.mcmod.sakura.item.ItemRegistry;
-import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
-import cn.mcmod.sakura.item.enums.SakuraFoodSet;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.material.MapColor;
+import cn.mcmod.sakura.item.FoodRegistry;
+import cn.mcmod.sakura.item.ItemRegistry;
+import cn.mcmod.sakura.item.enums.SakuraFoodSet;
+import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
 
 public class BlockRamen extends BlockNoodle {
+    public static final MapCodec<BlockRamen> CODEC = simpleCodec(p -> new BlockRamen());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
 
     public BlockRamen() {
         super(BlockBehaviour.Properties.of()

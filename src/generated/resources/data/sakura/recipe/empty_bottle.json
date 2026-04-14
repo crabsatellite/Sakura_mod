@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:glass"
+    }
+  },
+  "pattern": [
+    "# #",
+    "# #",
+    " # "
+  ],
+  "result": {
+    "count": 4,
+    "id": "sakura:empty_bottle"
+  },
+  "show_notification": true
+}

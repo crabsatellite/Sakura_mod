@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:crops/grape"
+    },
+    {
+      "tag": "c:crops/grape"
+    },
+    {
+      "tag": "c:crops/grape"
+    },
+    {
+      "tag": "c:crops/grape"
+    },
+    {
+      "tag": "c:crops/grape"
+    },
+    {
+      "tag": "c:crops/grape"
+    },
+    {
+      "tag": "c:crops/grape"
+    },
+    {
+      "tag": "c:crops/grape"
+    },
+    {
+      "item": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "id": "sakura:grape_fluid_bucket"
+  }
+}

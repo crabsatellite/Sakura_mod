@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:dried_rice"
+    },
+    {
+      "item": "sakura:ume"
+    },
+    {
+      "item": "sakura:sake_kasu"
+    },
+    {
+      "tag": "c:sugar"
+    }
+  ],
+  "result": {
+    "id": "sakura:suikatsugan"
+  }
+}

@@ -1,15 +1,15 @@
 package cn.mcmod.sakura.mixin;
 
-import cn.mcmod.sakura.level.biome.BiomeNoiseCondition;
-import cn.mcmod.sakura.level.biome.SakuraBiomeConfig;
-import cn.mcmod.sakura.level.biome.SakuraBiomeRarity;
-import cn.mcmod.sakura.level.biome.VoronoiGenerator;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
+import cn.mcmod.sakura.level.biome.BiomeNoiseCondition;
+import cn.mcmod.sakura.level.biome.SakuraBiomeConfig;
+import cn.mcmod.sakura.level.biome.SakuraBiomeRarity;
+import cn.mcmod.sakura.level.biome.VoronoiGenerator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

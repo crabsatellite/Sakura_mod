@@ -1,13 +1,14 @@
 package cn.mcmod.sakura.level.tree.decorator;
 
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 /**
  * Port of the 1.12.2 chestnut burr placement from WorldGenMapleTreeGreen.
@@ -17,7 +18,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorTy
  */
 public class ChestnutBurrDecorator extends TreeDecorator {
 
-    public static final Codec<ChestnutBurrDecorator> CODEC = RecordCodecBuilder.create(instance ->
+    public static final MapCodec<ChestnutBurrDecorator> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     Codec.FLOAT.fieldOf("probability").forGetter(d -> d.probability)
             ).apply(instance, ChestnutBurrDecorator::new));

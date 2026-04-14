@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:iron_sand"
+  },
+  "result": {
+    "id": "minecraft:iron_ingot"
+  }
+}

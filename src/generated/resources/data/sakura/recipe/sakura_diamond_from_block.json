@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:sakura_diamond_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "sakura:sakura_diamond"
+  }
+}

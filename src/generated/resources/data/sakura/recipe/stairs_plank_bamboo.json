@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "sakura",
+  "key": {
+    "#": {
+      "item": "sakura:plank_bamboo"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "id": "sakura:stairs_plank_bamboo"
+  },
+  "show_notification": true
+}

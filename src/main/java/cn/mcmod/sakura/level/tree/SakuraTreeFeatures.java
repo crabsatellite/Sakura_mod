@@ -1,14 +1,5 @@
 package cn.mcmod.sakura.level.tree;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.OptionalInt;
-
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.level.tree.decorator.ChestnutBurrDecorator;
-import cn.mcmod.sakura.level.tree.decorator.FallenLeavesDecorator;
-import cn.mcmod.sakura.level.tree.decorator.MapleSapLogDecorator;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +14,16 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePla
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.level.tree.decorator.ChestnutBurrDecorator;
+import cn.mcmod.sakura.level.tree.decorator.FallenLeavesDecorator;
+import cn.mcmod.sakura.level.tree.decorator.MapleSapLogDecorator;
 import com.mojang.datafixers.util.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalInt;
 
 public class SakuraTreeFeatures {
 
@@ -125,7 +125,7 @@ public class SakuraTreeFeatures {
     // ===== Helper methods =====
 
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(SakuraMod.MODID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, name));
     }
 
     private static ConfiguredFeature<?, ?> registryTree(ResourceKey<ConfiguredFeature<?, ?>> key, TreeConfiguration.TreeConfigurationBuilder tree) {

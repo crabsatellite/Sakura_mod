@@ -1,12 +1,10 @@
 package cn.mcmod.sakura.item;
 
-import java.util.List;
-
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,9 +14,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+// EnchantmentHelper sweeping/damage methods removed in 1.21
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+
+import java.util.List;
 
 /**
  * Katana weapon item for Sakura mod.
@@ -31,7 +31,7 @@ import net.minecraft.world.phys.AABB;
 public class KatanaItem extends SwordItem {
 
     public KatanaItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
-        super(tier, attackDamageModifier, attackSpeedModifier, properties);
+        super(tier, properties.attributes(SwordItem.createAttributes(tier, attackDamageModifier, attackSpeedModifier)));
     }
 
     public KatanaItem(Tier tier, Properties properties) {
@@ -86,7 +86,7 @@ public class KatanaItem extends SwordItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 
@@ -97,15 +97,15 @@ public class KatanaItem extends SwordItem {
         if (!(entityLiving instanceof Player player)) return;
         if (level.isClientSide()) return;
 
-        int ticksUsed = getUseDuration(stack) - timeLeft;
+        int ticksUsed = getUseDuration(stack, entityLiving) - timeLeft;
         if (ticksUsed < 5) return; // Minimum hold time before sweep triggers
 
-        float sweepRatio = EnchantmentHelper.getSweepingDamageRatio(player);
-        if (sweepRatio <= 0.0F) return;
+        // In 1.21, getSweepingDamageRatio was removed (sweeping is now data-driven).
+        // We use a fixed sweep ratio as a fallback.
+        float sweepRatio = 0.5F; // Default sweep ratio
 
         float baseDamage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        float enchantBonus = EnchantmentHelper.getDamageBonus(stack, entityLiving.getMobType()) / 1.2F;
-        float sweepDamage = 2.0F + sweepRatio * (baseDamage + enchantBonus);
+        float sweepDamage = 2.0F + sweepRatio * baseDamage;
 
         // Scale sweep area with enchantment level (matching 1.12.2 behavior)
         double sweepRange = 1.4D + sweepRatio * 1.2D;
@@ -118,7 +118,7 @@ public class KatanaItem extends SwordItem {
         for (LivingEntity target : targets) {
             // Disable shields on blocking players (matching 1.12.2)
             if (target instanceof Player targetPlayer && targetPlayer.isBlocking()) {
-                targetPlayer.disableShield(false);
+                targetPlayer.disableShield();
             }
 
             target.knockback(knockbackStrength,
@@ -131,7 +131,7 @@ public class KatanaItem extends SwordItem {
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
             player.sweepAttack();
-            stack.hurtAndBreak(2, player, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+            stack.hurtAndBreak(2, player, EquipmentSlot.MAINHAND);
         }
 
         // Apply cooldown after sweep attack (matching 1.12.2's 25-tick cooldown)
@@ -142,7 +142,7 @@ public class KatanaItem extends SwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(1, attacker, (user) -> user.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
         return true;
     }
 

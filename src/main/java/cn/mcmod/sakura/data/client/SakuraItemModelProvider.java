@@ -1,17 +1,17 @@
 package cn.mcmod.sakura.data.client;
 
+import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import cn.mcmod.sakura.block.BlockItemRegistry;
 import cn.mcmod.sakura.block.machines.StoneMortarBlock;
 import cn.mcmod.sakura.fluid.BucketItemRegistry;
 import cn.mcmod.sakura.item.DrinkRegistry;
 import cn.mcmod.sakura.item.ItemRegistry;
 import cn.mcmod_mmf.mmlib.data.AbstractItemModelProvider;
-import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class SakuraItemModelProvider extends AbstractItemModelProvider {
 
@@ -35,11 +35,11 @@ public class SakuraItemModelProvider extends AbstractItemModelProvider {
                 if (blockItem.getBlock() instanceof DoorBlock)
                     return; // bamboo door has hand-written item/generated model
                 if (blockItem.getBlock() instanceof BushBlock)
-                    bushItem(item);
+                    itemBlockFlat(() -> blockItem.getBlock());
                 else
-                    itemBlock(blockItem::getBlock);
+                    toBlock(() -> blockItem.getBlock());
             } else {
-                normalItem(item);
+                singleTex(item);
             }
         });
 
@@ -47,18 +47,18 @@ public class SakuraItemModelProvider extends AbstractItemModelProvider {
         // Bucket Items (BucketItemRegistry)
         // ==============================
         BucketItemRegistry.ITEMS.getEntries().forEach(item -> {
-            normalItem(item);
+            singleTex(item);
         });
 
         // ==============================
         // Regular Items (ItemRegistry)
-        // All items here use normalItem() which generates:
+        // All items here use singleTex() which generates:
         //   {"parent": "minecraft:item/generated", "textures": {"layer0": "sakura:item/<name>"}}
         // Most items already have hand-written Blockbench models in src/main/resources
         // which will take priority over these generated ones.
         // ==============================
         ItemRegistry.ITEMS.getEntries().forEach(item -> {
-            normalItem(item);
+            singleTex(item);
         });
 
         // ==============================
@@ -70,7 +70,7 @@ public class SakuraItemModelProvider extends AbstractItemModelProvider {
         // All hand-written models in src/main/resources override these generated ones.
         // ==============================
         DrinkRegistry.ITEMS.getEntries().forEach(item -> {
-            normalItem(item);
+            singleTex(item);
         });
     }
 }

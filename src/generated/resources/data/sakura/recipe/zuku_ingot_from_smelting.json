@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.5,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:zuku"
+  },
+  "result": {
+    "id": "sakura:zuku_ingot"
+  }
+}

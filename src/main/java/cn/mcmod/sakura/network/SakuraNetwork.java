@@ -1,23 +1,16 @@
 package cn.mcmod.sakura.network;
 
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import cn.mcmod.sakura.SakuraMod;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
 
+@EventBusSubscriber(modid = SakuraMod.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class SakuraNetwork {
-    private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(SakuraMod.MODID, "main"),
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
-    );
-
-    private static int packetId = 0;
-
-    public static void register() {
-        CHANNEL.registerMessage(packetId++, SheathKeyPacket.class,
-                SheathKeyPacket::encode, SheathKeyPacket::decode, SheathKeyPacket::handle);
+    @SubscribeEvent
+    public static void register(RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(SakuraMod.MODID);
+        registrar.playToServer(SheathKeyPacket.TYPE, SheathKeyPacket.STREAM_CODEC, SheathKeyPacket::handle);
     }
 }

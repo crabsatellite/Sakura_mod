@@ -1,10 +1,10 @@
 package cn.mcmod.sakura.tags;
 
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod_mmf.mmlib.utils.TagUtils;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod_mmf.mmlib.utils.TagUtils;
 
 public class SakuraItemTags {
     public static final TagKey<Item> OFFHAND_EQUIPMENT = TagUtils.modItemTag(SakuraMod.MODID,"offhand_equipment");

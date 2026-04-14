@@ -1,9 +1,5 @@
 package cn.mcmod.sakura.villager;
 
-import cn.mcmod.sakura.SakuraMod;
-import cn.mcmod.sakura.level.structure.JapaneseHouseElement;
-import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -13,10 +9,15 @@ import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
+import cn.mcmod.sakura.SakuraMod;
+import cn.mcmod.sakura.level.structure.JapaneseHouseElement;
+import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ import java.util.List;
  *       via reflection (the fields are private in StructureTemplatePool)</li>
  * </ol>
  */
-@Mod.EventBusSubscriber(modid = SakuraMod.MODID)
+@EventBusSubscriber(modid = SakuraMod.MODID)
 public class SakuraVillageStructures {
 
     // Village biome types where Japanese buildings can appear
@@ -58,7 +59,7 @@ public class SakuraVillageStructures {
                     event.getServer().registryAccess().registry(Registries.TEMPLATE_POOL).orElseThrow();
 
             for (String villageType : VILLAGE_TYPES) {
-                ResourceLocation housesPool = new ResourceLocation("village/" + villageType + "/houses");
+                ResourceLocation housesPool = ResourceLocation.parse("village/" + villageType + "/houses");
                 addProceduralHouseToPool(templatePoolRegistry, housesPool, 2);
                 SakuraMod.getLogger().info("Added Sakura Japanese house to {} village pool", villageType);
             }
@@ -111,7 +112,7 @@ public class SakuraVillageStructures {
         try {
             // Get the templates field (ObjectArrayList<StructurePoolElement>)
             Field templatesField = ObfuscationReflectionHelper.findField(
-                    StructureTemplatePool.class, "f_210560_"); // templates
+                    StructureTemplatePool.class, "templates"); // templates
 
             List<StructurePoolElement> currentTemplates =
                     (List<StructurePoolElement>) templatesField.get(pool);
@@ -123,7 +124,7 @@ public class SakuraVillageStructures {
 
             // Get the rawTemplates field (List<Pair<StructurePoolElement, Integer>>)
             Field rawTemplatesField = ObfuscationReflectionHelper.findField(
-                    StructureTemplatePool.class, "f_210559_"); // rawTemplates
+                    StructureTemplatePool.class, "rawTemplates"); // rawTemplates
 
             List<Pair<StructurePoolElement, Integer>> currentRaw =
                     (List<Pair<StructurePoolElement, Integer>>) rawTemplatesField.get(pool);
@@ -138,5 +139,5 @@ public class SakuraVillageStructures {
 
     private static final ResourceKey<StructureProcessorList> MOSSIFY_PROCESSOR =
             ResourceKey.create(Registries.PROCESSOR_LIST,
-                    new ResourceLocation("minecraft", "mossify_10_percent"));
+                    ResourceLocation.parse("mossify_10_percent"));
 }

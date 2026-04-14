@@ -12,15 +12,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
+import com.mojang.serialization.MapCodec;
 
 @SuppressWarnings("deprecation")
 public class MapleTreeSapLogBlock extends RotatedPillarBlock {
+    public static final MapCodec<MapleTreeSapLogBlock> CODEC = simpleCodec(p -> new MapleTreeSapLogBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     /** Sap age 0-5. At 5 the log is exhausted and no more sap can be collected. Matches 1.12.2 SAP_AGE. */
     public static final IntegerProperty EXHAUSTION = IntegerProperty.create("exhaustion", 0, 5);
     public static final int MAX_SAP_AGE = 5;
 
     public MapleTreeSapLogBlock() {
-        super(Properties.copy(Blocks.OAK_LOG).mapColor(
+        super(Properties.ofFullCopy(Blocks.OAK_LOG).mapColor(
                 state -> (state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? MapColor.WOOD
                         : MapColor.PODZOL))
                 .strength(2.0F).sound(SoundType.WOOD));

@@ -1,16 +1,19 @@
 package cn.mcmod.sakura.level.tree.decorator;
 
-import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
+import cn.mcmod.sakura.level.feature.SakuraFeatureRegistry;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 /**
  * Port of 1.12.2 fallenLeaves() method from WorldGenMapleTree / WorldGenBigMaple.
@@ -19,7 +22,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorTy
  */
 public class FallenLeavesDecorator extends TreeDecorator {
 
-    public static final Codec<FallenLeavesDecorator> CODEC = RecordCodecBuilder.create(instance ->
+    public static final MapCodec<FallenLeavesDecorator> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     BuiltInRegistries.BLOCK.byNameCodec().fieldOf("fallen_block").forGetter(d -> d.fallenBlock),
                     Codec.INT.fieldOf("radius_x").forGetter(d -> d.radiusX),

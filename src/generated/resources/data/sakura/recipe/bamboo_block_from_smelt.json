@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.5,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:bamboo_block"
+  },
+  "result": {
+    "id": "sakura:bamboo_charcoal_block"
+  }
+}

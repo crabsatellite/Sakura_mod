@@ -1,9 +1,5 @@
 package cn.mcmod.sakura.container;
 
-import java.util.Objects;
-
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.block.entity.MapleCauldronBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,10 +10,14 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.block.entity.MapleCauldronBlockEntity;
+
+import java.util.Objects;
 
 public class MapleCauldronContainer extends AbstractContainerMenu {
 
@@ -117,7 +117,7 @@ public class MapleCauldronContainer extends AbstractContainerMenu {
     }
 
     public MapleCauldronContainer(final int windowId, final Inventory playerInventory, final FriendlyByteBuf data) {
-        this(windowId, playerInventory, getTileEntity(playerInventory, data), new SimpleContainerData(2));
+        this(windowId, playerInventory, getTileEntity(playerInventory, data), new SimpleContainerData(3));
     }
 
     @Override
@@ -133,8 +133,6 @@ public class MapleCauldronContainer extends AbstractContainerMenu {
 
     @OnlyIn(Dist.CLIENT)
     public boolean isBurning() {
-        // In the 1.12.2 version, isBurning() checked if there was enough fluid (>=500)
-        // and a heat source. We expose mapleTime (field 0) as an indicator.
-        return this.containerData.get(0) > 0;
+        return this.containerData.get(2) > 0;
     }
 }

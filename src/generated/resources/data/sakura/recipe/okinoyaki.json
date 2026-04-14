@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.35,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:dough_okinoyaki"
+  },
+  "result": {
+    "id": "sakura:okinoyaki"
+  }
+}

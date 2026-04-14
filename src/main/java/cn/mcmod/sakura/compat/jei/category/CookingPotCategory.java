@@ -1,13 +1,20 @@
 package cn.mcmod.sakura.compat.jei.category;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import cn.mcmod.sakura.SakuraMod;
 import cn.mcmod.sakura.block.BlockRegistry;
 import cn.mcmod.sakura.block.entity.CookingPotBlockEntity;
 import cn.mcmod.sakura.compat.jei.JEIPlugin;
 import cn.mcmod.sakura.recipes.CookingPotRecipe;
-import cn.mcmod_mmf.mmlib.fluid.FluidIngredient;
+import cn.mcmod.sakura.recipes.base.FluidIngredient;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.forge.ForgeTypes;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -17,17 +24,10 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
 
-    public static final ResourceLocation UID = new ResourceLocation(SakuraMod.MODID, "cooking");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "cooking");
     protected final IDrawable heatIndicator;
     protected final IDrawableAnimated arrow;
     private final Component title;
@@ -36,7 +36,7 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
 
     public CookingPotCategory(IGuiHelper helper) {
         title = Component.translatable("sakura.jei.cooking");
-        ResourceLocation backgroundImage = new ResourceLocation(SakuraMod.MODID, "textures/gui/pot.png");
+        ResourceLocation backgroundImage = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/gui/pot.png");
         background = helper.createDrawable(backgroundImage, 16, 16, 144, 54);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlockRegistry.COOKING_POT.get()));
         heatIndicator = helper.createDrawable(backgroundImage, 176, 0, 18, 18);
@@ -79,7 +79,7 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
         if(recipe.getRequiredFluid() != FluidIngredient.EMPTY)
             builder.addSlot(RecipeIngredientRole.INPUT, 1, 1)
             .setFluidRenderer(CookingPotBlockEntity.TANK_CAPACITY, true, 16, 52)
-            .addIngredients(ForgeTypes.FLUID_STACK, recipe.getRequiredFluid().getMatchingFluidStacks());
+            .addIngredients(NeoForgeTypes.FLUID_STACK, recipe.getRequiredFluid().getMatchingFluidStacks());
         Minecraft minecraft = Minecraft.getInstance();
         builder.addSlot(RecipeIngredientRole.OUTPUT, 120, 22).addItemStack(recipe.getResultItem(minecraft.level.registryAccess()));
     }

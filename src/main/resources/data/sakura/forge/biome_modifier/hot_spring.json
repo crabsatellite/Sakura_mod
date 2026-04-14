@@ -1,6 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "#minecraft:is_mountain",
-  "features": "sakura:hot_spring",
-  "step": "vegetal_decoration"
-}

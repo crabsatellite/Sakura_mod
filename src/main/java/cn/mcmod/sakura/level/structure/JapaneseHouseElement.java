@@ -1,8 +1,5 @@
 package cn.mcmod.sakura.level.structure;
 
-import cn.mcmod.sakura.block.BlockRegistry;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -23,6 +20,11 @@ import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementTy
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import cn.mcmod.sakura.block.BlockRegistry;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +65,7 @@ public class JapaneseHouseElement extends StructurePoolElement {
     // Codec that allows this element type to be serialized/deserialized by the structure system.
     // Since our element has no configurable parameters (it's a fixed design), we just need
     // the projection field inherited from StructurePoolElement.
-    public static final Codec<JapaneseHouseElement> CODEC = RecordCodecBuilder.create(
+    public static final MapCodec<JapaneseHouseElement> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(projectionCodec())
                     .apply(instance, JapaneseHouseElement::new));
 
@@ -205,7 +207,7 @@ public class JapaneseHouseElement extends StructurePoolElement {
                          StructureManager structureManager, ChunkGenerator chunkGenerator,
                          BlockPos origin, BlockPos jigsawTargetPos,
                          Rotation rotation,
-                         BoundingBox boundingBox, RandomSource random, boolean keepJigsaws) {
+                         BoundingBox boundingBox, RandomSource random, LiquidSettings liquidSettings, boolean keepJigsaws) {
         // Direct port of WAVillagerHouse.addComponentParts() from 1.12.2,
         // with rotation support applied to all block placements.
         // Coordinates: x=0..8, z=-1..5, y=0..9 relative to origin (before rotation)

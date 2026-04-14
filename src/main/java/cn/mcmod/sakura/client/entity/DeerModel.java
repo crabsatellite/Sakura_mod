@@ -1,12 +1,12 @@
 package cn.mcmod.sakura.client.entity;
 
-import cn.mcmod.sakura.entity.DeerEntity;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import cn.mcmod.sakura.entity.DeerEntity;
 
 /**
  * DeerModel - ported from 1.12.2 ModelDeer by bagu (Tabula 7.0.0)

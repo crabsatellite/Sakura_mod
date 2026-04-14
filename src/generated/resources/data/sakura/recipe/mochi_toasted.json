@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.5,
+  "group": "sakura",
+  "ingredient": {
+    "item": "sakura:mochi"
+  },
+  "result": {
+    "id": "sakura:mochi_toasted"
+  }
+}

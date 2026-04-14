@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:bento_box"
+    },
+    {
+      "item": "sakura:omurice"
+    },
+    {
+      "tag": "c:vegetables"
+    }
+  ],
+  "result": {
+    "id": "sakura:bento_premium"
+  }
+}

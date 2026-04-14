@@ -1,13 +1,8 @@
 package cn.mcmod.sakura.block.machines;
 
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
-import cn.mcmod.sakura.block.entity.StoneMortarBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -20,12 +15,24 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
+import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
+import cn.mcmod.sakura.block.entity.StoneMortarBlockEntity;
+import com.mojang.serialization.MapCodec;
+
+import javax.annotation.Nullable;
 
 public class StoneMortarBlock extends BaseEntityBlock {
+    public static final MapCodec<StoneMortarBlock> CODEC = simpleCodec(p -> new StoneMortarBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
 
     public StoneMortarBlock() {
-        super(Properties.copy(Blocks.COBBLESTONE).noOcclusion());
+        super(Properties.ofFullCopy(Blocks.COBBLESTONE).noOcclusion());
     }
 
     @Override
@@ -39,12 +46,11 @@ public class StoneMortarBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn,
-            BlockHitResult result) {
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult result) {
         if (!world.isClientSide()) {
             BlockEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof StoneMortarBlockEntity blockEntity) {
-            	NetworkHooks.openScreen((ServerPlayer) player, blockEntity, pos);
+            	player.openMenu( blockEntity, pos);
             }
         }
         return InteractionResult.SUCCESS;

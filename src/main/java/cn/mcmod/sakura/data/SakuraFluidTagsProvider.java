@@ -1,14 +1,14 @@
 package cn.mcmod.sakura.data;
 
-import cn.mcmod.sakura.fluid.FluidRegistry;
-import cn.mcmod.sakura.tags.SakuraFluidTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import cn.mcmod.sakura.fluid.FluidRegistry;
+import cn.mcmod.sakura.tags.SakuraFluidTags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -43,7 +43,7 @@ public class SakuraFluidTagsProvider extends FluidTagsProvider {
         tag(FluidTags.WATER).add(FluidRegistry.MAPLE_SYRUP.get(),FluidRegistry.MAPLE_SYRUP_FLOWING.get());
         tag(FluidTags.WATER).add(FluidRegistry.HOT_SPRING_WATER.get(),FluidRegistry.HOT_SPRING_WATER_FLOWING.get());
 
-        tag(SakuraFluidTags.WATER_WATER).add(Fluids.WATER, Fluids.FLOWING_WATER).addOptional(new ResourceLocation("tfc:river_water"));
+        tag(SakuraFluidTags.WATER_WATER).add(Fluids.WATER, Fluids.FLOWING_WATER).addOptional(ResourceLocation.parse("tfc:river_water"));
         tag(SakuraFluidTags.BREWERS_ALCOHOL)
             .add(FluidRegistry.RUM.get(),FluidRegistry.RUM_FLOWING.get())
             .add(FluidRegistry.WHISKEY.get(),FluidRegistry.WHISKEY_FLOWING.get())
@@ -53,6 +53,6 @@ public class SakuraFluidTagsProvider extends FluidTagsProvider {
             .add(FluidRegistry.GIN.get(),FluidRegistry.GIN_FLOWING.get())
             .add(FluidRegistry.TEQUILA.get(),FluidRegistry.TEQUILA_FLOWING.get());
         tag(SakuraFluidTags.FOOD_OIL).addTag(SakuraFluidTags.PLANTOIL);
-        tag(SakuraFluidTags.PLANTOIL).add(FluidRegistry.FOOD_OIL.get(),FluidRegistry.FOOD_OIL_FLOWING.get()).addOptional(new ResourceLocation("tfc:flowing_olive_oil")).addOptional(new ResourceLocation("tfc:olive_oil"));
+        tag(SakuraFluidTags.PLANTOIL).add(FluidRegistry.FOOD_OIL.get(),FluidRegistry.FOOD_OIL_FLOWING.get()).addOptional(ResourceLocation.parse("tfc:flowing_olive_oil")).addOptional(ResourceLocation.parse("tfc:olive_oil"));
     }
 }

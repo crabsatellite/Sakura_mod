@@ -1,16 +1,12 @@
 package cn.mcmod.sakura.block.machines;
 
-import javax.annotation.Nullable;
-
-import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
-import cn.mcmod.sakura.block.entity.DistillerBlockEntity;
-import cn.mcmod.sakura.tags.SakuraBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,20 +29,33 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+
+import cn.mcmod.sakura.block.entity.BlockEntityRegistry;
+import cn.mcmod.sakura.block.entity.DistillerBlockEntity;
+import cn.mcmod.sakura.tags.SakuraBlockTags;
+import com.mojang.serialization.MapCodec;
+
+import javax.annotation.Nullable;
 
 public class DistillerBlock extends BaseEntityBlock {
+    public static final MapCodec<DistillerBlock> CODEC = simpleCodec(p -> new DistillerBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty TRAY_SUPPORT = BooleanProperty.create("tray_support");
     protected static final VoxelShape SHAPE_WITH_TRAY = Shapes.or(Shapes.block(),
             Block.box(0.0D, -1.0D, 0.0D, 16.0D, 0.0D, 16.0D));
     public DistillerBlock() {
-        super(Properties.copy(Blocks.OAK_PLANKS));
+        super(Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(TRAY_SUPPORT, false));
     }
 
@@ -76,28 +85,32 @@ public class DistillerBlock extends BaseEntityBlock {
     }
     
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn,
-            BlockHitResult result) {
-        ItemStack stack = player.getItemInHand(handIn);
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockentity = level.getBlockEntity(pos);
-        if (!(blockentity instanceof DistillerBlockEntity cookingPot)) {
-            return InteractionResult.FAIL;
+        if (!(blockentity instanceof DistillerBlockEntity distiller)) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
-        IFluidHandlerItem handler = FluidUtil.getFluidHandler(ItemHandlerHelper.copyStackWithSize(stack, 1))
+        IFluidHandlerItem handler = FluidUtil.getFluidHandler(stack.copyWithCount(1))
                 .orElse(null);
         if (handler != null && handler instanceof FluidBucketWrapper) {
-            if (cookingPot.getOutputFluidTank().isPresent()) {
-                FluidTank outTank = cookingPot.getOutputFluidTank().orElse(null);
-                if(!outTank.getFluid().isEmpty())
-                    if(FluidUtil.interactWithFluidHandler(player, handIn, outTank))
-                        return InteractionResult.SUCCESS;
-            }
-            FluidUtil.interactWithFluidHandler(player, handIn, cookingPot.getInputFluidTank().orElse(null));
-            return InteractionResult.SUCCESS;
+            FluidTank outTank = distiller.getOutputFluidTank();
+            if(!outTank.getFluid().isEmpty())
+                if(FluidUtil.interactWithFluidHandler(player, hand, outTank))
+                    return ItemInteractionResult.SUCCESS;
+            FluidUtil.interactWithFluidHandler(player, hand, distiller.getInputFluidTank());
+            return ItemInteractionResult.SUCCESS;
         }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
 
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (!(be instanceof DistillerBlockEntity menuProvider)) {
+            return InteractionResult.FAIL;
+        }
         if (!level.isClientSide()) {
-        	NetworkHooks.openScreen((ServerPlayer) player, cookingPot, pos);
+            player.openMenu(menuProvider, pos);
         }
         return InteractionResult.SUCCESS;
     }

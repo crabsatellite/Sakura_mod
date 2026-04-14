@@ -1,0 +1,27 @@
+{
+  "type": "sakura:cooking",
+  "experience": 0.0,
+  "fluid": {
+    "amount": 250,
+    "fluidTag": "c:water/water"
+  },
+  "ingredients": [
+    {
+      "tag": "c:dashi"
+    },
+    {
+      "tag": "c:soysauce"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    },
+    {
+      "tag": "c:salt"
+    }
+  ],
+  "recipeTime": 200,
+  "result": {
+    "count": 4,
+    "id": "sakura:noodle_soup"
+  }
+}

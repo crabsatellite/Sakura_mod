@@ -1,14 +1,15 @@
 package cn.mcmod.sakura.data;
 
-import cn.mcmod.sakura.level.biome.SakuraBiomeRegistry;
-import cn.mcmod.sakura.tags.SakuraBiomeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import cn.mcmod.sakura.level.biome.SakuraBiomeRegistry;
+import cn.mcmod.sakura.tags.SakuraBiomeTags;
+
 import java.util.concurrent.CompletableFuture;
 
 public class SakuraBiomeTagProvider extends BiomeTagsProvider {

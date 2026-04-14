@@ -7,22 +7,31 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
+import com.mojang.serialization.MapCodec;
 
 public class MapleTreeLogBlock extends RotatedPillarBlock {
+    public static final MapCodec<MapleTreeLogBlock> CODEC = simpleCodec(p -> new MapleTreeLogBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
 
     public MapleTreeLogBlock() {
-        super(Properties.copy(Blocks.OAK_LOG).mapColor(
+        super(Properties.ofFullCopy(Blocks.OAK_LOG).mapColor(
                 state -> (state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? MapColor.WOOD
                         : MapColor.PODZOL))
                 .strength(2.0F).sound(SoundType.WOOD));
     }
 
     @Override
-    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction,
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility toolAction,
             boolean simulate) {
-        if (context.getItemInHand().canPerformAction(ToolActions.SHEARS_CARVE)) {
+        if (context.getItemInHand().canPerformAction(ItemAbilities.SHEARS_CARVE)) {
             return BlockRegistry.MAPLE_SAP_LOG.get().withPropertiesOf(state).setValue(MapleTreeSapLogBlock.EXHAUSTION,
                     0);
         }

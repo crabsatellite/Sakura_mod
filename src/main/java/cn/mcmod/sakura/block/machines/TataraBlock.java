@@ -1,8 +1,5 @@
 package cn.mcmod.sakura.block.machines;
 
-import cn.mcmod.sakura.block.BlockRegistry;
-import cn.mcmod.sakura.item.ItemRegistry;
-import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -10,7 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -28,6 +25,10 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
+import cn.mcmod.sakura.block.BlockRegistry;
+import cn.mcmod.sakura.item.ItemRegistry;
+import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
+import com.mojang.serialization.MapCodec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,14 @@ import java.util.List;
  * When broken while still smelting (TIMER<3), drops unlit Tatara block.
  */
 public class TataraBlock extends Block {
+    public static final MapCodec<TataraBlock> CODEC = simpleCodec(p -> new TataraBlock());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MapCodec codec() {
+        return CODEC;
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final IntegerProperty TIMER = IntegerProperty.create("timer", 0, 3);
@@ -68,24 +77,21 @@ public class TataraBlock extends Block {
         builder.add(FACING, LIT, TIMER);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-                                 InteractionHand hand, BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide()) {
             level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
 
-        ItemStack stack = player.getItemInHand(hand);
-        if (hand == InteractionHand.MAIN_HAND && !state.getValue(LIT)) {
+        if (!state.getValue(LIT)) {
             if (stack.is(Items.FLINT_AND_STEEL)) {
                 level.setBlock(pos, state.setValue(LIT, true).setValue(TIMER, 0), 3);
-                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-                return InteractionResult.CONSUME;
+                stack.hurtAndBreak(1, player, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+                return ItemInteractionResult.CONSUME;
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

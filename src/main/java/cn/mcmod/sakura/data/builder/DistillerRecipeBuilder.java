@@ -1,24 +1,17 @@
 package cn.mcmod.sakura.data.builder;
 
-import java.util.function.Consumer;
-
-import javax.annotation.Nullable;
-
-import com.google.gson.JsonObject;
-
-import cn.mcmod.sakura.recipes.FermenterRecipe;
+import cn.mcmod.sakura.recipes.DistillerRecipe;
 import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
-import cn.mcmod_mmf.mmlib.fluid.FluidIngredient;
+import cn.mcmod.sakura.recipes.base.FluidIngredient;
 import net.minecraft.core.NonNullList;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class DistillerRecipeBuilder {
     private final NonNullList<Ingredient> ingredients = NonNullList.create();
@@ -35,18 +28,18 @@ public class DistillerRecipeBuilder {
         this.experience = exp;
         this.recipeTime = time;
     }
-    
+
     private DistillerRecipeBuilder(FluidIngredient fluid, FluidStack result_fluid, float exp, int time) {
         this.fluid = fluid;
         this.result_fluid = result_fluid;
         this.experience = exp;
         this.recipeTime = time;
     }
-    
+
     public static DistillerRecipeBuilder distillation(FluidIngredient fluid, FluidStack result_fluid, float exp, int time) {
         return new DistillerRecipeBuilder(fluid, result_fluid, exp, time);
     }
-    
+
     public static DistillerRecipeBuilder distillation(FluidIngredient fluid, FluidStack result_fluid) {
         return new DistillerRecipeBuilder(fluid, result_fluid, 0F, 400);
     }
@@ -93,7 +86,7 @@ public class DistillerRecipeBuilder {
         }
         return this;
     }
-    
+
     public DistillerRecipeBuilder addResult(ItemLike result) {
         return this.addResult(result, 1);
     }
@@ -103,58 +96,14 @@ public class DistillerRecipeBuilder {
         return this;
     }
 
-    public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-        consumer.accept(new DistillerRecipeBuilder.Result(id, this.fluid, this.result, this.ingredients,
-                result_fluid, this.experience, this.recipeTime));
+    public void save(RecipeOutput output, ResourceLocation id) {
+        DistillerRecipe recipe = new DistillerRecipe();
+        recipe.outputItems = this.result;
+        recipe.inputFluid = this.fluid;
+        recipe.inputItems = this.ingredients;
+        recipe.outputFluid = this.result_fluid;
+        recipe.experience = this.experience;
+        recipe.recipeTime = this.recipeTime;
+        output.accept(id, recipe, null);
     }
-
-
-    public static class Result implements FinishedRecipe {
-        private final FermenterRecipe recipe = new FermenterRecipe();
-
-        public Result(ResourceLocation id, FluidIngredient fluid, NonNullList<ItemStack> result, NonNullList<Ingredient> ingredients
-                , FluidStack result_fluid, float exp, int time) {
-            recipe.setId(id);
-            recipe.outputItems = result;
-            recipe.inputFluid = fluid;
-            recipe.inputItems = ingredients;
-            recipe.outputFluid = result_fluid;
-            recipe.experience = exp;
-            recipe.recipeTime = time;
-        }
-
-        @Override
-        public void serializeRecipeData(JsonObject json) {
-            JsonObject recipeJson = RecipeTypeRegistry.FERMENTER_RECIPE_SERIALIZER.get().toJson(recipe);
-            json.add("ingredients", recipeJson.get("ingredients"));
-            json.add("fluid", recipeJson.get("fluid"));
-            json.add("results", recipeJson.get("results"));
-            json.add("result_fluid", recipeJson.get("result_fluid"));
-            json.add("experience", recipeJson.get("experience"));
-            json.add("recipeTime", recipeJson.get("recipeTime"));
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return RecipeTypeRegistry.DISTILLER_RECIPE_SERIALIZER.get();
-        }
-
-        @Override
-        public ResourceLocation getId() {
-            return recipe.getId();
-        }
-
-        @Nullable
-        @Override
-        public JsonObject serializeAdvancement() {
-            return null;
-        }
-
-        @Nullable
-        @Override
-        public ResourceLocation getAdvancementId() {
-            return null;
-        }
-    }
-
 }

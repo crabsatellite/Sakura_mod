@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "T": {
+      "item": "sakura:sakura_diamond"
+    }
+  },
+  "pattern": [
+    "T",
+    "S"
+  ],
+  "result": {
+    "id": "sakura:sakura_kodachi"
+  },
+  "show_notification": true
+}

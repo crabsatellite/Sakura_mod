@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BroomItem extends ShovelItem {
     public BroomItem(Tier tier, float attackDamage, float attackSpeed, Properties properties) {
-        super(tier, attackDamage, attackSpeed, properties);
+        super(tier, properties.attributes(ShovelItem.createAttributes(tier, attackDamage, attackSpeed)));
     }
 
     @Override
@@ -26,8 +26,8 @@ public class BroomItem extends ShovelItem {
             level.setBlock(pos, Blocks.DIRT_PATH.defaultBlockState(), 11);
             level.playSound(null, pos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.2F, 1.0F);
             context.getItemInHand().hurtAndBreak(1, context.getPlayer(),
-                p -> p.broadcastBreakEvent(context.getHand()));
-            return InteractionResult.sidedSuccess(level.isClientSide);
+                net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+            return InteractionResult.SUCCESS;
         }
         return super.useOn(context);
     }

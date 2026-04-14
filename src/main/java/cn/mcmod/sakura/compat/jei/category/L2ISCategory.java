@@ -1,11 +1,15 @@
 package cn.mcmod.sakura.compat.jei.category;
 
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import cn.mcmod.sakura.SakuraMod;
 import cn.mcmod.sakura.block.BlockRegistry;
 import cn.mcmod.sakura.compat.jei.JEIPlugin;
 import cn.mcmod.sakura.recipes.LiquidToItemRecipe;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.forge.ForgeTypes;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -15,10 +19,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.Collections;
 
@@ -29,7 +29,7 @@ import java.util.Collections;
  */
 public class L2ISCategory implements IRecipeCategory<LiquidToItemRecipe> {
 
-    public static final ResourceLocation UID = new ResourceLocation(SakuraMod.MODID, "liquid_to_item");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "liquid_to_item");
     protected final IDrawableAnimated arrow;
     private final Component title;
     private final IDrawable background;
@@ -37,7 +37,7 @@ public class L2ISCategory implements IRecipeCategory<LiquidToItemRecipe> {
 
     public L2ISCategory(IGuiHelper helper) {
         title = Component.translatable("sakura.jei.liquid_to_item");
-        ResourceLocation backgroundImage = new ResourceLocation(SakuraMod.MODID, "textures/gui/barrel_out.png");
+        ResourceLocation backgroundImage = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/gui/barrel_out.png");
         // Use a region of the barrel_out GUI texture as the background
         background = helper.createDrawable(backgroundImage, 32, 16, 110, 54);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlockRegistry.BARREL_OUT.get()));
@@ -70,7 +70,7 @@ public class L2ISCategory implements IRecipeCategory<LiquidToItemRecipe> {
         // Input fluid on the left
         builder.addSlot(RecipeIngredientRole.INPUT, 1, 1)
                 .setFluidRenderer(10000, true, 16, 52)
-                .addIngredient(ForgeTypes.FLUID_STACK, recipe.getRequiredFluid());
+                .addIngredient(NeoForgeTypes.FLUID_STACK, recipe.getRequiredFluid());
 
         // Container item input
         builder.addSlot(RecipeIngredientRole.INPUT, 23, 19)

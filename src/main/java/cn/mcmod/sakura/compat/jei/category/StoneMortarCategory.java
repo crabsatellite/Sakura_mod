@@ -1,5 +1,11 @@
 package cn.mcmod.sakura.compat.jei.category;
 
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import cn.mcmod.sakura.SakuraMod;
 import cn.mcmod.sakura.block.BlockRegistry;
 import cn.mcmod.sakura.compat.jei.JEIPlugin;
@@ -13,16 +19,10 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 public class StoneMortarCategory implements IRecipeCategory<StoneMortarRecipe> {
 
-    public static final ResourceLocation UID = new ResourceLocation(SakuraMod.MODID, "stone_mortar");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "stone_mortar");
     private final Component title;
     private final IDrawable background;
     private final IDrawable icon;
@@ -31,7 +31,7 @@ public class StoneMortarCategory implements IRecipeCategory<StoneMortarRecipe> {
 
     public StoneMortarCategory(IGuiHelper helper) {
         title = Component.translatable("sakura.jei.stone_mortar");
-        ResourceLocation backgroundImage = new ResourceLocation(SakuraMod.MODID, "textures/gui/stonemortar.png");
+        ResourceLocation backgroundImage = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "textures/gui/stonemortar.png");
         background = helper.createDrawable(backgroundImage, 39, 13, 87, 62);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlockRegistry.STONE_MORTAR.get()));
         mortar = helper.createDrawable(backgroundImage, 176, 0, 14, 16);

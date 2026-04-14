@@ -1,5 +1,20 @@
 {
   "variants": {
-    "": { "model": "sakura:block/maple_cauldron" }
+    "facing=north,level=0": { "model": "sakura:block/maple_cauldron" },
+    "facing=north,level=1": { "model": "sakura:block/maple_cauldron" },
+    "facing=north,level=2": { "model": "sakura:block/maple_cauldron" },
+    "facing=north,level=3": { "model": "sakura:block/maple_cauldron" },
+    "facing=east,level=0": { "model": "sakura:block/maple_cauldron", "y": 90 },
+    "facing=east,level=1": { "model": "sakura:block/maple_cauldron", "y": 90 },
+    "facing=east,level=2": { "model": "sakura:block/maple_cauldron", "y": 90 },
+    "facing=east,level=3": { "model": "sakura:block/maple_cauldron", "y": 90 },
+    "facing=south,level=0": { "model": "sakura:block/maple_cauldron", "y": 180 },
+    "facing=south,level=1": { "model": "sakura:block/maple_cauldron", "y": 180 },
+    "facing=south,level=2": { "model": "sakura:block/maple_cauldron", "y": 180 },
+    "facing=south,level=3": { "model": "sakura:block/maple_cauldron", "y": 180 },
+    "facing=west,level=0": { "model": "sakura:block/maple_cauldron", "y": 270 },
+    "facing=west,level=1": { "model": "sakura:block/maple_cauldron", "y": 270 },
+    "facing=west,level=2": { "model": "sakura:block/maple_cauldron", "y": 270 },
+    "facing=west,level=3": { "model": "sakura:block/maple_cauldron", "y": 270 }
   }
 }

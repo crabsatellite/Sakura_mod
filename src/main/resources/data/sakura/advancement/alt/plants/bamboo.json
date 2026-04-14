@@ -1,0 +1,28 @@
+{
+  "parent": "sakura:alt/root",
+  "display": {
+    "icon": {
+      "id": "sakura:bamboo"
+    },
+    "title": {
+      "translate": "advancements.sakura.bamboo.title"
+    },
+    "description": {
+      "translate": "advancements.sakura.bamboo.description"
+    }
+  },
+  "criteria": {
+    "bamboo": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sakura:bamboo"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
