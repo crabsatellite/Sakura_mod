@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:tequila_bucket"
-            ]
+            "items": "sakura:tequila_bucket"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_tequila",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_tequila"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_tequila"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

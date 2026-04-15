@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:dough"
+            "items": "#c:dough"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_dough",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_dough"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:dough_okinoyaki"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

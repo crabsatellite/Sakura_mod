@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:chestnut"
-            ]
+            "items": "sakura:chestnut"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ingredient",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ingredient"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:chestnut_toasted"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

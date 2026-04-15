@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item": {
+    "has_block": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:plank_bamboo"
-            ]
+            "items": "sakura:plank_bamboo"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:slab_plank_bamboo"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

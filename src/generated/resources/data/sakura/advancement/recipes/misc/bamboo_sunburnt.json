@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:bamboo_block_sunburnt"
-            ]
+            "items": "sakura:bamboo_block_sunburnt"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ingredient",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ingredient"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:bamboo_sunburnt"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

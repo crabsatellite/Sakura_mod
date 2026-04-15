@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:red_wine_bucket"
-            ]
+            "items": "sakura:red_wine_bucket"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_red_wine",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_red_wine"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_red_wine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

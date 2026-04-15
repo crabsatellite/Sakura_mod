@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:seeds/rapeseed"
+            "items": "#c:seeds/rapeseed"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_seeds",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_seeds"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:food_oil_bucket"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

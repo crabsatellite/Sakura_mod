@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:sakura_katana"
-            ]
+            "items": "sakura:sakura_katana"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_sakura_katana",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_sakura_katana"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:sakura_katana_sheath"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

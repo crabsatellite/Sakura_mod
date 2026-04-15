@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:slices/raw_fishes"
+            "items": "#c:slices/raw_fishes"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_fish",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_fish"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:sashimi"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

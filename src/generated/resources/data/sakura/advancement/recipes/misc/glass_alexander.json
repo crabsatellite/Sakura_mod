@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:glass_brandy"
-            ]
+            "items": "sakura:glass_brandy"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_brandy",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_brandy"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_alexander"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

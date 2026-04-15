@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:smoked_bonito"
-            ]
+            "items": "sakura:smoked_bonito"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ingredient",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ingredient"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:dried_bonito_from_campfire_cooking"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

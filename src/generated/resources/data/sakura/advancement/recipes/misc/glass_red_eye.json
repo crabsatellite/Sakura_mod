@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:glass_beer"
-            ]
+            "items": "sakura:glass_beer"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_beer",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_beer"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_red_eye"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

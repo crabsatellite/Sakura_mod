@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:dried_imogara"
-            ]
+            "items": "sakura:dried_imogara"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_dried_imogara",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_dried_imogara"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:imogaranawa_piece"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

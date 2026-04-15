@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:pound_cake"
-            ]
+            "items": "sakura:pound_cake"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_pound_cake",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_pound_cake"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:pound_cake_mocha"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

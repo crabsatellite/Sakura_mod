@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:okinoyaki"
-            ]
+            "items": "sakura:okinoyaki"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_okinoyaki",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_okinoyaki"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:okinoyaki_plus"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

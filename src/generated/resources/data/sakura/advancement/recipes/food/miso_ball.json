@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:miso"
+            "items": "#c:miso"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_miso",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_miso"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:miso_ball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

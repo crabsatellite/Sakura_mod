@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:bamboo_block"
-            ]
+            "items": "sakura:bamboo_block"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ingredient",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ingredient"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:bamboo"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:sagegane"
-            ]
+            "items": "sakura:sagegane"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_sagegane",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_sagegane"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:tamahagane_from_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

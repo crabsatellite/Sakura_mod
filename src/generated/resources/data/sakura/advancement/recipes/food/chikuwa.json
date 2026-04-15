@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:chikuwa_raw"
-            ]
+            "items": "sakura:chikuwa_raw"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ingredient",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ingredient"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:chikuwa"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

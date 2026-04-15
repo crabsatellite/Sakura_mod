@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:steel_ingot"
-            ]
+            "items": "sakura:steel_ingot"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_steel",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_steel"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:tachi"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

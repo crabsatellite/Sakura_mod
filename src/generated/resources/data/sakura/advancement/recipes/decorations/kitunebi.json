@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:jack_o_lantern"
-            ]
+            "items": "minecraft:jack_o_lantern"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_jack_o_lantern",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_jack_o_lantern"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:kitunebi"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:glass_sake"
-            ]
+            "items": "sakura:glass_sake"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_sake",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_sake"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_saketini"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

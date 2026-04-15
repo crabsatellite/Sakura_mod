@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:kawara_block"
-            ]
+            "items": "sakura:kawara_block"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_kawara",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_kawara"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:kawara_stairs"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

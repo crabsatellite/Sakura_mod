@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:cobblestone"
+            "items": "#c:cobblestones"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_cobblestone",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_cobblestone"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:stone_hammer"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

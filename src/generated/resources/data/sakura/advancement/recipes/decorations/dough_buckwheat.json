@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:flour/buckwheat"
+            "items": "#c:flour/buckwheat"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_flour",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_flour"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:dough_buckwheat"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

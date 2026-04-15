@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:shouchu_bucket"
-            ]
+            "items": "sakura:shouchu_bucket"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_shouchu",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_shouchu"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_shouchu"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

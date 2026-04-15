@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:silk"
-            ]
+            "items": "sakura:silk"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_silk",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_silk"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:kimono"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

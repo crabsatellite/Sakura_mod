@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:mocha"
-            ]
+            "items": "sakura:mocha"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_mocha",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_mocha"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:mocha_cookie"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

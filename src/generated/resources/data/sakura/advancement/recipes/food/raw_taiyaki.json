@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:red_bean_paste"
-            ]
+            "items": "sakura:red_bean_paste"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_redbean_paste",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_redbean_paste"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:raw_taiyaki"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:cooking_pot"
-            ]
+            "items": "sakura:cooking_pot"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_pot",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_pot"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:nabe_sukiyaki"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

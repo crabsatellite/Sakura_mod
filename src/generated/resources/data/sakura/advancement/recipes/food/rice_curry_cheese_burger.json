@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:rice_curry_cheese"
-            ]
+            "items": "sakura:rice_curry_cheese"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_curry_cheese",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_curry_cheese"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:rice_curry_cheese_burger"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

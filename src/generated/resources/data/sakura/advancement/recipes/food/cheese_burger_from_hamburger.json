@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:bun"
-            ]
+            "items": "sakura:bun"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_bun",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_bun"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:cheese_burger_from_hamburger"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

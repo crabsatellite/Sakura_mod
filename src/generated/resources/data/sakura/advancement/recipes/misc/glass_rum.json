@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:rum_bucket"
-            ]
+            "items": "sakura:rum_bucket"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_rum",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_rum"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_rum"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:sakura_log"
-            ]
+            "items": "sakura:sakura_log"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_sakura_log",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_sakura_log"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:charcoal_from_sakura_log"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

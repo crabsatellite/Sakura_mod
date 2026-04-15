@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:flour/wheat"
+            "items": "#c:flour/wheat"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_flour",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_flour"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:dough"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

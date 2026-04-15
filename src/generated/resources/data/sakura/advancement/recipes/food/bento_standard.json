@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:bento_box"
-            ]
+            "items": "sakura:bento_box"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_bento_box",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_bento_box"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:bento_standard"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

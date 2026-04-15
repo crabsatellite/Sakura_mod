@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:seaweed_raw"
-            ]
+            "items": "sakura:seaweed_raw"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ingredient",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ingredient"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:seaweed_dried_from_smoking"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

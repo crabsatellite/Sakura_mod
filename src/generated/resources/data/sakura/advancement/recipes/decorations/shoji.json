@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:lumber"
+            "items": "#c:lumber"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_lumber",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_lumber"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:shoji"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

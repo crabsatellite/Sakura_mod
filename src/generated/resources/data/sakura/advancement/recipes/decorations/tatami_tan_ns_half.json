@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_tatami_tan_ns": {
+      "conditions": {
+        "items": [
+          {
+            "items": "sakura:tatami_tan_ns"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "sakura:tatami_tan_ns_half"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tatami_tan_ns"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "sakura:tatami_tan_ns_half"
+    ]
+  }
+}

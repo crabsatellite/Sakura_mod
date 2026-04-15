@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:liqueur_bucket"
-            ]
+            "items": "sakura:liqueur_bucket"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_liqueur",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_liqueur"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_liqueur"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

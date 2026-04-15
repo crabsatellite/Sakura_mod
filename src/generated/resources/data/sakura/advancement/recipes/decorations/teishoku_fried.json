@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:obon"
-            ]
+            "items": "sakura:obon"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_obon",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_obon"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:teishoku_fried"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

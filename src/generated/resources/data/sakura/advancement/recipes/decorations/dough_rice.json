@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:flour/rice"
+            "items": "#c:flour/rice"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_flour",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_flour"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:dough_rice"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

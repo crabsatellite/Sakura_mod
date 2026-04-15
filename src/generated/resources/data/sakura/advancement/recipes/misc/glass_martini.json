@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:glass_gin"
-            ]
+            "items": "sakura:glass_gin"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_gin",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_gin"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_martini"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

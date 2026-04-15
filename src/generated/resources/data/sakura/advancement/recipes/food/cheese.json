@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:salt"
+            "items": "#c:salt"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_salt",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_salt"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:cheese"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

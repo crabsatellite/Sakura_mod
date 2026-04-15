@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:glass_rum"
-            ]
+            "items": "sakura:glass_rum"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_rum",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_rum"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_daiquiri"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

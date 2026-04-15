@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:dough_okinoyaki"
-            ]
+            "items": "sakura:dough_okinoyaki"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ingredient",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ingredient"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:okinoyaki_from_smoking"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

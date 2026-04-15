@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:tatami_waxed"
-            ]
+            "items": "sakura:tatami_waxed"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_tatami",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_tatami"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:tatami_ns_carpet"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

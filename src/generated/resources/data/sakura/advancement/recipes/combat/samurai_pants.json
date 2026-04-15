@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:tamahagane"
-            ]
+            "items": "sakura:tamahagane"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_tamahagane",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_tamahagane"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:samurai_pants"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

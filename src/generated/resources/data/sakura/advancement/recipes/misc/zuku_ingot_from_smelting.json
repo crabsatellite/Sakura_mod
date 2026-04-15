@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:zuku"
-            ]
+            "items": "sakura:zuku"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_zuku",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_zuku"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:zuku_ingot_from_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

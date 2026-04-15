@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:sakura_diamond"
-            ]
+            "items": "sakura:sakura_diamond"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_sakura_diamond",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_sakura_diamond"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:sakura_pickaxe"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

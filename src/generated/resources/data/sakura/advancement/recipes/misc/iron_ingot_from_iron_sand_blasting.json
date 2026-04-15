@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:iron_sand"
-            ]
+            "items": "sakura:iron_sand"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_iron_sand",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_iron_sand"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:iron_ingot_from_iron_sand_blasting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

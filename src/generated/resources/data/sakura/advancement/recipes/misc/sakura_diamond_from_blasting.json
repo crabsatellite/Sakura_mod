@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:sakura_diamond_ore"
-            ]
+            "items": "sakura:sakura_diamond_ore"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:sakura_diamond_from_blasting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

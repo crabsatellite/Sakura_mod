@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:chestnut_burrs"
-            ]
+            "items": "sakura:chestnut_burrs"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_chestnut_burrs",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_chestnut_burrs"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:chestnut_from_smelting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

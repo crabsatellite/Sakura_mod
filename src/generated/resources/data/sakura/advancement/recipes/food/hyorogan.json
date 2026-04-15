@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:dried_rice"
-            ]
+            "items": "sakura:dried_rice"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_dried_rice",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_dried_rice"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:hyorogan"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

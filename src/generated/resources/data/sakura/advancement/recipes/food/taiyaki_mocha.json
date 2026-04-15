@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:taiyaki"
-            ]
+            "items": "sakura:taiyaki"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_taiyaki",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_taiyaki"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:taiyaki_mocha"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

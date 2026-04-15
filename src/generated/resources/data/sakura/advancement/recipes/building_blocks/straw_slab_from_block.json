@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:straw_block"
-            ]
+            "items": "sakura:straw_block"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:straw_slab_from_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

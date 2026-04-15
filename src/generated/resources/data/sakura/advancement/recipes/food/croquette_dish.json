@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:croquette"
-            ]
+            "items": "sakura:croquette"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_croquette",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_croquette"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:croquette_dish"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

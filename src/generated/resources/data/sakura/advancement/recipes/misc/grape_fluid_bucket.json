@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:crops/grape"
+            "items": "#c:crops/grape"
           }
         ]
       },
@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_grape",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_grape"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:grape_fluid_bucket"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

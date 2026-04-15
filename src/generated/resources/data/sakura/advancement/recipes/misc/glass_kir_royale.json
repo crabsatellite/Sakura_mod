@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "sakura:glass_champagne"
-            ]
+            "items": "sakura:glass_champagne"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_champagne",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_champagne"
     ]
   ],
   "rewards": {
     "recipes": [
       "sakura:glass_kir_royale"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
