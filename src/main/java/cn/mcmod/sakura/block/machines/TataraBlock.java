@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
+import cn.mcmod.sakura.SakuraConfig;
 import cn.mcmod.sakura.block.BlockRegistry;
 import cn.mcmod.sakura.item.ItemRegistry;
 import cn.mcmod.sakura.item.enums.SakuraNormalItemSet;
@@ -38,8 +39,9 @@ import java.util.List;
  * Right-click with flint and steel to ignite (LIT=true).
  * When LIT, random ticks advance the TIMER from 0 to 3.
  * Adjacent unlit Tatara blocks are also ignited (spread smelting).
- * When broken while TIMER==3 (finished), drops tamahagane or steel ingots.
- * When broken while still smelting (TIMER<3), drops unlit Tatara block.
+ * When broken while TIMER==3 (finished), drops tamahagane (rare) or raw smelting material
+ * (zuku/sagegane/zuku_ingot, selected by SakuraConfig.harderIronDifficult, default zuku).
+ * When broken while still smelting (TIMER&lt;3), drops unlit Tatara block.
  */
 public class TataraBlock extends Block {
     public static final MapCodec<TataraBlock> CODEC = simpleCodec(p -> new TataraBlock());
@@ -129,23 +131,33 @@ public class TataraBlock extends Block {
             drops.add(new ItemStack(BlockRegistry.TATARA.get()));
             return drops;
         }
-        // Finished smelting (TIMER == 3): drop tamahagane/steel
+        // Finished smelting (TIMER == 3): drop raw smelting material or (rare) tamahagane.
+        // Matches 1.12.2 BlockTataraSmelting: default drops zuku (requires smelting/forging
+        // to become iron); config harderIronDifficult selects alternate raw material.
         RandomSource random = builder.getLevel().random;
         if (random.nextInt(10) == 0) {
-            // Rare chance: drop tamahagane (special steel)
             for (int i = 0; i < 2; ++i) {
                 if (random.nextInt(2) == 0) {
                     drops.add(new ItemStack(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()));
                 }
             }
         } else {
-            // Normal: drop steel ingots
+            SakuraNormalItemSet material = resolveTataraDrop();
             for (int i = 0; i < 9; ++i) {
                 if (random.nextInt(9) <= 7) {
-                    drops.add(new ItemStack(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.STEEL_INGOT).get()));
+                    drops.add(new ItemStack(ItemRegistry.MATERIALS.get(material).get()));
                 }
             }
         }
         return drops;
+    }
+
+    public static SakuraNormalItemSet resolveTataraDrop() {
+        int difficulty = SakuraConfig.COMMON.harderIronDifficult.get();
+        return switch (difficulty) {
+            case 2 -> SakuraNormalItemSet.SAGEGANE;
+            case 3 -> SakuraNormalItemSet.ZUKU_INGOT;
+            default -> SakuraNormalItemSet.ZUKU;
+        };
     }
 }
