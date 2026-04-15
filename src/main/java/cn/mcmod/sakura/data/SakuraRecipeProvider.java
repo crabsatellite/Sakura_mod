@@ -1233,6 +1233,16 @@ public class SakuraRecipeProvider extends RecipeProvider {
                 .group("sakura").unlockedBy("has_tamahagane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.TAMAHAGANE).get()))
                 .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "steel_ingot_from_smelting"));
 
+        // Forging chain: zuku_ingot -> sagegane -> iron_ingot (restores 1.12.2 progression).
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SAGEGANE).get(), 1)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.ZUKU_INGOT).get(), 4)
+                .group("sakura").unlockedBy("has_zuku_ingot", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.ZUKU_INGOT).get()))
+                .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "sagegane_from_zuku_ingot"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.IRON_INGOT, 1)
+                .requires(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SAGEGANE).get(), 2)
+                .group("sakura").unlockedBy("has_sagegane", has(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SAGEGANE).get()))
+                .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "iron_ingot_from_sagegane"));
+
         // Maple Log -> Charcoal (smelting)
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(BlockRegistry.MAPLE_LOG.get()), RecipeCategory.MISC, Items.CHARCOAL, 0.15F, 200)
                 .group("sakura").unlockedBy("has_maple_log", has(BlockRegistry.MAPLE_LOG.get()))

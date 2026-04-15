@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "sakura",
+  "ingredients": [
+    {
+      "item": "sakura:sagegane"
+    },
+    {
+      "item": "sakura:sagegane"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:iron_ingot"
+  }
+}
