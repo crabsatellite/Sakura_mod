@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import cn.mcmod.sakura.SakuraMod;
@@ -291,19 +292,24 @@ public class BlockRegistry {
     public static final DeferredHolder<Block, Block> TEISHOKU_BURGER = BLOCKS.register("teishoku_burger",
             () -> new TeishokuBlock(FoodInfo.builder().amountAndCalories(10, 0.8f).build()));
 
+    // Lantern shapes (from Blockbench models)
+    public static final VoxelShape STONE_LANTERN_SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
+    public static final VoxelShape BAMBOO_LANTERN_SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 8.0D, 11.0D);
+    public static final VoxelShape PAPER_LANTERN_SHAPE = Block.box(5.5D, 0.0D, 5.5D, 10.5D, 16.0D, 10.5D);
+
     // Lanterns
     public static final DeferredHolder<Block, Block> STONE_LANTERN = BLOCKS.register("stone_lantern",
-            () -> new net.minecraft.world.level.block.LanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.STONE).sound(SoundType.STONE).lightLevel(s -> 15)));
+            () -> new SakuraLanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.STONE).sound(SoundType.STONE).lightLevel(s -> 15).noOcclusion(), STONE_LANTERN_SHAPE));
     public static final DeferredHolder<Block, Block> COBBLESTONE_LANTERN = BLOCKS.register("cobblestone_lantern",
-            () -> new net.minecraft.world.level.block.LanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.STONE).sound(SoundType.STONE).lightLevel(s -> 15)));
+            () -> new SakuraLanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.STONE).sound(SoundType.STONE).lightLevel(s -> 15).noOcclusion(), STONE_LANTERN_SHAPE));
     public static final DeferredHolder<Block, Block> MOSSY_STONE_LANTERN = BLOCKS.register("mossy_stone_lantern",
-            () -> new net.minecraft.world.level.block.LanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.STONE).sound(SoundType.STONE).lightLevel(s -> 15)));
+            () -> new SakuraLanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.STONE).sound(SoundType.STONE).lightLevel(s -> 15).noOcclusion(), STONE_LANTERN_SHAPE));
     public static final DeferredHolder<Block, Block> RED_LANTERN = BLOCKS.register("red_lantern",
-            () -> new net.minecraft.world.level.block.LanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.COLOR_RED).lightLevel(s -> 15)));
+            () -> new SakuraLanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.COLOR_RED).lightLevel(s -> 15).noOcclusion(), PAPER_LANTERN_SHAPE));
     public static final DeferredHolder<Block, Block> WHITE_LANTERN = BLOCKS.register("white_lantern",
-            () -> new net.minecraft.world.level.block.LanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.SNOW).lightLevel(s -> 15)));
+            () -> new SakuraLanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.SNOW).lightLevel(s -> 15).noOcclusion(), PAPER_LANTERN_SHAPE));
     public static final DeferredHolder<Block, Block> BAMBOO_LANTERN = BLOCKS.register("bamboo_lantern",
-            () -> new net.minecraft.world.level.block.LanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.SAND).sound(SoundType.BAMBOO).lightLevel(s -> 15)));
+            () -> new SakuraLanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.SAND).sound(SoundType.BAMBOO).lightLevel(s -> 15).noOcclusion(), BAMBOO_LANTERN_SHAPE));
 
     // Kawara (roof tiles)
     public static final DeferredHolder<Block, Block> KAWARA_BLOCK = BLOCKS.register("kawara_block",
@@ -313,7 +319,7 @@ public class BlockRegistry {
 
     // Decorative furniture
     public static final DeferredHolder<Block, Block> WINDBELL = BLOCKS.register("windbell",
-            () -> new net.minecraft.world.level.block.LanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.METAL).noOcclusion()));
+            () -> new WindBellBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).mapColor(MapColor.METAL).noOcclusion().noCollission()));
     public static final DeferredHolder<Block, Block> ANDON = BLOCKS.register("andon",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(0.5F).sound(SoundType.WOOD).lightLevel(s -> 14).noOcclusion()));
     public static final DeferredHolder<Block, Block> KITUNEBI = BLOCKS.register("kitunebi",
