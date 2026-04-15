@@ -236,6 +236,9 @@ public class SakuraBlockTagsProvider extends BlockTagsProvider {
                 BlockRegistry.NOREN_WHITE.get(),
                 BlockRegistry.NOREN_BLUE.get(),
                 BlockRegistry.NOREN_PINK.get());
+
+        this.tag(SakuraBlockTags.MINEABLE_WITH_HAMMER).add(
+                BlockRegistry.TATARA.get());
     }
 
     @Override
