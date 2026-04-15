@@ -1,9 +1,9 @@
 {
   "type": "sakura:fermenting",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 500,
-    "fluidTag": "sakura:brewers_alcohol"
+    "tag": "sakura:brewers_alcohol"
   },
   "ingredients": [
     {
@@ -17,17 +17,14 @@
     }
   ],
   "recipeTime": 800,
-  "result_fluid": {
-    "amount": 0,
-    "fluid": "minecraft:empty"
-  },
   "results": [
     {
       "count": 8,
-      "item": "sakura:mirin"
+      "id": "sakura:mirin"
     },
     {
-      "item": "sakura:mirin_kasu"
+      "count": 1,
+      "id": "sakura:mirin_kasu"
     }
   ]
 }

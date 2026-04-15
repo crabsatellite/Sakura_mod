@@ -1,10 +1,9 @@
 {
   "type": "sakura:fermenting",
-  "experience": 10.0,
+  "experience": 10,
   "fluid": {
     "amount": 500,
-    "fluid": "sakura:doburoku",
-    "nbt": {}
+    "fluid": "sakura:doburoku"
   },
   "ingredients": [
     {
@@ -14,12 +13,12 @@
   "recipeTime": 500,
   "result_fluid": {
     "amount": 250,
-    "fluid": "sakura:sake"
+    "id": "sakura:sake"
   },
   "results": [
     {
       "count": 2,
-      "item": "sakura:sake_kasu"
+      "id": "sakura:sake_kasu"
     }
   ]
 }

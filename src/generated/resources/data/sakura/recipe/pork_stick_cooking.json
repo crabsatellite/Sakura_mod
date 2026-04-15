@@ -1,9 +1,6 @@
 {
   "type": "sakura:cooking",
-  "experience": 0.0,
-  "fluid": {
-    "null_fluid": true
-  },
+  "experience": 0,
   "ingredients": [
     {
       "tag": "c:raw_pork"

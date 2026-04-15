@@ -2,11 +2,14 @@
   "type": "sakura:chopping",
   "byproducts": [
     {
-      "count": 2,
-      "item": "sakura:bonito_shaving"
+      "chance": 1,
+      "item": {
+        "count": 2,
+        "id": "sakura:bonito_shaving"
+      }
     }
   ],
-  "experience": 1.0,
+  "experience": 1,
   "ingredient": {
     "item": "sakura:dried_bonito"
   },

@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "c:cobblestone"
+      "tag": "c:cobblestones"
     },
     "L": {
       "tag": "c:lumber"
@@ -15,7 +15,7 @@
     "###"
   ],
   "result": {
+    "count": 1,
     "id": "sakura:stone_mortar"
-  },
-  "show_notification": true
+  }
 }

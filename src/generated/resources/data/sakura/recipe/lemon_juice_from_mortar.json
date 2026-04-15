@@ -1,6 +1,6 @@
 {
   "type": "sakura:stone_mortar",
-  "experience": 0.0,
+  "experience": 0,
   "ingredients": [
     {
       "item": "sakura:lemon"
@@ -10,7 +10,7 @@
   "results": [
     {
       "count": 2,
-      "item": "sakura:lemon_juice"
+      "id": "sakura:lemon_juice"
     }
   ]
 }

@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "sakura",
   "key": {
-    "M": {
+    "#": {
       "item": "sakura:plank_sakura"
     }
   },
   "pattern": [
-    "MMM"
+    "###"
   ],
   "result": {
     "count": 6,
     "id": "sakura:slab_plank_sakura"
-  },
-  "show_notification": true
+  }
 }

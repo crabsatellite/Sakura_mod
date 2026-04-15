@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "sakura",
   "key": {
-    "M": {
+    "#": {
       "item": "sakura:tatami_sunburnt"
     }
   },
   "pattern": [
-    "MMM"
+    "###"
   ],
   "result": {
     "count": 6,
     "id": "sakura:tatami_slab_sunburnt"
-  },
-  "show_notification": true
+  }
 }

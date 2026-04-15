@@ -1,9 +1,9 @@
 {
   "type": "sakura:cooking",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 125,
-    "fluidTag": "c:water/water"
+    "tag": "c:water/water"
   },
   "ingredients": [
     {
@@ -12,6 +12,7 @@
   ],
   "recipeTime": 200,
   "result": {
+    "count": 1,
     "id": "sakura:brown_rice_cooked"
   }
 }

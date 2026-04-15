@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "T": {
+      "item": "sakura:tatami_tan_ns"
+    }
+  },
+  "pattern": [
+    "T"
+  ],
+  "result": {
+    "count": 2,
+    "id": "sakura:tatami_tan_ns_half"
+  }
+}

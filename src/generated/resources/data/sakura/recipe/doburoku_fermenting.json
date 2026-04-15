@@ -1,9 +1,9 @@
 {
   "type": "sakura:fermenting",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 1000,
-    "fluidTag": "c:water/water"
+    "tag": "c:water/water"
   },
   "ingredients": [
     {
@@ -16,7 +16,7 @@
   "recipeTime": 800,
   "result_fluid": {
     "amount": 500,
-    "fluid": "sakura:doburoku"
+    "id": "sakura:doburoku"
   },
   "results": []
 }

@@ -6,7 +6,7 @@
       "tag": "c:bamboo"
     },
     "S": {
-      "tag": "c:string"
+      "tag": "c:strings"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     "B"
   ],
   "result": {
+    "count": 1,
     "id": "sakura:broom"
-  },
-  "show_notification": true
+  }
 }

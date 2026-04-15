@@ -1,19 +1,20 @@
 {
   "type": "sakura:stone_mortar",
-  "experience": 0.0,
+  "experience": 0,
   "ingredients": [
     {
-      "tag": "c:cobblestone"
+      "tag": "c:cobblestones"
     }
   ],
   "recipeTime": 200,
   "results": [
     {
-      "item": "minecraft:gravel"
+      "count": 1,
+      "id": "minecraft:gravel"
     },
     {
       "count": 2,
-      "item": "sakura:salt"
+      "id": "sakura:salt"
     }
   ]
 }

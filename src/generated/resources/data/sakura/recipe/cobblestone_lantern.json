@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "C": {
-      "tag": "c:cobblestone"
+      "tag": "c:cobblestones"
     },
     "T": {
       "item": "minecraft:torch"
@@ -15,7 +15,7 @@
     " C "
   ],
   "result": {
+    "count": 1,
     "id": "sakura:cobblestone_lantern"
-  },
-  "show_notification": true
+  }
 }

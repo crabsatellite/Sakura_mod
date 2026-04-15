@@ -6,7 +6,7 @@
       "tag": "c:rods/wooden"
     },
     "S": {
-      "tag": "c:cobblestone"
+      "tag": "c:cobblestones"
     }
   },
   "pattern": [
@@ -14,7 +14,7 @@
     " L"
   ],
   "result": {
+    "count": 1,
     "id": "sakura:stone_hammer"
-  },
-  "show_notification": true
+  }
 }

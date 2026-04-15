@@ -1,6 +1,6 @@
 {
   "type": "sakura:stone_mortar",
-  "experience": 0.0,
+  "experience": 0,
   "ingredients": [
     {
       "tag": "c:bread"
@@ -10,11 +10,11 @@
   "results": [
     {
       "count": 2,
-      "item": "sakura:breadcrumbs"
+      "id": "sakura:breadcrumbs"
     },
     {
       "count": 2,
-      "item": "sakura:breadcrumbs"
+      "id": "sakura:breadcrumbs"
     }
   ]
 }

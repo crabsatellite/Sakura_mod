@@ -2,15 +2,20 @@
   "type": "sakura:chopping",
   "byproducts": [
     {
-      "item": "sakura:sashimi"
+      "chance": 1,
+      "item": {
+        "count": 1,
+        "id": "sakura:sashimi"
+      }
     }
   ],
-  "experience": 1.0,
+  "experience": 1,
   "ingredient": {
     "item": "sakura:machined_fish"
   },
   "recipeTime": 1,
   "result": {
+    "count": 1,
     "id": "sakura:sashimi"
   },
   "tool": {

@@ -3,10 +3,13 @@
   "byproducts": [
     {
       "chance": 0.5,
-      "item": "minecraft:bone_meal"
+      "item": {
+        "count": 1,
+        "id": "minecraft:bone_meal"
+      }
     }
   ],
-  "experience": 1.0,
+  "experience": 1,
   "ingredient": {
     "item": "sakura:bonito"
   },

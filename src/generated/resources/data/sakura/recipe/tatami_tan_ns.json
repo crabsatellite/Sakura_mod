@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "sakura:tatami_tan"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "sakura:tatami_tan_ns"
+  }
+}

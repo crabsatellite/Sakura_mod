@@ -1,16 +1,15 @@
 {
   "type": "sakura:distillation",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 1000,
-    "fluid": "sakura:beer",
-    "nbt": {}
+    "fluid": "sakura:beer"
   },
   "ingredients": [],
   "recipeTime": 400,
   "result_fluid": {
     "amount": 500,
-    "fluid": "sakura:whiskey"
+    "id": "sakura:whiskey"
   },
   "results": []
 }

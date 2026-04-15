@@ -3,13 +3,13 @@
   "category": "misc",
   "key": {
     "G": {
-      "tag": "c:glass"
+      "tag": "c:glass_blocks"
     },
     "I": {
       "tag": "c:ingots/iron"
     },
     "S": {
-      "tag": "c:string"
+      "tag": "c:strings"
     }
   },
   "pattern": [
@@ -18,7 +18,7 @@
     " S "
   ],
   "result": {
+    "count": 1,
     "id": "sakura:windbell"
-  },
-  "show_notification": true
+  }
 }

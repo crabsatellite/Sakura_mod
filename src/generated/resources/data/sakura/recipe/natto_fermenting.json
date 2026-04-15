@@ -1,9 +1,6 @@
 {
   "type": "sakura:cooking",
-  "experience": 1.0,
-  "fluid": {
-    "null_fluid": true
-  },
+  "experience": 1,
   "ingredients": [
     {
       "tag": "c:crops/soybean"

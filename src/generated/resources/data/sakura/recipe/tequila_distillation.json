@@ -1,9 +1,9 @@
 {
   "type": "sakura:distillation",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 200,
-    "fluidTag": "c:water/water"
+    "tag": "c:water/water"
   },
   "ingredients": [
     {
@@ -19,7 +19,7 @@
   "recipeTime": 400,
   "result_fluid": {
     "amount": 100,
-    "fluid": "sakura:tequila"
+    "id": "sakura:tequila"
   },
   "results": []
 }

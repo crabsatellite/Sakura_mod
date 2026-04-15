@@ -1,10 +1,9 @@
 {
   "type": "sakura:fermenting",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 200,
-    "fluid": "sakura:white_wine",
-    "nbt": {}
+    "fluid": "sakura:white_wine"
   },
   "ingredients": [
     {
@@ -17,7 +16,7 @@
   "recipeTime": 800,
   "result_fluid": {
     "amount": 100,
-    "fluid": "sakura:champagne"
+    "id": "sakura:champagne"
   },
   "results": []
 }

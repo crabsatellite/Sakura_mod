@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "S": {
-      "tag": "c:stone"
+      "tag": "c:stones"
     },
     "T": {
       "item": "minecraft:torch"
@@ -15,7 +15,7 @@
     " S "
   ],
   "result": {
+    "count": 1,
     "id": "sakura:stone_lantern"
-  },
-  "show_notification": true
+  }
 }

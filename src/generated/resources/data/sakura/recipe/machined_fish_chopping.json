@@ -2,14 +2,21 @@
   "type": "sakura:chopping",
   "byproducts": [
     {
-      "item": "sakura:machined_fish"
+      "chance": 1,
+      "item": {
+        "count": 1,
+        "id": "sakura:machined_fish"
+      }
     },
     {
       "chance": 0.5,
-      "item": "minecraft:bone_meal"
+      "item": {
+        "count": 1,
+        "id": "minecraft:bone_meal"
+      }
     }
   ],
-  "experience": 1.0,
+  "experience": 1,
   "ingredient": [
     {
       "item": "minecraft:cod"
@@ -23,6 +30,7 @@
   ],
   "recipeTime": 1,
   "result": {
+    "count": 1,
     "id": "sakura:machined_fish"
   },
   "tool": {

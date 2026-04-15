@@ -2,19 +2,27 @@
   "type": "sakura:chopping",
   "byproducts": [
     {
-      "item": "sakura:sliced_cabbage"
+      "chance": 1,
+      "item": {
+        "count": 1,
+        "id": "sakura:sliced_cabbage"
+      }
     },
     {
       "chance": 0.5,
-      "item": "sakura:sliced_cabbage"
+      "item": {
+        "count": 1,
+        "id": "sakura:sliced_cabbage"
+      }
     }
   ],
-  "experience": 1.0,
+  "experience": 1,
   "ingredient": {
     "tag": "c:crops/cabbage"
   },
   "recipeTime": 1,
   "result": {
+    "count": 1,
     "id": "sakura:sliced_cabbage"
   },
   "tool": {

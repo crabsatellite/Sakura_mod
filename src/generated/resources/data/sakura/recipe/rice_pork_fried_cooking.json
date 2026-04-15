@@ -1,9 +1,9 @@
 {
   "type": "sakura:cooking",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 125,
-    "fluidTag": "c:food_oil"
+    "tag": "c:food_oil"
   },
   "ingredients": [
     {
@@ -21,6 +21,7 @@
   ],
   "recipeTime": 200,
   "result": {
+    "count": 1,
     "id": "sakura:rice_pork_fried"
   }
 }

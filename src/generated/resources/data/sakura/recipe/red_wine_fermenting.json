@@ -1,9 +1,9 @@
 {
   "type": "sakura:fermenting",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 200,
-    "fluidTag": "c:water/water"
+    "tag": "c:water/water"
   },
   "ingredients": [
     {
@@ -22,7 +22,7 @@
   "recipeTime": 800,
   "result_fluid": {
     "amount": 100,
-    "fluid": "sakura:red_wine"
+    "id": "sakura:red_wine"
   },
   "results": []
 }

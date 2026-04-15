@@ -1,9 +1,9 @@
 {
   "type": "sakura:fermenting",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 500,
-    "fluidTag": "c:water/water"
+    "tag": "c:water/water"
   },
   "ingredients": [
     {
@@ -14,14 +14,10 @@
     }
   ],
   "recipeTime": 800,
-  "result_fluid": {
-    "amount": 0,
-    "fluid": "minecraft:empty"
-  },
   "results": [
     {
       "count": 2,
-      "item": "sakura:kouji"
+      "id": "sakura:kouji"
     }
   ]
 }

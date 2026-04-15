@@ -1,6 +1,6 @@
 {
   "type": "sakura:stone_mortar",
-  "experience": 0.0,
+  "experience": 0,
   "ingredients": [
     [
       {
@@ -35,11 +35,11 @@
   "results": [
     {
       "count": 2,
-      "item": "sakura:minced_meat"
+      "id": "sakura:minced_meat"
     },
     {
       "count": 2,
-      "item": "sakura:minced_meat"
+      "id": "sakura:minced_meat"
     }
   ]
 }

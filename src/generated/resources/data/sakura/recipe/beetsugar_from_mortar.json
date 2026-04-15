@@ -1,6 +1,6 @@
 {
   "type": "sakura:stone_mortar",
-  "experience": 0.0,
+  "experience": 0,
   "ingredients": [
     {
       "item": "minecraft:beetroot"
@@ -9,10 +9,12 @@
   "recipeTime": 200,
   "results": [
     {
-      "item": "minecraft:sugar"
+      "count": 1,
+      "id": "minecraft:sugar"
     },
     {
-      "item": "sakura:molasses"
+      "count": 1,
+      "id": "sakura:molasses"
     }
   ]
 }

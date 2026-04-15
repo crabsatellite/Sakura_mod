@@ -1,16 +1,16 @@
 {
   "type": "sakura:cooking",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 125,
-    "fluidTag": "c:water/water"
+    "tag": "c:water/water"
   },
   "ingredients": [
     {
       "tag": "c:dough/rice"
     },
     {
-      "item": "minecraft:grass"
+      "item": "minecraft:short_grass"
     },
     {
       "item": "sakura:red_bean_paste"

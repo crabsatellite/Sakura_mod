@@ -1,9 +1,9 @@
 {
   "type": "sakura:distillation",
-  "experience": 0.0,
+  "experience": 0,
   "fluid": {
     "amount": 200,
-    "fluidTag": "sakura:brewers_alcohol"
+    "tag": "sakura:brewers_alcohol"
   },
   "ingredients": [
     {
@@ -19,7 +19,7 @@
   "recipeTime": 400,
   "result_fluid": {
     "amount": 200,
-    "fluid": "sakura:liqueur"
+    "id": "sakura:liqueur"
   },
   "results": []
 }
