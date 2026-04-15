@@ -1,49 +1,42 @@
 {
-  "type": "neoforge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
     {
-      "conditions": [
-        {
-          "type": "neoforge:mod_loaded",
-          "modid": "farmersdelight"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "category": "misc",
-        "ingredients": [
-          {
-            "item": "minecraft:dirt"
-          },
-          {
-            "tag": "c:straw"
-          },
-          {
-            "tag": "c:straw"
-          },
-          {
-            "item": "minecraft:bone_meal"
-          },
-          {
-            "item": "minecraft:bone_meal"
-          },
-          {
-            "item": "farmersdelight:tree_bark"
-          },
-          {
-            "item": "farmersdelight:tree_bark"
-          },
-          {
-            "item": "farmersdelight:tree_bark"
-          },
-          {
-            "item": "farmersdelight:tree_bark"
-          }
-        ],
-        "result": {
-          "id": "farmersdelight:organic_compost"
-        }
-      }
+      "item": "minecraft:dirt"
+    },
+    {
+      "tag": "c:straw"
+    },
+    {
+      "tag": "c:straw"
+    },
+    {
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "farmersdelight:tree_bark"
+    },
+    {
+      "item": "farmersdelight:tree_bark"
+    },
+    {
+      "item": "farmersdelight:tree_bark"
+    },
+    {
+      "item": "farmersdelight:tree_bark"
+    }
+  ],
+  "result": {
+    "id": "farmersdelight:organic_compost"
+  },
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "farmersdelight"
     }
   ]
 }
