@@ -136,6 +136,7 @@ public class TataraBlock extends Block {
             // Normal: drop steel ingots
             for (int i = 0; i < 9; ++i) {
                 if (random.nextInt(9) <= 7) {
+                    // Here could be anything, but not STEEL!
                     drops.add(new ItemStack(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.STEEL_INGOT).get()));
                 }
             }
