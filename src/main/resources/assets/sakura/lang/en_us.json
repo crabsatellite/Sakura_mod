@@ -772,6 +772,11 @@
     "guide.sakura_guide.landing_text": "There are many plants in this world. This book mainly describes things that must-see for harvesters",
 
     "itemGroup.sakura": "Sakura",
+    "itemGroup.sakura.blocks": "Sakura Blocks",
+    "itemGroup.sakura.items": "Sakura Items",
+    "itemGroup.sakura.foods": "Sakura Foods",
+    "itemGroup.sakura.drinks": "Sakura Drinks",
+    "jei.sakura.tatara.description": "The Tatara smelts iron sand into Zuku, then Zuku can be refined into iron ingots.",
 
     "sakura.config.vanilla_weight": "Vanilla Weight",
     "sakura.config.vanilla_weight.tooltip": "Changes generate rate of Vanilla. Increase value to gen more Vanilla.",

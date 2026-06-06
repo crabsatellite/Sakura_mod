@@ -1128,14 +1128,6 @@ public class SakuraRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
                 .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "maple_spile"));
 
-        // ===== CAMPFIRE_IDLE (sakura campfire) =====
-        // 1.12.2:  #  / #S#   #=logWood, S=lumber
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BlockRegistry.CAMPFIRE_IDLE.get())
-                .pattern(" # ").pattern("#S#")
-                .define('#', ItemTags.LOGS).define('S', SakuraItemTags.LUMBER)
-                .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
-                .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "campfire_idle"));
-
         // ===== SAKURA_DIAMOND_BLOCK (storage block: 9 diamonds -> block) =====
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockRegistry.SAKURA_DIAMOND_BLOCK.get())
                 .pattern("###").pattern("###").pattern("###")
@@ -1180,14 +1172,6 @@ public class SakuraRecipeProvider extends RecipeProvider {
                 .define('#', SakuraItemTags.LUMBER).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_lumber", has(SakuraItemTags.LUMBER))
                 .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "vanilla_splint"));
-
-        // ===== STRAW_WEB (drying rack) =====
-        // 1.12.2:     / HHH / S S   H=straw, S=lumber
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegistry.STRAW_WEB.get())
-                .pattern("HHH").pattern("S S")
-                .define('H', SakuraItemTags.STRAW).define('S', SakuraItemTags.LUMBER)
-                .unlockedBy("has_straw", has(SakuraItemTags.STRAW))
-                .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "straw_web"));
 
         // ===== KITUNEBI (fox fire lantern) =====
         // 1.12.2: LLL / WTW / LLL   T=lit_pumpkin(jack_o_lantern), W=lumber, L=lapis -> yields 16
@@ -3325,30 +3309,6 @@ public class SakuraRecipeProvider extends RecipeProvider {
                 .requiresTool(SakuraItemTags.TOOLS_KNIVES_FISH)
                 .addByproduce(FoodRegistry.FOODSET.get(SakuraFoodSet.SASHIMI).get())
                 .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "sashimi_chopping"));
-
-        // Ramen block -> raw ramen noodles with noodle knife
-        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.RAMEN_RAW).get(), 4)
-                .requires(BlockItemRegistry.RAMEN_BLOCK.get())
-                .requiresTool(SakuraItemTags.TOOLS_KNIVES_NOODLE)
-                .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "ramen_raw_chopping"));
-
-        // Udon unfinished block -> raw udon with noodle knife
-        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.UDON_RAW).get(), 4)
-                .requires(BlockItemRegistry.UDON_UNFINISHED.get())
-                .requiresTool(SakuraItemTags.TOOLS_KNIVES_NOODLE)
-                .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "udon_raw_chopping"));
-
-        // Soba block -> raw soba with noodle knife
-        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.SOBA_RAW).get(), 4)
-                .requires(BlockItemRegistry.SOBA_BLOCK.get())
-                .requiresTool(SakuraItemTags.TOOLS_KNIVES_NOODLE)
-                .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "soba_raw_chopping"));
-
-        // Pasta block -> raw pasta with noodle knife
-        ChoppingBoardRecipeBuilder.chop(ItemRegistry.MATERIALS.get(SakuraNormalItemSet.PASTA_RAW).get(), 4)
-                .requires(BlockItemRegistry.PASTA_BLOCK.get())
-                .requiresTool(SakuraItemTags.TOOLS_KNIVES_NOODLE)
-                .save(output, ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "pasta_raw_chopping"));
 
         // Bonito machining: bonito -> machined bonito with fish knife
         ChoppingBoardRecipeBuilder.chop(FoodRegistry.FOODSET.get(SakuraFoodSet.MACHINED_BONITO).get(), 2)

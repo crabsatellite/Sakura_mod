@@ -1,6 +1,7 @@
 package cn.mcmod.sakura.client.model;
 
 import com.google.common.collect.ImmutableList;
+import cn.mcmod.sakura.item.KimonoRenderLayerPolicy;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -110,21 +111,10 @@ public class KimonoModel<T extends LivingEntity> extends HumanoidModel<T> {
     public void setVisibleForSlot(EquipmentSlot slot) {
         setAllVisible(false);
 
-        switch (slot) {
-            case LEGS:
-                this.body.visible = true;
-                this.rightArm.visible = true;
-                this.leftArm.visible = true;
-                this.rightLeg.visible = true;
-                this.leftLeg.visible = true;
-                break;
-            case CHEST:
-                this.body.visible = true;
-                this.rightArm.visible = true;
-                this.leftArm.visible = true;
-                break;
-            default:
-                break;
-        }
+        this.body.visible = KimonoRenderLayerPolicy.showsBody(slot);
+        this.rightArm.visible = KimonoRenderLayerPolicy.showsArms(slot);
+        this.leftArm.visible = KimonoRenderLayerPolicy.showsArms(slot);
+        this.rightLeg.visible = KimonoRenderLayerPolicy.showsLegs(slot);
+        this.leftLeg.visible = KimonoRenderLayerPolicy.showsLegs(slot);
     }
 }

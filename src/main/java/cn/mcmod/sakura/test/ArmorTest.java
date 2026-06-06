@@ -3,10 +3,12 @@ package cn.mcmod.sakura.test;
 import cn.mcmod.sakura.SakuraMod;
 import cn.mcmod.sakura.item.ItemRegistry;
 import cn.mcmod.sakura.item.KimonoItem;
+import cn.mcmod.sakura.item.KimonoRenderLayerPolicy;
 import cn.mcmod.sakura.item.SamuraiArmorItem;
 import cn.mcmod.sakura.test.util.SakuraTestBase;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.gametest.GameTestHolder;
@@ -84,6 +86,24 @@ public class ArmorTest {
         SakuraTestBase.assertEquals(helper, ArmorItem.Type.CHESTPLATE,
                 ((ArmorItem) ItemRegistry.HAORI.get()).getType(),
                 "HAORI wrong slot");
+        helper.succeed();
+    }
+
+    @GameTest(template = SakuraTestBase.EMPTY_TEMPLATE)
+    public static void kimono_and_haori_render_layers_do_not_overlap(GameTestHelper helper) {
+        SakuraTestBase.assertTrue(helper, KimonoRenderLayerPolicy.showsBody(EquipmentSlot.CHEST),
+                "Haori chest layer should show body");
+        SakuraTestBase.assertTrue(helper, KimonoRenderLayerPolicy.showsArms(EquipmentSlot.CHEST),
+                "Haori chest layer should show arms");
+        SakuraTestBase.assertFalse(helper, KimonoRenderLayerPolicy.showsLegs(EquipmentSlot.CHEST),
+                "Haori chest layer must not render legs over kimono");
+
+        SakuraTestBase.assertFalse(helper, KimonoRenderLayerPolicy.showsBody(EquipmentSlot.LEGS),
+                "Kimono leg layer must not render body under haori");
+        SakuraTestBase.assertFalse(helper, KimonoRenderLayerPolicy.showsArms(EquipmentSlot.LEGS),
+                "Kimono leg layer must not render arms under haori");
+        SakuraTestBase.assertTrue(helper, KimonoRenderLayerPolicy.showsLegs(EquipmentSlot.LEGS),
+                "Kimono leg layer should render legs");
         helper.succeed();
     }
 

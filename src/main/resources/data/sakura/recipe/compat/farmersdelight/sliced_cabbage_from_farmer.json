@@ -10,8 +10,10 @@
   },
   "result": [
     {
-      "id": "sakura:sliced_cabbage",
-      "count": 2
+      "item": {
+        "id": "sakura:sliced_cabbage",
+        "count": 2
+      }
     }
   ],
   "neoforge:conditions": [

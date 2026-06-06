@@ -37,5 +37,12 @@ config = "${mod_id}.mixins.json"
     ordering="AFTER"
     side="BOTH"
 
+[[dependencies.${mod_id}]]
+    modId="terrablender"
+    type="optional"
+    versionRange="[4.0.0,)"
+    ordering="AFTER"
+    side="BOTH"
+
 [modproperties.${mod_id}]
     catalogueItemIcon="sakura:stone"

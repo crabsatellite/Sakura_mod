@@ -66,6 +66,19 @@ public class DrinksTest {
     }
 
     @GameTest(template = SakuraTestBase.EMPTY_TEMPLATE)
+    public static void cocktail_set_retains_restored_and_new_drinks(GameTestHelper helper) {
+        SakuraTestBase.assertEquals(helper, 65, SakuraCocktailSet.values().length,
+                "SakuraCocktailSet should retain the restored 1.12.2 cocktails plus 1.21.1 additions");
+        SakuraTestBase.assertNotNull(helper, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_STINGER),
+                "Restored GLASS_STINGER cocktail missing");
+        SakuraTestBase.assertNotNull(helper, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_KIR_ROYALE),
+                "1.21.1 GLASS_KIR_ROYALE cocktail missing");
+        SakuraTestBase.assertNotNull(helper, DrinkRegistry.COCKTAILS.get(SakuraCocktailSet.GLASS_PINA_COLADA),
+                "1.21.1 GLASS_PINA_COLADA cocktail missing");
+        helper.succeed();
+    }
+
+    @GameTest(template = SakuraTestBase.EMPTY_TEMPLATE)
     public static void drinks_use_drink_animation(GameTestHelper helper) {
         for (DeferredHolder<Item, Item> obj : DrinkRegistry.TEAS.values()) {
             DrinkItem drink = (DrinkItem) obj.get();

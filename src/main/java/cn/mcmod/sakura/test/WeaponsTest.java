@@ -68,17 +68,49 @@ public class WeaponsTest {
     }
 
     @GameTest(template = SakuraTestBase.EMPTY_TEMPLATE)
-    public static void katana_uses_block_animation(GameTestHelper helper) {
+    public static void unsheathed_katana_does_not_start_blocking_use_action(GameTestHelper helper) {
         Item katana = ItemRegistry.KATANA.get();
         ItemStack stack = new ItemStack(katana);
-        SakuraTestBase.assertEquals(helper, UseAnim.BLOCK, katana.getUseAnimation(stack),
-                "KATANA right-click animation should be BLOCK");
+        SakuraTestBase.assertEquals(helper, UseAnim.NONE, katana.getUseAnimation(stack),
+                "KATANA should not use BLOCK animation when unsheathed");
+        SakuraTestBase.assertEquals(helper, 0, katana.getUseDuration(stack, null),
+                "KATANA should not have a right-click use duration when unsheathed");
         Item tachi = ItemRegistry.TACHI.get();
-        SakuraTestBase.assertEquals(helper, UseAnim.BLOCK, tachi.getUseAnimation(new ItemStack(tachi)),
-                "TACHI right-click animation should be BLOCK");
+        SakuraTestBase.assertEquals(helper, UseAnim.NONE, tachi.getUseAnimation(new ItemStack(tachi)),
+                "TACHI should not use BLOCK animation when unsheathed");
+        SakuraTestBase.assertEquals(helper, 0, tachi.getUseDuration(new ItemStack(tachi), null),
+                "TACHI should not have a right-click use duration when unsheathed");
         Item sakuraKatana = ItemRegistry.SAKURA_KATANA.get();
-        SakuraTestBase.assertEquals(helper, UseAnim.BLOCK, sakuraKatana.getUseAnimation(new ItemStack(sakuraKatana)),
-                "SAKURA_KATANA right-click animation should be BLOCK");
+        SakuraTestBase.assertEquals(helper, UseAnim.NONE, sakuraKatana.getUseAnimation(new ItemStack(sakuraKatana)),
+                "SAKURA_KATANA should not use BLOCK animation when unsheathed");
+        SakuraTestBase.assertEquals(helper, 0, sakuraKatana.getUseDuration(new ItemStack(sakuraKatana), null),
+                "SAKURA_KATANA should not have a right-click use duration when unsheathed");
+        helper.succeed();
+    }
+
+    @GameTest(template = SakuraTestBase.EMPTY_TEMPLATE)
+    public static void sheathed_katana_keeps_quick_draw_use_action(GameTestHelper helper) {
+        Item sheathed = ItemRegistry.KATANA_SHEATH.get();
+        ItemStack stack = new ItemStack(sheathed);
+        SakuraTestBase.assertEquals(helper, UseAnim.BOW, sheathed.getUseAnimation(stack),
+                "Sheathed katana should keep BOW quick-draw animation");
+        SakuraTestBase.assertEquals(helper, 20, sheathed.getUseDuration(stack, null),
+                "Sheathed katana should keep short quick-draw duration");
+        Item sakuraSheathed = ItemRegistry.SAKURA_KATANA_SHEATH.get();
+        ItemStack sakuraStack = new ItemStack(sakuraSheathed);
+        SakuraTestBase.assertEquals(helper, UseAnim.BOW, sakuraSheathed.getUseAnimation(sakuraStack),
+                "Sakura sheathed katana should keep BOW quick-draw animation");
+        SakuraTestBase.assertEquals(helper, 20, sakuraSheathed.getUseDuration(sakuraStack, null),
+                "Sakura sheathed katana should keep short quick-draw duration");
+        helper.succeed();
+    }
+
+    @GameTest(template = SakuraTestBase.EMPTY_TEMPLATE)
+    public static void empty_sheath_still_blocks(GameTestHelper helper) {
+        Item sheath = ItemRegistry.SHEATH.get();
+        ItemStack stack = new ItemStack(sheath);
+        SakuraTestBase.assertEquals(helper, UseAnim.BLOCK, sheath.getUseAnimation(stack),
+                "Empty sheath should still use BLOCK animation");
         helper.succeed();
     }
 

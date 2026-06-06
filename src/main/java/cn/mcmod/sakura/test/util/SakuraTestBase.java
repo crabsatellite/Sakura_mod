@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import java.util.Map;
 
 public final class SakuraTestBase {
-    public static final String EMPTY_TEMPLATE = "sakura:empty";
+    public static final String EMPTY_TEMPLATE = "empty";
 
     private SakuraTestBase() {}
 

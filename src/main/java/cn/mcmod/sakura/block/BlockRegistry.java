@@ -148,54 +148,54 @@ public class BlockRegistry {
             () -> new FacingSlab(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)));
 
     public static final DeferredHolder<Block, Block> RICE_CROP_ROOT = BLOCKS.register("rice_crop_root",
-            () -> new RiceCropRoot(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F)));
+            () -> new RiceCropRoot(cropProperties()));
     public static final DeferredHolder<Block, Block> RICE_CROP = BLOCKS.register("rice_crop",
-            () -> new RiceCrop(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F)));
+            () -> new RiceCrop(cropProperties()));
 
     public static final DeferredHolder<Block, Block> CABBAGE_CROP = BLOCKS.register("cabbage_crop",
-            () -> new BaseCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS).strength(0.2F), ItemRegistry.CABBAGE_SEEDS));
+            () -> new BaseCropBlock(cropProperties(), ItemRegistry.CABBAGE_SEEDS));
 
     public static final DeferredHolder<Block, Block> RADISH_CROP = BLOCKS.register("radish_crop",
-            () -> new Age3CropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS).strength(0.2F), ItemRegistry.RADISH_SEEDS));
+            () -> new Age3CropBlock(cropProperties(), ItemRegistry.RADISH_SEEDS));
 
     public static final DeferredHolder<Block, Block> ONION_CROP = BLOCKS.register("onion_crop",
-            () -> new Age3CropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS).strength(0.2F), ItemRegistry.ONION_SEEDS));
+            () -> new Age3CropBlock(cropProperties(), ItemRegistry.ONION_SEEDS));
 
     public static final DeferredHolder<Block, Block> REDBEAN_CROP = BLOCKS.register("redbean_crop",
-            () -> new Age3CropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F), ItemRegistry.RED_BEAN));
+            () -> new Age3CropBlock(cropProperties(), ItemRegistry.RED_BEAN));
     
     public static final DeferredHolder<Block, Block> SOYBEAN_CROP = BLOCKS.register("soybean_crop",
-            () -> new Age3CropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F), ItemRegistry.SOYBEAN));
+            () -> new Age3CropBlock(cropProperties(), ItemRegistry.SOYBEAN));
 
     public static final DeferredHolder<Block, Block> RAPESEED_CROP = BLOCKS.register("rapeseed_crop",
-            () -> new BaseCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F), ItemRegistry.RAPESEEDS));
+            () -> new BaseCropBlock(cropProperties(), ItemRegistry.RAPESEEDS));
 
     public static final DeferredHolder<Block, Block> BUCKWHEAT_CROP = BLOCKS.register("buckwheat_crop",
-            () -> new BaseCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F), ItemRegistry.BUCKWHEAT));
+            () -> new BaseCropBlock(cropProperties(), ItemRegistry.BUCKWHEAT));
 
     public static final DeferredHolder<Block, Block> TARO_CROP = BLOCKS.register("taro_crop",
-            () -> new Age3CropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F), ItemRegistry.TARO));
+            () -> new Age3CropBlock(cropProperties(), ItemRegistry.TARO));
 
     public static final DeferredHolder<Block, Block> TOMATO_CROP = BLOCKS.register("tomato_crop",
-            () -> new HighCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS).strength(0.2F), ItemRegistry.TOMATO_SEEDS));
+            () -> new HighCropBlock(cropProperties(), ItemRegistry.TOMATO_SEEDS));
 
     public static final DeferredHolder<Block, Block> EGGPLANT_CROP = BLOCKS.register("eggplant_crop",
-            () -> new HighCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS).strength(0.2F), ItemRegistry.EGGPLANT_SEEDS));
+            () -> new HighCropBlock(cropProperties(), ItemRegistry.EGGPLANT_SEEDS));
 
     public static final DeferredHolder<Block, Block> PEPPER_CROP = BLOCKS.register("pepper_crop",
-            () -> new HighCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS).strength(0.2F), ItemRegistry.PEPPER_SEEDS));
+            () -> new HighCropBlock(cropProperties(), ItemRegistry.PEPPER_SEEDS));
 
     public static final DeferredHolder<Block, Block> VANILLA_CROP = BLOCKS.register("vanilla_crop",
-            () -> new HighCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS).strength(0.2F), ItemRegistry.VANILLA_SEEDS));
+            () -> new HighCropBlock(cropProperties(), ItemRegistry.VANILLA_SEEDS));
 
     public static final DeferredHolder<Block, Block> GRAPE_CROP = BLOCKS.register("grape_crop",
-            () -> new HighCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS).strength(0.2F), ItemRegistry.GRAPE_SEEDS));
+            () -> new HighCropBlock(cropProperties(), ItemRegistry.GRAPE_SEEDS));
 
     public static final DeferredHolder<Block, Block> HOPS_CROP = BLOCKS.register("hops_crop",
-            () -> new HighCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F), ItemRegistry.HOP_SEEDS));
+            () -> new HighCropBlock(cropProperties(), ItemRegistry.HOP_SEEDS));
 
     public static final DeferredHolder<Block, Block> SEAWEED_CROP = BLOCKS.register("seaweed_crop",
-            () -> new BaseCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F), ItemRegistry.SEAWEED_SEEDS));
+            () -> new BaseCropBlock(cropProperties(), ItemRegistry.SEAWEED_SEEDS));
 
     // Crop support blocks
     public static final DeferredHolder<Block, Block> PEPPER_SPLINT = BLOCKS.register("pepper_splint",
@@ -458,6 +458,10 @@ public class BlockRegistry {
     private static SaplingBlock sapling(TreeGrower tree) {
         return new SaplingBlock(tree, BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS).noCollission().randomTicks()
                 .instabreak().sound(SoundType.GRASS));
+    }
+
+    private static BlockBehaviour.Properties cropProperties() {
+        return BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).noCollission().instabreak().sound(SoundType.CROP);
     }
 
     private static RotatedPillarBlock simplebambooBlock(MapColor top, MapColor bark) {

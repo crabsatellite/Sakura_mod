@@ -1,6 +1,7 @@
 package cn.mcmod.sakura.compat.jei;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -32,6 +33,7 @@ import cn.mcmod.sakura.recipes.RecipeTypeRegistry;
 import cn.mcmod.sakura.recipes.StoneMortarRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -42,7 +44,7 @@ import java.util.List;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-    public static final ResourceLocation PLUGIN_ID = ResourceLocation.fromNamespaceAndPath(SakuraMod.MODID, "jei_plugin");
+    public static final ResourceLocation PLUGIN_ID = SakuraJeiInfo.PLUGIN_ID;
 
     private static final Minecraft MC = Minecraft.getInstance();
 
@@ -88,6 +90,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipes(DISTILLER_JEI_TYPE, findRecipesByType(RecipeTypeRegistry.DISTILLER_RECIPE_TYPE.get()));
         registration.addRecipes(CHOPPING_JEI_TYPE, findRecipesByType(RecipeTypeRegistry.CHOPPING_RECIPE_TYPE.get()));
         registration.addRecipes(L2IS_JEI_TYPE, LiquidToItemRegistry.getRecipes());
+        registration.addIngredientInfo(SakuraJeiInfo.tataraInfoStack(), VanillaTypes.ITEM_STACK,
+                Component.translatable(SakuraJeiInfo.TATARA_INFO_KEY));
     }
 
     @Override

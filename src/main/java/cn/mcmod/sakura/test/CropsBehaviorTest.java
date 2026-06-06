@@ -6,13 +6,18 @@ import cn.mcmod.sakura.block.crops.GrapeLeavesBlock;
 import cn.mcmod.sakura.block.crops.GrapeVineBlock;
 import cn.mcmod.sakura.block.crops.WildCropBlock;
 import cn.mcmod.sakura.test.util.SakuraTestBase;
+import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.neoforged.neoforge.registries.DeferredHolder;
+
+import java.util.List;
 
 @GameTestHolder(SakuraMod.MODID)
 @PrefixGameTestTemplate(false)
@@ -119,6 +124,18 @@ public class CropsBehaviorTest {
     }
 
     @GameTest(template = SakuraTestBase.EMPTY_TEMPLATE)
+    public static void all_registered_crop_blocks_break_instantly(GameTestHelper helper) {
+        BlockPos pos = helper.absolutePos(new BlockPos(0, 0, 0));
+        for (DeferredHolder<Block, ? extends Block> crop : cropBlocks()) {
+            BlockState state = crop.get().defaultBlockState();
+            SakuraTestBase.assertEquals(helper, 0.0F,
+                    state.getDestroySpeed(helper.getLevel(), pos),
+                    crop.getId() + " should break instantly like vanilla crops");
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = SakuraTestBase.EMPTY_TEMPLATE)
     public static void wild_pepper_is_wild_crop_block(GameTestHelper helper) {
         SakuraTestBase.assertTrue(helper,
                 BlockRegistry.WILD_PEPPER.get() instanceof WildCropBlock,
@@ -145,5 +162,27 @@ public class CropsBehaviorTest {
         SakuraTestBase.assertEquals(helper, 7, (int) seven.getValue(GrapeVineBlock.AGE),
                 "GRAPE_VINE must accept AGE=7");
         helper.succeed();
+    }
+
+    private static List<DeferredHolder<Block, ? extends Block>> cropBlocks() {
+        return List.of(
+                BlockRegistry.RICE_CROP_ROOT,
+                BlockRegistry.RICE_CROP,
+                BlockRegistry.CABBAGE_CROP,
+                BlockRegistry.RADISH_CROP,
+                BlockRegistry.ONION_CROP,
+                BlockRegistry.REDBEAN_CROP,
+                BlockRegistry.SOYBEAN_CROP,
+                BlockRegistry.RAPESEED_CROP,
+                BlockRegistry.BUCKWHEAT_CROP,
+                BlockRegistry.TARO_CROP,
+                BlockRegistry.TOMATO_CROP,
+                BlockRegistry.EGGPLANT_CROP,
+                BlockRegistry.PEPPER_CROP,
+                BlockRegistry.VANILLA_CROP,
+                BlockRegistry.GRAPE_CROP,
+                BlockRegistry.HOPS_CROP,
+                BlockRegistry.SEAWEED_CROP
+        );
     }
 }

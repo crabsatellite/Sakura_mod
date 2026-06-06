@@ -23,8 +23,8 @@ import java.util.List;
 /**
  * Katana weapon item for Sakura mod.
  * <p>
- * A Japanese-style sword that can block like a shield when right-clicked.
- * Supports sweeping attacks when the Sweeping Edge enchantment is applied.
+ * A Japanese-style sword. Unsheathed katanas do not start a blocking use action
+ * in the 1.21.1 port; sweep/quick-draw behavior belongs to the sheathed katana.
  * Players cannot dual-wield two katanas -- the off-hand katana is forcibly
  * moved back to inventory every tick (matching 1.12.2 behavior).
  */
@@ -67,27 +67,17 @@ public class KatanaItem extends SwordItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-
-        // Prevent dual-wielding katanas: if the other hand also holds a katana, deny use
-        InteractionHand otherHand = (hand == InteractionHand.MAIN_HAND)
-                ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
-        ItemStack otherStack = player.getItemInHand(otherHand);
-        if (otherStack.getItem() instanceof KatanaItem) {
-            return InteractionResultHolder.fail(stack);
-        }
-
-        player.startUsingItem(hand);
-        return InteractionResultHolder.consume(stack);
+        return InteractionResultHolder.pass(stack);
     }
 
     @Override
     public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.BLOCK;
+        return UseAnim.NONE;
     }
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return 72000;
+        return 0;
     }
 
     // --- Sweep attack on release ---
